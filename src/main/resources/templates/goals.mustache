@@ -4,26 +4,39 @@
     <title>Goals</title>
 </head>
 <body>
-<h1>Goals</h1>
-<div>
-<form action="/logout" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
-</div>
+<header>
+    <div> <strong><a href="/">BiT</a></strong></div>
 
-<div>
-<form action="/goals" method="post">
-    <div><label>Goal name <input type="text" name="name"/></label></div>
-    <div><label>Steps <input type="text" name="steps"/></label></div>
-    <div><label>Note <input type="text" name="note"/></label></div>
-    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-    <div><input type="submit" value="Add goal"/></div>
-</form>
-</div>
+    <div>{{#user}}
+        {{id}}&nbsp;{{name}}&nbsp;{{username}}&nbsp;{{password}}
+        {{/user}}</div>
 
+    <div>
+        {{countOfGoals}}
+    </div>
+    <div>
+        <form action="/newgoal" method="get">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <div><input type="submit" value="Add goal"/></div>
+        </form>
+    </div>
+    <div>
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <input type="submit" value="Log Out"/>
+        </form>
+    </div>
+</header>
+
+<br>
 <div>
+
 {{#goals}}
-    <div>{{goalName}}&nbsp;{{doneSteps}}/{{allSteps}}</div>
+    <form action="/goal" method="post">
+    <input type="submit" value="{{goalName}}&nbsp;{{doneSteps}}/{{allSteps}}"/>
+    <input type="hidden" name="goalId" value="{{id}}"/>
+    <input type="hidden" name = "_csrf" value="{{_csrf.token}}"/>
+    </form>
 {{/goals}}
 
     {{^goals}}
@@ -32,3 +45,4 @@
 </div>
 
 </body>
+</html>

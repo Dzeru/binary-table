@@ -1,50 +1,52 @@
 package com.pie.binarytable.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
-@Table(name = "goal", schema = "binarytable", catalog = "")
+@Table(name = "goal")
 public class Goal
 {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
-
+	private Long id;
 	private String goalName;
 	private int allSteps;
 	private int doneSteps;
 	private String currentState;
 	private String note;
+	private Long userId;
 
+/*
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
+*/
 
 	public Goal(){}
 
-	public Goal(User user, String goalName, int allSteps)
+	public Goal(Long userId, String goalName, int allSteps)
 	{
 		this.goalName = goalName;
 		this.allSteps = allSteps;
-		this.user = user;
+		this.userId = userId;
 	}
 
-	public Goal(User user, String goalName, int allSteps, String note)
+	public Goal(Long userId, String goalName, int allSteps, String note)
 	{	this.goalName = goalName;
 		this.allSteps = allSteps;
 		this.note = note;
-		this.user = user;
+		this.userId = userId;
 	}
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "id", nullable = false)
-	public int getId()
+	public Long getId()
 	{
 		return id;
 	}
 
-	public void setId(int id)
+	public void setId(Long id)
 	{
 		this.id = id;
 	}
@@ -73,6 +75,16 @@ public class Goal
 		this.allSteps = allSteps;
 	}
 
+	public int getDoneSteps()
+	{
+		return doneSteps;
+	}
+
+	public void setDoneSteps(int doneSteps)
+	{
+		this.doneSteps = doneSteps;
+	}
+
 	@Basic
 	@Column(name = "current_state", nullable = false, length = 1000)
 	public String getCurrentState()
@@ -97,6 +109,39 @@ public class Goal
 		this.note = note;
 	}
 
+	public Long getUserId()
+	{
+		return userId;
+	}
+
+	public void setUserId(Long userId)
+	{
+		this.userId = userId;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o) return true;
+		if (!(o instanceof Goal)) return false;
+		Goal goal = (Goal) o;
+		return getAllSteps() == goal.getAllSteps() &&
+				getDoneSteps() == goal.getDoneSteps() &&
+				Objects.equals(getId(), goal.getId()) &&
+				Objects.equals(getGoalName(), goal.getGoalName()) &&
+				Objects.equals(getCurrentState(), goal.getCurrentState()) &&
+				Objects.equals(getNote(), goal.getNote()) &&
+				Objects.equals(getUserId(), goal.getUserId());
+	}
+
+	@Override
+	public int hashCode()
+	{
+
+		return Objects.hash(getId(), getGoalName(), getAllSteps(), getDoneSteps(), getCurrentState(), getNote(), getUserId());
+	}
+
+	/*
 	public User getUser()
 	{
 		return user;
@@ -125,7 +170,6 @@ public class Goal
 	@Override
 	public int hashCode()
 	{
-
 		return Objects.hash(getId(), getGoalName(), getAllSteps(), doneSteps, getCurrentState(), getNote(), getUser());
-	}
+	}*/
 }

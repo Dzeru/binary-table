@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:=http://www.w3.org/1999/xhtml">
+<head>
+    <title>New goal</title>
+</head>
+<body>
+<h1>New goal</h1>
+<div>
+    <form action="/newgoal" method="post">
+        <div><label>Goal name <input type="text" name="name"/></label></div>
+        <div><label>Steps <input type="text" name="steps"/></label></div>
+        <div><label>Note <input type="text" name="note"/></label></div>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+        <div><input type="submit" value="Add goal"/></div>
+    </form>
+</div>
+</body>
+</html>

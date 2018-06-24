@@ -37,7 +37,7 @@ public class UsersController
 		user.setActive(true);
 		user.setRoles(Collections.singleton(Role.USER));
 		userDAO.save(user);
-System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRR " + user.getName());
+
 		return "redirect:/login";
 	}
 }

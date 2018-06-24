@@ -9,9 +9,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user")
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class User implements UserDetails
+{
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
     private String password;
@@ -22,6 +23,10 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    /*@OrderBy("goalName")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<Goal> goals;*/
 
     public Long getId() {
         return id;
@@ -97,4 +102,16 @@ public class User implements UserDetails {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    /*
+	public Set<Goal> getGoals()
+	{
+		return goals;
+	}
+
+	public void setGoals(Set<Goal> goals)
+	{
+		this.goals = goals;
+	}
+	*/
 }
