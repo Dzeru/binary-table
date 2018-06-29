@@ -1,16 +1,24 @@
 package com.pie.binarytable.controllers;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /*
 Controller for simple pages
  */
+@Controller
 public class PageController
 {
 	@GetMapping("/about")
 	public String about()
 	{
 		return "about";
+	}
+
+	@GetMapping("/terms")
+	public String terms()
+	{
+		return "terms";
 	}
 
 	@GetMapping("/index")
@@ -23,5 +31,11 @@ public class PageController
 	public String index()
 	{
 		return "index";
+	}
+
+	@GetMapping("/goal")
+	public String goal()
+	{
+		return "goal";
 	}
 }

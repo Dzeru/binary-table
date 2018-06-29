@@ -1,48 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:=http://www.w3.org/1999/xhtml">
 <head>
-    <title>Goals</title>
+    <title>BiT | Goals</title>
 </head>
 <body>
-<header>
-    <div> <strong><a href="/">BiT</a></strong></div>
+    <header>
+        <div> <strong><a href="/">BiT</a></strong></div>
 
-    <div>{{#user}}
-        {{id}}&nbsp;{{name}}&nbsp;{{username}}&nbsp;{{password}}
-        {{/user}}</div>
+        <div>{{#user}}
+            {{id}}&nbsp;{{name}}&nbsp;{{username}}&nbsp;{{password}}
+            {{/user}}
+        </div>
 
+        <div>
+            {{countOfGoals}}
+        </div>
+
+        <div>
+            <form action="/newgoal" method="get">
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                <div><input type="submit" value="Add goal"/></div>
+            </form>
+        </div>
+
+        <div>
+            <form action="/logout" method="post">
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                <input type="submit" value="Log Out"/>
+            </form>
+        </div>
+    </header>
+
+    <br>
     <div>
-        {{countOfGoals}}
-    </div>
-    <div>
-        <form action="/newgoal" method="get">
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-            <div><input type="submit" value="Add goal"/></div>
-        </form>
-    </div>
-    <div>
-        <form action="/logout" method="post">
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-            <input type="submit" value="Log Out"/>
-        </form>
-    </div>
-</header>
+        {{#goals}}
+            <div>
+                <a href="/goal?goalId={{id}}">{{goalName}}&nbsp;{{doneSteps}}/{{allSteps}}</a>
+            </div>
+        {{/goals}}
 
-<br>
-<div>
-
-{{#goals}}
-    <form action="/goal" method="post">
-    <input type="submit" value="{{goalName}}&nbsp;{{doneSteps}}/{{allSteps}}"/>
-    <input type="hidden" name="goalId" value="{{id}}"/>
-    <input type="hidden" name = "_csrf" value="{{_csrf.token}}"/>
-    </form>
-{{/goals}}
-
-    {{^goals}}
-        There are no goals yet!
-    {{/goals}}
-</div>
+        {{^goals}}
+            There are no goals yet!
+        {{/goals}}
+    </div>
 
 </body>
 </html>

@@ -5,11 +5,11 @@ import com.pie.binarytable.entities.Role;
 import com.pie.binarytable.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Collections;
-import java.util.Map;
 
 @Controller
 public class UsersController
@@ -24,13 +24,28 @@ public class UsersController
 	}
 
 	@PostMapping("/registration")
-	public String addUser(User user, Map<String, Object> model)
+	public String addUser(User user, Model model)
 	{
 		User userFromDB = userDAO.findByUsername(user.getUsername());
 
 		if(userFromDB != null)
 		{
-			model.put("message", "User already exists!");
+			model.addAttribute("errorMessage", "User with this e-mail already exists!");
+			return "registration";
+		}
+		if(user.getPassword().length() < 6)
+		{
+			model.addAttribute("errorMessage", "Password must have 6 or more symbols!");
+			return "registration";
+		}
+		if(user.getUsername() == null || user.getUsername().isEmpty())
+		{
+			model.addAttribute("errorMessage", "E-mail is empty!");
+			return "registration";
+		}
+		if(user.getName() == null || user.getName().isEmpty())
+		{
+			model.addAttribute("errorMessage", "Name is empty!");
 			return "registration";
 		}
 

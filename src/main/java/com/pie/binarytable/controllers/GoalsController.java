@@ -1,6 +1,5 @@
 package com.pie.binarytable.controllers;
 
-import com.pie.binarytable.dao.UserDAO;
 import com.pie.binarytable.dao.GoalDAO;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.User;
@@ -33,6 +32,14 @@ public class GoalsController
 		return "goals";
 	}
 
+	@PostMapping("/goal?goalId={goalId}")
+	public String goals(@RequestParam (value="goalId") Long goalId, Model model)
+	{
+		System.out.println("/goal post id = " + goalId);
+		model.addAttribute("goalId", goalId);
+		return "goal?goalId=" + goalId;
+	}
+
 	@GetMapping("/newgoal")
 	public String newGoal(@AuthenticationPrincipal User user, Model model)
 	{
@@ -44,10 +51,21 @@ public class GoalsController
 	@PostMapping("/newgoal")
 	public String addGoal(@AuthenticationPrincipal User user,
 	                 @RequestParam String name,
-	                 @RequestParam int steps,
+	                 @RequestParam Integer steps,
 	                 @RequestParam String note,
 	                 Model model)
 	{
+		if(name == null || name.isEmpty())
+		{
+			model.addAttribute("errorMessage", "Goal name is empty!");
+			return "newgoal";
+		}
+		if(steps == null || steps <= 0)
+		{
+			model.addAttribute("errorMessage", "Amount of steps must be greater than 0!");
+			return "newgoal";
+		}
+
 		Goal goal = new Goal(user.getId(), name, steps, note);
 
 		if(note == null)

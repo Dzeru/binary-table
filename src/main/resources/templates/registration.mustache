@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:=http://www.w3.org/1999/xhtml">
 <head>
-    <title>Registration</title>
+    <title>BiT | Registration</title>
 </head>
 <body>
+<div>
+{{#errorMessage}}
+    {{.}}
+{{/errorMessage}}
+</div>
 <form action="/registration" method="post">
     <div><label>Name <input type="text" name="name"/></label></div>
     <div><label>Email <input type="text" name="username"/></label></div>
     <div><label>Password <input type="password" name="password"/></label></div>
     <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
     <div><input type="submit" value="Sign In"/></div>
+	If you sign in, you agree with <a href="/terms">Privacy Policy and Terms</a>
 </form>
 </body>

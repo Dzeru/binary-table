@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:=http://www.w3.org/1999/xhtml">
 <head>
-    <title>New goal</title>
+    <title>BiT | New goal</title>
 </head>
 <body>
 <h1>New goal</h1>
 <div>
+    {{#errorMessage}}
+        {{.}}
+    {{/errorMessage}}
     <form action="/newgoal" method="post">
         <div><label>Goal name <input type="text" name="name"/></label></div>
         <div><label>Steps <input type="text" name="steps"/></label></div>
