@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Collections;
 
+/*
+Controller for users
+ */
 @Controller
 public class UsersController
 {
@@ -23,6 +26,11 @@ public class UsersController
 		return "registration";
 	}
 
+	/*
+	Registers user.
+	If registration is successful, redirects to sign in,
+	else shows error on the registration page.
+	*/
 	@PostMapping("/registration")
 	public String addUser(User user, Model model)
 	{

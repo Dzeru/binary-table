@@ -13,10 +13,12 @@ public class RestGoalsController
 	@Autowired
 	GoalDAO goalDAO;
 
+	/*
+	Sends JSON with Goal object to JavaScript functions in /goal
+    */
 	@RequestMapping("/getgoal")
-	public Goal goal(@RequestParam(value="goalId") Long goalId)
+	public Goal goal(@RequestParam(value="id") Long goalId)
 	{
-		System.out.println("REST id = " + goalId);
 		return goalDAO.findByIdEquals(goalId);
 	}
 }

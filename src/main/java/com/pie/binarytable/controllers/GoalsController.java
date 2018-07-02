@@ -11,12 +11,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
+/*
+Controller for goals.
+REST controller for /goal page is in another class RestGoalsController
+ */
 @Controller
 public class GoalsController
 {
 	@Autowired
 	private GoalDAO goalDAO;
 
+	/*
+	Forms list of goals and so on
+	 */
 	@GetMapping("/goals")
 	public String goals(@AuthenticationPrincipal User user, Model model)
 	{
@@ -32,14 +39,9 @@ public class GoalsController
 		return "goals";
 	}
 
-	@PostMapping("/goal?goalId={goalId}")
-	public String goals(@RequestParam (value="goalId") Long goalId, Model model)
-	{
-		System.out.println("/goal post id = " + goalId);
-		model.addAttribute("goalId", goalId);
-		return "goal?goalId=" + goalId;
-	}
-
+	/*
+	Gets page /new goal
+	 */
 	@GetMapping("/newgoal")
 	public String newGoal(@AuthenticationPrincipal User user, Model model)
 	{
@@ -47,7 +49,9 @@ public class GoalsController
 		return "newgoal";
 	}
 
-	//Add goal
+	/*
+	Adds new goal and redirect to the list of user's goals
+	 */
 	@PostMapping("/newgoal")
 	public String addGoal(@AuthenticationPrincipal User user,
 	                 @RequestParam String name,
