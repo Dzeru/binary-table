@@ -38,4 +38,16 @@ public class PageController
 	{
 		return "goal";
 	}
+
+	@GetMapping("/feedback")
+	public String feedback()
+	{
+		return "feedback";
+	}
+
+	@GetMapping("/forgotpassword")
+	public String forgotpassword()
+	{
+		return "forgotpassword";
+	}
 }

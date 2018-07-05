@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:=http://www.w3.org/1999/xhtml">
+<head>
+    <title>BiT | Feedback</title>
+</head>
+<body>
+<header>
+    {{> navbar}}
+</header>
+<section>
+    Want to share an opinion about Binary Table? Fill the form below or <a href="google.survey">answer the questions there</a>. It is absolutely anonymous.
+	<form action="/feedback" method="post" accept-charset="utf-8">
+		<input type="text" name="feedback" placeholder="Your feedback"/>
+		<input type="submit" value="Send your feedback"/>
+		<input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+	</form>
+</section>
+{{> footer}}
+</body>
+</html>

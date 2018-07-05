@@ -5,25 +5,18 @@
 </head>
 <body>
     <header>
-        <div> <strong><a href="/">BiT</a></strong></div>
-
+        <div><strong><a href="/">BiT</a></strong></div>
         <div>{{#user}}
-            {{id}}&nbsp;{{name}}&nbsp;{{username}}&nbsp;{{password}}
+            Hello&nbsp;{{name}}!
             {{/user}}
-        </div>
-
-        <div>
+        </div><div>
             {{countOfGoals}}
-        </div>
-
-        <div>
+        </div><div>
             <form action="/newgoal" method="get">
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
                 <div><input type="submit" value="Add goal"/></div>
             </form>
-        </div>
-
-        <div>
+        </div><div>
             <form action="/logout" method="post">
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
                 <input type="submit" value="Log Out"/>
