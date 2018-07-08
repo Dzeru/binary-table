@@ -1,0 +1,57 @@
+html {
+  font-family: sans-serif;
+}
+
+body {
+  	background:#9370DB;
+	font-family: 'Share Tech Mono', monospace;
+	color: #FFFFFF;
+	font-size: 48px;
+}
+
+table {
+	text-align: center;
+}
+
+tr {
+  width: 50%;
+  margin: 0 auto;
+  
+}
+
+td {
+  width: 90px;
+  height: 60px;
+ 
+  
+}
+
+.saveState {
+	visibility: hidden;
+}
+
+.mytitle {
+	 width: auto;
+	 font-size: 30px;
+
+}
+
+/*body{
+	background:#9370DB;
+	font-family: 'Share Tech Mono', monospace;
+	color: #FFFFFF;
+	font-size: 20px;/*
+		
+} 
+/*.taskName{
+	border: 1px solid white;
+	margin-left: 10%;
+	margin-right:10%;
+	margin-top: 3%;
+} */
+
+.tabel1 {
+
+	font-size: 60px;
+
+}
