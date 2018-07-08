@@ -129,17 +129,15 @@ var getUrlParameter = function getUrlParameter(sParam) {
 };
 
 var id = getUrlParameter('id');
-var url = "http://www.mocky.io/v2/5b3fc7af3400002b00001c8a";
-//var url = "/getgoal?id=" + id;
+//var url = "http://www.mocky.io/v2/5b3fc7af3400002b00001c8a";
+var url = "/getgoal?id=" + id;
 
 function getGoalInfo() {
   $.ajax({
     url: url,
     type: 'GET',
-    dataType: 'jsonp',
+    // dataType: 'jsonp',
     // url: /goal
-    // type: 'POST',
-    // data: JSON.stringify(id),
     success: function(res) {
       data.numString = res.currentState;
       data.title = res.goalName;
