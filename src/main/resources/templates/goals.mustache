@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:=http://www.w3.org/1999/xhtml">
 <head>
+    <meta charset="utf-8"/>
     <title>BiT | Goals</title>
 </head>
 <body>
     <header>
         <div><strong><a href="/">BiT</a></strong></div>
         <div>{{#user}}
-            Hello,&nbsp;{{name}}!
+            {{#i18n}}greeting{{/i18n}},&nbsp;{{name}}!
             {{/user}}
-        </div><div>
-            {{countOfGoals}}
-        </div><div>
+            &nbsp;&nbsp;&nbsp;
+            {{#i18n}}countOfGoals{{/i18n}}{{countOfGoals}}
+            &nbsp;&nbsp;&nbsp;
             <form action="/newgoal" method="get">
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
                 <div><input type="submit" value="Add goal"/></div>
             </form>
-        </div><div>
+            &nbsp;&nbsp;&nbsp;
             <form action="/logout" method="post">
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
                 <input type="submit" value="Log Out"/>
@@ -28,7 +29,7 @@
     <div>
         {{#goals}}
             <div>
-                <a href="goal?id={{id}}">{{goalName}}&nbsp;{{doneSteps}}/{{allSteps}}</a>
+                <a href="goal?id={{id}}">{{goalName}}&nbsp;{{doneSteps}}/{{allSteps}}&nbsp;{{note}}</a>
             </div>
         {{/goals}}
 

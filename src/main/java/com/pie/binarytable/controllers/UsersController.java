@@ -27,8 +27,8 @@ public class UsersController
 	}
 
 	/*
-	Registers user.
-	If registration is successful, redirects to sign in,
+	Registers the user.
+	If registration is successful, redirects to log in,
 	else shows error on the registration page.
 	*/
 	@PostMapping("/registration")

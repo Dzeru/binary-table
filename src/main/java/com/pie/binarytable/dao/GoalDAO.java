@@ -14,4 +14,5 @@ public interface GoalDAO extends CrudRepository<Goal, Long>
 {
 	Goal findByIdEquals(Long id);
 	List<Goal> findByUserId(Long userId);
+
 }

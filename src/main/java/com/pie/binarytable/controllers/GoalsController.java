@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 /*
+TODO: Rewrite error messages from /newgoal in i18n style
+*/
+
+/*
 Controller for goals.
 REST controller for /goal page is in another class RestGoalsController
  */
@@ -29,8 +33,7 @@ public class GoalsController
 	{
 		ArrayList<Goal> goals = new ArrayList(goalDAO.findByUserId(user.getId()));
 
-		int count = goals.size();
-		String countOfGoals = count == 1 ? count + " goal" : count + " goals";
+		int countOfGoals = goals.size();
 
 		model.addAttribute("goals", goals);
 		model.addAttribute("user", user);
@@ -40,12 +43,11 @@ public class GoalsController
 	}
 
 	/*
-	Gets page /new goal
+	Gets page /newgoal, where user can add the goal
 	 */
 	@GetMapping("/newgoal")
-	public String newGoal(@AuthenticationPrincipal User user, Model model)
+	public String newGoal(Model model)
 	{
-		model.addAttribute("user", user);
 		return "newgoal";
 	}
 
