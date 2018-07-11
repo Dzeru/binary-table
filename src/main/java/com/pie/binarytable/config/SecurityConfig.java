@@ -38,7 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 				.and().logout().logoutSuccessUrl("/").permitAll();
 	}
 
-	//No password encoder during developing
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception
 	{
