@@ -11,11 +11,13 @@
 {{/errorMessage}}
 </div>
 <form action="/registration" method="post">
+    {{#i18n}}
     <div><label>Name <input type="text" name="name"/></label></div>
     <div><label>Email <input type="text" name="username"/></label></div>
     <div><label>Password <input type="password" name="password"/></label></div>
     <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-    <div><input type="submit" value="Sign In"/></div>
+    <div><input type="submit" value="Sign Up"/></div>
 	If you sign in, you agree with <a href="/terms">Privacy Policy and Terms</a>
+    {{/i18n}}
 </form>
 </body>

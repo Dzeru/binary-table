@@ -4,6 +4,7 @@ import com.pie.binarytable.dao.UserDAO;
 import com.pie.binarytable.entities.Role;
 import com.pie.binarytable.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,9 @@ public class UsersController
 {
 	@Autowired
 	private UserDAO userDAO;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@GetMapping("/registration")
 	public String registration()
@@ -57,6 +61,7 @@ public class UsersController
 			return "registration";
 		}
 
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setActive(true);
 		user.setRoles(Collections.singleton(Role.USER));
 		userDAO.save(user);
