@@ -43,18 +43,18 @@ public class GoalsController
 	}
 
 	/*
-	Gets page /newgoal, where user can add the goal
+	Gets page /addgoal, where user can add the goal
 	 */
-	@GetMapping("/newgoal")
+	@GetMapping("/addgoal")
 	public String newGoal(Model model)
 	{
-		return "newgoal";
+		return "addgoal";
 	}
 
 	/*
-	Adds new goal and redirect to the list of user's goals
+	Adds new goal and redirect back to the list of user's goals
 	 */
-	@PostMapping("/newgoal")
+	@PostMapping("/addgoal")
 	public String addGoal(@AuthenticationPrincipal User user,
 	                 @RequestParam String name,
 	                 @RequestParam Integer steps,
@@ -64,12 +64,12 @@ public class GoalsController
 		if(name == null || name.isEmpty())
 		{
 			model.addAttribute("errorMessage", "Goal name is empty!");
-			return "newgoal";
+			return "addgoal";
 		}
 		if(steps == null || steps <= 0)
 		{
 			model.addAttribute("errorMessage", "Amount of steps must be greater than 0!");
-			return "newgoal";
+			return "addgoal";
 		}
 
 		Goal goal = new Goal(user.getId(), name, steps, note);

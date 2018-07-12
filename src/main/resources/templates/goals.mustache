@@ -2,25 +2,25 @@
 <html xmlns:=http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
-    <title>BiT | Goals</title>
+    <title>BiT | {{#i18n}}goal.goals{{/i18n}}</title>
 </head>
 <body>
     <header>
         <div><strong><a href="/">BiT</a></strong></div>
         <div>{{#user}}
-            {{#i18n}}greeting{{/i18n}},&nbsp;{{name}}!
+            {{#i18n}}goal.greeting{{/i18n}},&nbsp;{{name}}!
             {{/user}}
             &nbsp;&nbsp;&nbsp;
-            {{#i18n}}countOfGoals{{/i18n}}{{countOfGoals}}
+            {{#i18n}}goal.countOfGoals{{/i18n}}{{countOfGoals}}
             &nbsp;&nbsp;&nbsp;
-            <form action="/newgoal" method="get">
+            <form action="/addgoal" method="get">
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-                <div><input type="submit" value="Add goal"/></div>
+                <div><input type="submit" value="{{#i18n}}goal.addGoal{{/i18n}}"/></div>
             </form>
             &nbsp;&nbsp;&nbsp;
             <form action="/logout" method="post">
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-                <input type="submit" value="Log Out"/>
+                <input type="submit" value="{{#i18n}}meta.logout{{/i18n}}"/>
             </form>
         </div>
     </header>
@@ -34,7 +34,7 @@
         {{/goals}}
 
         {{^goals}}
-            There are no goals yet!
+        {{#i18n}}goal.noGoalsYet{{/i18n}}
         {{/goals}}
     </div>
 

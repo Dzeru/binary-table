@@ -2,21 +2,21 @@
 <html xmlns:=http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
-    <title>BiT | Log in</title>
+    <title>BiT | {{#i18n}}meta.login{{/i18n}}</title>
 </head>
 <body>
 <div>
     <form action="/login" method="post">
-        <div><label>Email <input type="text" name="username"/></label></div>
-        <div><label>Password <input type="password" name="password"/></label></div>
+        <div><label>{{#i18n}}fields.email{{/i18n}}<input type="text" name="username"/></label></div>
+        <div><label>{{#i18n}}fields.password{{/i18n}}<input type="password" name="password"/></label></div>
         <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-        <div><input type="submit" value="Log in"/></div>
+        <div><input type="submit" value="{{#i18n}}meta.login{{/i18n}}"/></div>
     </form>
-	<a href="/forgotpassword">Forgot your password?</a>
-    <a href="/registration">I want to sign up!</a>
+	<a href="/forgotpassword">{{#i18n}}login.forgotPassword{{/i18n}}</a>
+    <a href="/registration">{{#i18n}}login.wantToSignUp{{/i18n}}</a>
 </div>
 <footer>
-    Binary Table, 2018 <a href="/about">About</a>
+    Binary Table, 2018 <a href="/about">{{#i18n}}meta.about{{/i18n}}</a>
 </footer>
 </body>
 </html>
