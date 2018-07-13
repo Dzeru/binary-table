@@ -45,6 +45,12 @@ public class PageController
 		return "feedback";
 	}
 
+	@GetMapping("/contact")
+	public String contact()
+	{
+		return "contact";
+	}
+
 	@GetMapping("/forgotpassword")
 	public String forgotpassword()
 	{

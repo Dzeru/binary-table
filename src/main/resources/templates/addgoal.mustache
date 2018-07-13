@@ -7,12 +7,14 @@
 <body>
 <div>
     {{#errorMessage}}
-        {{.}}
+        {{#i18n}}{{errorMessage}}{{/i18n}}
     {{/errorMessage}}
+</div>
+<div>
     <form action="/addgoal" method="post" accept-charset="utf-8">
         <div><label>{{#i18n}}fields.goalName{{/i18n}} <input type="text" name="name"/></label></div>
         <div><label>{{#i18n}}fields.countOfSteps{{/i18n}} <input type="text" name="steps"/></label></div>
-        <div><label>{{#i18n}}fields.note{{/i18n}} <input type="text" name="note"/></label></div>
+        <div><label>{{#i18n}}fields.note{{/i18n}} <textarea name="note"></textarea></label></div>
         <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
         <div><input type="submit" value="{{#i18n}}goal.addGoal{{/i18n}}"/></div>
     </form>

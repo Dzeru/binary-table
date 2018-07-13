@@ -3,6 +3,7 @@ package com.pie.binarytable.controllers;
 import com.pie.binarytable.dao.GoalDAO;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -10,10 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-
-/*
-TODO: Rewrite error messages from /newgoal in i18n style
-*/
 
 /*
 Controller for goals.
@@ -63,12 +60,12 @@ public class GoalsController
 	{
 		if(name == null || name.isEmpty())
 		{
-			model.addAttribute("errorMessage", "Goal name is empty!");
+			model.addAttribute("errorMessage", "error.emptyGoalName");
 			return "addgoal";
 		}
 		if(steps == null || steps <= 0)
 		{
-			model.addAttribute("errorMessage", "Amount of steps must be greater than 0!");
+			model.addAttribute("errorMessage", "error.wrongSteps");
 			return "addgoal";
 		}
 

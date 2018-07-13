@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 				.authorizeRequests()
 				.antMatchers("/resources/**", "/", "/index",
 						"/registration", "/forgotpassword",
-						"/about", "/terms", "/feedback").permitAll()
+						"/about", "/terms", "/feedback", "/contact").permitAll()
 				.anyRequest().authenticated()
 				.and().formLogin().loginPage("/login").defaultSuccessUrl("/goals").permitAll()
 				.and().logout().logoutSuccessUrl("/").permitAll();

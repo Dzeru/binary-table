@@ -3,6 +3,7 @@ package com.pie.binarytable.controllers;
 import com.pie.binarytable.dao.UserDAO;
 import com.pie.binarytable.entities.Role;
 import com.pie.binarytable.entities.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -42,22 +43,22 @@ public class UsersController
 
 		if(userFromDB != null)
 		{
-			model.addAttribute("errorMessage", "User with this e-mail already exists!");
+			model.addAttribute("errorMessage", "error.emailExists");
 			return "registration";
 		}
 		if(user.getPassword().length() < 6)
 		{
-			model.addAttribute("errorMessage", "Password must have 6 or more symbols!");
+			model.addAttribute("errorMessage", "error.shortPassword");
 			return "registration";
 		}
 		if(user.getUsername() == null || user.getUsername().isEmpty())
 		{
-			model.addAttribute("errorMessage", "E-mail is empty!");
+			model.addAttribute("errorMessage", "error.emptyEmail");
 			return "registration";
 		}
 		if(user.getName() == null || user.getName().isEmpty())
 		{
-			model.addAttribute("errorMessage", "Name is empty!");
+			model.addAttribute("errorMessage", "error.emptyName");
 			return "registration";
 		}
 
