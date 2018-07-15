@@ -2,20 +2,23 @@
 <html xmlns:=http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
-    <title>BiT | Registration</title>
+    <title>BiT | {{#i18n}}meta.signup{{/i18n}}</title>
 </head>
 <body>
 <div>
-{{#errorMessage}}
-    {{.}}
-{{/errorMessage}}
+    {{#errorMessage}}
+        {{#i18n}}{{errorMessage}}{{/i18n}}
+    {{/errorMessage}}
 </div>
-<form action="/registration" method="post">
-    <div><label>Name <input type="text" name="name"/></label></div>
-    <div><label>Email <input type="text" name="username"/></label></div>
-    <div><label>Password <input type="password" name="password"/></label></div>
-    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-    <div><input type="submit" value="Sign In"/></div>
-	If you sign in, you agree with <a href="/terms">Privacy Policy and Terms</a>
-</form>
+<div>
+    <form action="/registration" method="post">
+        <div><label>{{#i18n}}fields.name{{/i18n}} <input type="text" name="name"/></label></div>
+        <div><label>{{#i18n}}fields.email{{/i18n}} <input type="text" name="username"/></label></div>
+        <div><label>{{#i18n}}fields.password{{/i18n}} <input type="password" name="password"/></label></div>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+        <div><input type="submit" value="{{#i18n}}meta.signup{{/i18n}}"/></div>
+        {{#i18n}}login.registrationAgreeMessage{{/i18n}} <a href="/terms">{{#i18n}}login.termsForSignUp{{/i18n}}</a>
+    </form>
+</div>
 </body>
+</html>
