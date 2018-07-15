@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-  <head>
+<head>
     <title>BiT | Goal</title>
     <meta charset=UTF-8"/>
     <meta name="_csrf" content="{{_csrf.token}}"/>
     <meta name="_csrf_header" content="X-CSRF-TOKEN"/>
 
-    <link rel="stylesheet" type="text/css" href="/global.css">
-    <link rel="stylesheet" href="/jquery-ui.min.css">
-    <script src="/jquery.min.js"></script>
-    <script src="/jquery-ui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="global.css">
+    <link rel="stylesheet" href="jquery-ui.min.css">
+    <script src="jquery.js"></script>
+    <script src="jquery-ui.min.js"></script>
 
     <style>
-   .cross { cursor: pointer; }
-      </style>
-  </head>
+      .cross { cursor: pointer; }
+    </style>
+
+    </head>
 
   <body>
     <div id="deleteConfirmation" title="Are you sure to DELETE? 0->1 " 
@@ -27,27 +28,25 @@
         <button class="confNumber"> 0 </button>
       </p>
     </div>
-
-  	<button class="saveState">
-      <img src="/pictures/saveButtonImg.png" alt="Save">
+    
+  	<button class="saveState"> 
+      <img src="pictures/saveButtonImg.png" alt="Save">
     </button>
 
     <button class="deleteGoal" style="position: absolute;right: 0">
-      <img src="/pictures/deleteButtonImg.png" alt="Delete">
+      <img src="pictures/deleteButtonImg.png" alt="Delete">
     </button>
 
-    <table class="cross" onmousedown="return false" onselectstart="return false" cellspacing="0" border="0" cols="7" align="center" caption-side="bottom">
-    		  <!-- Кнопочки - поделиться  -->
+     <table class="cross" onmousedown="return false" onselectstart="return false" cellspacing="0" border="0" cols="7" align="center" caption-side="bottom">
 
     <caption align="top"> 
-      <table bordercolor="white" cellspacing="0" border="1" cols="1" align="center"> 
-      <tbody>
-        <tr>
-          <td class="mytitle" width="auto" align="center"> 
+      <table bordercolor="white" cellspacing="0" border="1" cols="1" align="center">
+        <tbody><tr>
+          <td class="mytitle" width="auto" align="center">
             Loading, please, wait... 
           </td>
-        </tr>
-      </tbody></table>
+        </tr></tbody>
+      </table>
     </caption>
 
       <caption align="bottom"> 
@@ -64,10 +63,10 @@
         <div class="pluso" data-background="transparent" data-options="medium,square,line,horizontal,counter,theme=04" data-services="vkontakte,facebook,twitter,google"></div> -->
       </caption> 
       <!-- Конец блока кнопок -->
-      <script src="/goal-logic.js"></script>
+      <script src="goal-logic.js"></script>
       
     </table>
-
+   
     <!-- <script type="text/javascript" charset="UTF-8" async="" src="https://share.pluso.ru/pluso-like.js"></script> -->
 
   </body>

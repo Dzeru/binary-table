@@ -109,8 +109,8 @@ function calculateProgressString(original) {
   titleAndProgress.innerHTML = original + ' (' + ones + '/' + data.numString.length + ')';
 }
 
-////////////////////////////////////////////////////////////////
-// Магия при загрузке страницы
+/////////////////////////////////////////////////////////////////////// 
+// Начальная загрузка страницы + GET информации
 
 // Считывание URL страницы
 var getUrlParameter = function getUrlParameter(sParam) {
@@ -162,10 +162,23 @@ function getGoalInfo() {
     }
   })
 }
-var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
+var isJavaEnabled = 0; // Изменять вручную, 0 для debug'а без сервера
 if (!isJavaEnabled) {
-  var goalNumber = 25;
-  stringGoalProgressInit(goalNumber);
+  var goalNumber = 9;
+  data.numString = '010101000';
+  data.title = 'client-only testing';
+  data.id = 9000;
+  data.userId = 0;
+  data.note = 'not implemented probably';
+
+  calculateProgressString(data.title);
+  var cellTable = document.querySelector('table');
+  createCells(data);
+  createTable(cellTable, data);
+  makeButtons();
+  $("button.saveState").on('click', function(event) {
+    updateGoal();
+  });
 }
 else {
   getGoalInfo();
@@ -174,7 +187,6 @@ else {
 ///////////////////////////////////////////////////////////////////////
 // Магия с кнопкой сохранения состояния
 function updateGoal() {
-  console.log("good");
   var formData = {
     "id": data.id,
     "goalName": data.title,
@@ -185,8 +197,6 @@ function updateGoal() {
     "userId": data.userId
   };
 
-
-  console.log(formData);
   $.ajax({
     //url:'http://www.mocky.io/v2/5afffe89310000730076ded3'
     url:'/updategoal',
@@ -203,7 +213,6 @@ function updateGoal() {
       $("button.saveState").fadeOut("slow");
       $("button.saveState").prop('disabled', true);
       console.log("State saved!");
-      console.log(JSON.stringify(res));
     })
     .fail(function(res) {
       data.saved = true;
@@ -213,6 +222,67 @@ function updateGoal() {
       console.log(JSON.stringify(res));
     });
 }
+
+///////////////////////////////////////////////////////////////////////
+// Все что связано с удалением цели
+function askDeleteConfirmation() {
+  console.log("Showing dialog");
+  $('#deleteConfirmation').dialog({
+    classes: {
+      "ui-dialog-content": "confNumberText"
+    }
+  });
+
+  //$('deleteConfirmation').dialog("open");
+}
+
+var confirmationsCount = 0;
+
+$("button.deleteGoal").on('click', function(event) {
+  askDeleteConfirmation();
+  $(".confNumber").on('click', function(event) {
+    if (this.innerHTML == 0) {
+      this.innerHTML = 1;
+      confirmationsCount = confirmationsCount + 1;
+    }
+    else {
+      this.innerHTML = 0;
+      confirmationsCount = confirmationsCount - 1;
+    }
+    if (confirmationsCount == 4) {
+      $('#deleteConfirmation').dialog("close");
+      deleteGoal();
+    }
+  });
+});
+
+function deleteGoal() {
+  var formData = {
+    "id": data.id
+  };
+
+  $.ajax({
+    //url:'http://www.mocky.io/v2/5afffe89310000730076ded3'
+    url:'/deletegoal',
+    method:'POST',
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify(formData),
+    headers:
+    {
+        'X-CSRF-TOKEN' : $('meta[name="_csrf"]').attr('content')
+    }})
+    .done(function(res) {
+      location.replace('/goals'); //location.href = '/goals' (?)
+      console.log("Delete request sended!");
+    })
+    .fail(function(res) {
+      console.log("Goal delete went wrong!");
+      console.log(JSON.stringify(res));
+    });
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////
 // Потенциальная нереализованная магия
