@@ -162,7 +162,7 @@ function getGoalInfo() {
     }
   })
 }
-var isJavaEnabled = 0; // Изменять вручную, 0 для debug'а без сервера
+var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
 if (!isJavaEnabled) {
   var goalNumber = 9;
   data.numString = '010101000';
