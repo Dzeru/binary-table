@@ -3,10 +3,9 @@ html {
 }
 
 body {
-  	background: #bc5cdb;
+  background:#9370DB;
 	font-family: 'Share Tech Mono', monospace;
 	color: #FFFFFF;
-	font-size: 48px;
 }
 
 table {
@@ -22,8 +21,7 @@ tr {
 td {
   width: 90px;
   height: 60px;
- 
-  
+  font-size: 48px;
 }
 
 .saveState {
@@ -31,9 +29,30 @@ td {
 }
 
 .mytitle {
-	 width: auto;
-	 font-size: 30px;
+  width: auto;
+  font-size: 30px;
+}
 
+.confNumber {
+  background-color: Transparent;
+  border: none;
+  outline: none;
+}
+
+.confNumberText {
+  font-size: 30px;
+}
+
+.arrowBack {
+	position: relative;
+	font-size: 45px;
+	font-weight: 900;
+	border-color: #FFFFFF;
+	border-style: solid;
+	border-width: 2px;
+	background-color: Transparent;
+	font-family: 'Share Tech Mono', monospace;
+	color: #FFFFFF;
 }
 
 /*body{

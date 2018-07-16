@@ -210,13 +210,13 @@ function updateGoal() {
     }})
     .done(function(res) {
       data.saved = true;
-      $("button.saveState").fadeOut("slow");
+      $("button.saveState").fadeTo(500, 0.001);
       $("button.saveState").prop('disabled', true);
       console.log("State saved!");
     })
     .fail(function(res) {
       data.saved = true;
-      $("button.saveState").fadeOut("slow");
+      $("button.saveState").fadeTo(500, 0.001);
       $("button.saveState").prop('disabled', true);
       console.log("Saving state went wrong!");
       console.log(JSON.stringify(res));
@@ -277,7 +277,8 @@ function deleteGoal() {
       console.log("Delete request sended!");
     })
     .fail(function(res) {
-      console.log("Goal delete went wrong!");
+      llocation.replace('/goals');
+      console.log("Goal deletion went wrong!");
       console.log(JSON.stringify(res));
     });
 }
