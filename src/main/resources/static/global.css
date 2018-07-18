@@ -55,6 +55,20 @@ td {
 	color: #FFFFFF;
 }
 
+@font-face {												/* А вообще наш стандартный шрифт СЛИШКОМ похож на этот. Они одинаковые? */
+	font-family: consola;							
+	src: url(resources/consola.ttf) ; /* Добавить первую черточку в рабочем проекте! */
+}
+
+#note {
+	display: none;
+	font-family: consola;
+	background-color: #ad33ff;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #6666ff;
+}
+
 /*body{
 	background:#9370DB;
 	font-family: 'Share Tech Mono', monospace;

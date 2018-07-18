@@ -1,23 +1,22 @@
 <!DOCTYPE html>
-<head>
-    <title>BiT | Goal</title>
-    <meta charset=UTF-8"/>
-    <meta name="_csrf" content="{{_csrf.token}}"/>
-    <meta name="_csrf_header" content="X-CSRF-TOKEN"/>
+	<head>
+	  <title>BiT | Goal</title>
+	  <meta charset=UTF-8"/>
+	  <meta name="_csrf" content="{{_csrf.token}}"/>
+	  <meta name="_csrf_header" content="X-CSRF-TOKEN"/>
 
-    <link rel="stylesheet" type="text/css" href="global.css">
-    <link rel="stylesheet" href="jquery-ui.min.css">
-    <script src="jquery.js"></script>
-    <script src="jquery-ui.min.js"></script>
+	  <link rel="stylesheet" type="text/css" href="global.css">
+	  <link rel="stylesheet" href="jquery-ui.min.css">
+	  <script src="jquery.js"></script>
+	  <script src="jquery-ui.min.js"></script>
 
-    <style>
-      .cross { cursor: pointer; }
-    </style>
-
-    </head>
+	  <style>
+	    .cross { cursor: pointer; }
+	  </style>
+	</head>
 
   <body>
-
+  	<span id="openNoteBtn"><img src = "images/note-image.png" alt="[Note]"></span>
     <div id="deleteConfirmation" title="Are you sure to DELETE? 0->1 " 
     style="display: none">
       <p align="center"> 
@@ -46,7 +45,7 @@
 
   	</div>
 
-
+  	
 
     <table class="cross" onmousedown="return false" onselectstart="return false" cellspacing="0" border="0" cols="7" align="center" caption-side="bottom">
 
@@ -56,8 +55,10 @@
           <td class="mytitle" width="auto" align="center">
             Loading, please, wait... 
           </td>
+
         </tr></tbody>
       </table>
+      <p id="note"> </p>
     </caption>
 
       <caption align="bottom"> 

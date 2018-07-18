@@ -16,6 +16,7 @@
   </head>
 
   <body>
+    <span id="openNoteBtn"><img src = "/images/note-image.png" alt="[Note]"></span>
     <div id="deleteConfirmation" title="Are you sure to DELETE? 0->1 " 
     style="display: none">
       <p align="center"> 
@@ -28,13 +29,21 @@
       </p>
     </div>
 
-  	<button class="saveState">
-      <img src="/pictures/saveButtonImg.png" alt="Save">
-    </button>
+    <div>
+      <a href="/goals" style="text-decoration: none;">
+        <button class="arrowBack"> 
+          < - -  
+        </button>
+      </a>
+      <button class="saveState"> 
+        <img src="/pictures/saveButtonImg.png" alt="Save">
+      </button>
 
-    <button class="deleteGoal" style="position: absolute;right: 0">
-      <img src="/pictures/deleteButtonImg.png" alt="Delete">
-    </button>
+      <button class="deleteGoal" style="float: right">
+        <img src="/pictures/deleteButtonImg.png" alt="Delete">
+      </button>
+
+    </div>
 
     <table class="cross" onmousedown="return false" onselectstart="return false" cellspacing="0" border="0" cols="7" align="center" caption-side="bottom">
     		  <!-- Кнопочки - поделиться  -->
