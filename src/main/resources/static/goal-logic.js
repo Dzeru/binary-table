@@ -105,8 +105,10 @@ function calculateProgress() {
   return onesCount;
 }
 function calculateProgressString(original) {
+  $("#openNoteBtn").appendTo("body");
   var ones = calculateProgress();
   titleAndProgress.innerHTML = original + ' (' + ones + '/' + data.numString.length + ')';
+  $("#openNoteBtn").appendTo("td.mytitle");
 }
 
 /////////////////////////////////////////////////////////////////////// 
@@ -155,6 +157,9 @@ function getGoalInfo() {
       $("button.saveState").on('click', function(event) {
         updateGoal();
       });
+      $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
+        typeWriterCall();
+      });
     },
     error: function(err) {
       console.log("request failed");
@@ -164,12 +169,12 @@ function getGoalInfo() {
 }
 var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
 if (!isJavaEnabled) {
-  var goalNumber = 9;
-  data.numString = '010101000';
+  var goalNumber = 5;
+  data.numString = '00100';
   data.title = 'client-only testing';
   data.id = 9000;
   data.userId = 0;
-  data.note = 'not implemented probably';
+  data.note = 'this feature is not implemented probably';
 
   calculateProgressString(data.title);
   var cellTable = document.querySelector('table');
@@ -178,6 +183,9 @@ if (!isJavaEnabled) {
   makeButtons();
   $("button.saveState").on('click', function(event) {
     updateGoal();
+  });
+  $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
+    typeWriterCall();
   });
 }
 else {
@@ -281,6 +289,34 @@ function deleteGoal() {
       console.log("Goal deletion went wrong!");
       console.log(JSON.stringify(res));
     });
+}
+
+///////////////////////////////////////////////////////////////////////
+// Заметка к цели и связанные с ней функции
+var opened = false;
+function typeWriterCall() {
+  var i = 0;
+  var speed = 35; /* The speed/duration of the effect in milliseconds */
+
+  function typeWriter() {
+    if (i < data.note.length) {
+      document.getElementById("note").innerHTML += data.note.charAt(i);
+      i++;
+      setTimeout(typeWriter, speed);
+    }
+  }
+
+  if (!opened) {
+    $("#note").fadeToggle("slow");
+    typeWriter();
+  }
+  else {
+    $("#note").fadeToggle(400, "swing", function() {
+      $("#note").text("");
+    });
+
+  }
+  opened = !opened;
 }
 
 
