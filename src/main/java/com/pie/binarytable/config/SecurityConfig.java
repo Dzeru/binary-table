@@ -1,6 +1,7 @@
 package com.pie.binarytable.config;
 
-import com.pie.binarytable.dao.UserService;
+import com.pie.binarytable.services.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,8 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 		http
 				.authorizeRequests()
 				.antMatchers("/resources/**", "/", "/index",
-						"/registration", "/forgotpassword",
-						"/about", "/terms", "/feedback", "/contact").permitAll()
+						"/registration", "/forgotpassword", "/updatepassword/**",
+						"/about", "/terms", "/feedback", "/contacts").permitAll()
 				.anyRequest().authenticated()
 				.and().formLogin().loginPage("/login").defaultSuccessUrl("/goals").permitAll()
 				.and().logout().logoutSuccessUrl("/").permitAll();

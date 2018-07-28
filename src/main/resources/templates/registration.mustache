@@ -12,9 +12,9 @@
 </div>
 <div>
     <form action="/registration" method="post">
-        <div><label>{{#i18n}}fields.name{{/i18n}} <input type="text" name="name"/></label></div>
-        <div><label>{{#i18n}}fields.email{{/i18n}} <input type="text" name="username"/></label></div>
-        <div><label>{{#i18n}}fields.password{{/i18n}} <input type="password" name="password"/></label></div>
+        <div><label>{{#i18n}}fields.name{{/i18n}} <input type="text" name="name" placeholder="{{#i18n}}placeholder.name{{/i18n}}"/></label></div>
+        <div><label>{{#i18n}}fields.email{{/i18n}}<input type="text" name="username" placeholder="{{#i18n}}placeholder.email{{/i18n}}"/></label></div>
+        <div><label>{{#i18n}}fields.password{{/i18n}}<input type="password" name="password" placeholder="{{#i18n}}placeholder.password{{/i18n}}"/></label></div>
         <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
         <div><input type="submit" value="{{#i18n}}meta.signup{{/i18n}}"/></div>
         {{#i18n}}login.registrationAgreeMessage{{/i18n}} <a href="/terms">{{#i18n}}login.termsForSignUp{{/i18n}}</a>

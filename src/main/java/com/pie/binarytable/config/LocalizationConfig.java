@@ -33,6 +33,7 @@ public class LocalizationConfig implements WebMvcConfigurer
 		lci.setParamName("lang");
 		return lci;
 	}
+	
 	@Bean
 	public LocaleResolver localeResolver()
 	{

@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Set;
 
@@ -14,10 +15,18 @@ public class User implements UserDetails
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+	@NotNull
     private String username;
+
+	@NotNull
     private String password;
+
+	@NotNull
     private String name;
+
     private boolean active;
+    private String updatePassword; //UUID for updating password
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -101,6 +110,16 @@ public class User implements UserDetails
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getUpdatePassword()
+    {
+        return updatePassword;
+    }
+
+    public void setUpdatePassword(String updatePassword)
+    {
+        this.updatePassword = updatePassword;
     }
 
     /*

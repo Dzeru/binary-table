@@ -37,7 +37,7 @@ public class RestGoalsController
 			result = true; //success
 			return ResponseEntity.ok().body(result);
 		}
-		return ResponseEntity.badRequest().body(result);
+		else return ResponseEntity.badRequest().body(result);
 	}
 
 	/*
@@ -55,6 +55,6 @@ public class RestGoalsController
 			result = true; //success
 			return ResponseEntity.ok().body(result);
 		}
-		return ResponseEntity.badRequest().body(result);
+		else return ResponseEntity.badRequest().body(result);
 	}
 }

@@ -2,17 +2,20 @@
 <html xmlns:=http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="utf-8"/>
-    <title>BiT | Feedback</title>
+    <title>BiT | {{#i18n}}meta.feedback{{/i18n}}</title>
 </head>
 <body>
     {{> navbar}}
 <section>
-    Want to share an opinion about Binary Table? Fill the form below or <a href="google.survey">answer the questions here</a>. It is absolutely anonymous.
+    Want to share an opinion about Binary Table? Fill the form below or <a href="https://goo.gl/forms/jIARUsiHMU96qQWu1" target="_blank">answer the questions here</a>. It is absolutely anonymous.
 	<form action="/feedback" method="post" accept-charset="utf-8">
-		<textarea name="feedback" placeholder="Your feedback"></textarea>
+		<textarea name="feedback" placeholder="{{#i18n}}placeholder.feedback{{/i18n}}"></textarea>
 		<input type="submit" value="Send your feedback"/>
 		<input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
 	</form>
+	{{#thanks}}
+		{{thanks}}
+	{{/thanks}}
 </section>
 	{{> footer}}
 </body>

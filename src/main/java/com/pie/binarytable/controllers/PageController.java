@@ -39,21 +39,9 @@ public class PageController
 		return "goal";
 	}
 
-	@GetMapping("/feedback")
-	public String feedback()
-	{
-		return "feedback";
-	}
-
-	@GetMapping("/contact")
+	@GetMapping("/contacts")
 	public String contact()
 	{
-		return "contact";
-	}
-
-	@GetMapping("/forgotpassword")
-	public String forgotpassword()
-	{
-		return "forgotpassword";
+		return "contacts";
 	}
 }

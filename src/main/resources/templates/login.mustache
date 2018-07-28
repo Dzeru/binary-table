@@ -7,9 +7,9 @@
 <body>
 <div>
     <form action="/login" method="post">
-        <div><label>{{#i18n}}fields.email{{/i18n}}<input type="text" name="username"/></label></div>
-        <div><label>{{#i18n}}fields.password{{/i18n}}<input type="password" name="password"/></label></div>
-        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+        <div><label>{{#i18n}}fields.email{{/i18n}}<input type="text" name="username" placeholder="{{#i18n}}placeholder.email{{/i18n}}"/></label></div>
+        <div><label>{{#i18n}}fields.password{{/i18n}}<input type="password" name="password" placeholder="{{#i18n}}placeholder.password{{/i18n}}"/></label></div>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
         <div><input type="submit" value="{{#i18n}}meta.login{{/i18n}}"/></div>
     </form>
 	<a href="/forgotpassword">{{#i18n}}login.forgotPassword{{/i18n}}</a>
