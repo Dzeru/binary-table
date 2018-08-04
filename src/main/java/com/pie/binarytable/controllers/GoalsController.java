@@ -61,11 +61,15 @@ public class GoalsController
 		if(name == null || name.isEmpty())
 		{
 			model.addAttribute("errorMessage", "error.emptyGoalName");
+			model.addAttribute("stepsVal", steps);
+			model.addAttribute("noteVal", note);
 			return "addgoal";
 		}
 		if(steps == null || steps <= 0)
 		{
 			model.addAttribute("errorMessage", "error.wrongSteps");
+			model.addAttribute("goalNameVal", name);
+			model.addAttribute("noteVal", note);
 			return "addgoal";
 		}
 

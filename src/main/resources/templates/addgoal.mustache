@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:=http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8"/>
+    {{> meta}}
     <title>BiT | {{#i18n}}goal.addGoal{{/i18n}}</title>
 </head>
 <body>
@@ -10,13 +10,22 @@
         {{#i18n}}{{errorMessage}}{{/i18n}}
     {{/errorMessage}}
 </div>
-<div>
+<div class="mx-auto align-middle" style="width: 50%; heigth: 50%;">
     <form action="/addgoal" method="post" accept-charset="utf-8">
-        <div><label>{{#i18n}}fields.goalName{{/i18n}} <input type="text" name="name"/></label></div>
-        <div><label>{{#i18n}}fields.countOfSteps{{/i18n}} <input type="text" name="steps"/></label></div>
-        <div><label>{{#i18n}}fields.note{{/i18n}} <textarea name="note"></textarea></label></div>
-        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-        <div><input type="submit" value="{{#i18n}}goal.addGoal{{/i18n}}"/></div>
+        <div class="form-group">
+            <label for="goalName">{{#i18n}}fields.goalName{{/i18n}}</label>
+            <input class="form-control" id="goalName" type="text" name="name" placeholder="{{#i18n}}placeholder.goalName{{/i18n}}" value="{{#goalNameVal}}{{goalNameVal}}{{/goalNameVal}}">
+        </div>
+        <div class="form-group">
+            <label for="steps">{{#i18n}}fields.countOfSteps{{/i18n}}</label>
+            <input class="form-control" id="steps" type="text" name="steps" placeholder="{{#i18n}}placeholder.steps{{/i18n}}" value="{{#stepsVal}}{{stepsVal}}{{/stepsVal}}">
+        </div>
+        <div class="form-group">
+            <label for="note">{{#i18n}}fields.note{{/i18n}}</label>
+            <textarea class="form-control" id="note" name="note" placeholder="{{#i18n}}placeholder.note{{/i18n}}">{{#noteVal}}{{noteVal}}{{/noteVal}}</textarea>
+        </div>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+        <input class="btn btn-primary" type="submit" value="{{#i18n}}goal.addGoal{{/i18n}}">
     </form>
 </div>
 </body>

@@ -44,37 +44,55 @@ public class UsersController
 	else shows error on the registration page.
 	*/
 	@PostMapping("/registration")
-	public String addUser(User user, Model model)
+	public String addUser(User user, @RequestParam String repeatPassword, Model model)
 	{
-		User userFromDB = userDAO.findByUsername(user.getUsername());
+		if(!user.getPassword().equals(repeatPassword))
+		{
+			model.addAttribute("errorMessage", "error.equalPasswords");
+			model.addAttribute("nameVal", user.getName());
+			model.addAttribute("emailVal", user.getUsername());
+			return "registration";
+		}
+		else
+		{
+			User userFromDB = userDAO.findByUsername(user.getUsername());
 
-		if(userFromDB != null)
-		{
-			model.addAttribute("errorMessage", "error.emailExists");
-			return "registration";
-		}
-		if(user.getPassword().length() < 6)
-		{
-			model.addAttribute("errorMessage", "error.shortPassword");
-			return "registration";
-		}
-		if(user.getUsername() == null || user.getUsername().isEmpty())
-		{
-			model.addAttribute("errorMessage", "error.emptyEmail");
-			return "registration";
-		}
-		if(user.getName() == null || user.getName().isEmpty())
-		{
-			model.addAttribute("errorMessage", "error.emptyName");
-			return "registration";
-		}
+			if(userFromDB != null)
+			{
+				model.addAttribute("errorMessage", "error.emailExists");
+				model.addAttribute("nameVal", user.getName());
+				model.addAttribute("passwordVal", user.getPassword());
+				return "registration";
+			}
+			if(user.getPassword().length() < 6)
+			{
+				model.addAttribute("errorMessage", "error.shortPassword");
+				model.addAttribute("nameVal", user.getName());
+				model.addAttribute("emailVal", user.getUsername());
+				return "registration";
+			}
+			if(user.getUsername() == null || user.getUsername().isEmpty())
+			{
+				model.addAttribute("errorMessage", "error.emptyEmail");
+				model.addAttribute("nameVal", user.getName());
+				model.addAttribute("passwordVal", user.getPassword());
+				return "registration";
+			}
+			if(user.getName() == null || user.getName().isEmpty())
+			{
+				model.addAttribute("errorMessage", "error.emptyName");
+				model.addAttribute("emailVal", user.getUsername());
+				model.addAttribute("passwordVal", user.getPassword());
+				return "registration";
+			}
 
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		user.setActive(true);
-		user.setRoles(Collections.singleton(Role.USER));
-		userDAO.save(user);
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
+			user.setActive(true);
+			user.setRoles(Collections.singleton(Role.USER));
+			userDAO.save(user);
 
-		mailSender.sendGreetingMessage(user.getUsername());
+			mailSender.sendGreetingMessage(user.getUsername());
+		}
 
 		return "redirect:/login";
 	}
@@ -111,27 +129,34 @@ public class UsersController
 	}
 
 	@PostMapping("/updatepassword")
-	public String updatePassword(@RequestParam String email, @RequestParam String password, @RequestParam String updatePassword, Model model)
+	public String updatePassword(@RequestParam String email, @RequestParam String password, @RequestParam String repeatPassword, @RequestParam String updatePassword, Model model)
 	{
-		User user = userDAO.findByUsername(email);
-		if(user.getUpdatePassword().equals(updatePassword))
-		{
-			password = passwordEncoder.encode(password);
-			user.setPassword(password);
-			userDAO.save(user);
-		}
-
 		String status = "";
-
-		if(userDAO.findByIdEquals(user.getId()).getPassword().equals(password))
+		if(!password.equals(repeatPassword))
 		{
-			status = "Password is updated successfully!";
-			user.setUpdatePassword("");
-			mailSender.sendNotificationAboutUpdatePasswordMessage(email);
+			status = "error.equalPasswords";
+			model.addAttribute("emailVal", email);
 		}
 		else
 		{
-			status = "Something went wrong! Fail to update password!";
+			User user = userDAO.findByUsername(email);
+			if(user.getUpdatePassword().equals(updatePassword))
+			{
+				password = passwordEncoder.encode(password);
+				user.setPassword(password);
+				userDAO.save(user);
+			}
+
+			if(userDAO.findByIdEquals(user.getId()).getPassword().equals(password))
+			{
+				status = "status.successUpdatePassword";
+				user.setUpdatePassword("");
+				mailSender.sendNotificationAboutUpdatePasswordMessage(email);
+			}
+			else
+			{
+				status = "error.failToUpdatePassword";
+			}
 		}
 		model.addAttribute("status", status);
 

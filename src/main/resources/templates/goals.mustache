@@ -1,42 +1,56 @@
 <!DOCTYPE html>
 <html xmlns:=http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8"/>
+    {{> meta}}
     <title>BiT | {{#i18n}}goal.goals{{/i18n}}</title>
 </head>
-<body>
-    <header>
-        <div><strong><a href="/">BiT</a></strong></div>
-        <div>{{#user}}
-            {{#i18n}}goal.greeting{{/i18n}},&nbsp;{{name}}!
-            {{/user}}
-            &nbsp;&nbsp;&nbsp;
-            {{#i18n}}goal.countOfGoals{{/i18n}}{{countOfGoals}}
-            &nbsp;&nbsp;&nbsp;
-            <form action="/addgoal" method="get">
-                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-                <div><input type="submit" value="{{#i18n}}goal.addGoal{{/i18n}}"/></div>
-            </form>
-            &nbsp;&nbsp;&nbsp;
-            <form action="/logout" method="post">
-                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-                <input type="submit" value="{{#i18n}}meta.logout{{/i18n}}"/>
-            </form>
-        </div>
-    </header>
-
-    <br>
-    <div>
-        {{#goals}}
-            <div>
-                <a href="goal?id={{id}}">{{goalName}}&nbsp;{{doneSteps}}/{{allSteps}}&nbsp;{{note}}</a>
-            </div>
-        {{/goals}}
-
-        {{^goals}}
-        {{#i18n}}goal.noGoalsYet{{/i18n}}
-        {{/goals}}
+<body class="bg-dark">
+{{> scripts}}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">BiT</a>
+    <div class="navbar-nav mr-auto">
+        <span class="nav-item nav-link active">{{#user}}{{#i18n}}goal.greeting{{/i18n}},&nbsp;{{name}}!{{/user}}</span>
+        <span class="nav-item nav-link active">{{#i18n}}goal.countOfGoals{{/i18n}}{{countOfGoals}}</span>
+        <a class="nav-item btn btn-outline-primary ml-3" href="/addgoal">{{#i18n}}goal.addGoal{{/i18n}}</a>
+        <form class="bg-dark" action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+            <input class="nav-item nav-link active bg-dark border-0 ml-5" type="submit" value="{{#i18n}}meta.logout{{/i18n}}"/>
+        </form>
     </div>
+</nav>
+<div>
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Goal</th>
+                <th scope="col">Steps</th>
+                <th scope="col">Note</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#goals}}
+        <tr>
+            <td><a href="goal?id={{id}}">{{goalName}}</a></td>
+            <td>{{doneSteps}}/{{allSteps}}</td>
+            <td>{{note}}</td>
+        </tr>
+        {{/goals}}
+        {{^goals}}
+        <tr>
+            <td>{{#i18n}}goal.noGoalsYet{{/i18n}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        {{/goals}}
+        </tbody>
+    </table>
 
+    <!--
+    {{#goals}}
+        <div>
+            <a href="goal?id={{id}}">{{goalName}}&nbsp;{{doneSteps}}/{{allSteps}}&nbsp;{{note}}</a>
+        </div>
+    {{/goals}} -->
+</div>
 </body>
 </html>

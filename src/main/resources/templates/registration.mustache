@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:=http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8"/>
+    {{> meta}}
     <title>BiT | {{#i18n}}meta.signup{{/i18n}}</title>
 </head>
 <body>
@@ -10,15 +10,32 @@
         {{#i18n}}{{errorMessage}}{{/i18n}}
     {{/errorMessage}}
 </div>
-<div>
+<div class="mx-auto border my-5 py-3 px-3" style="width: 50%;">
+    <div class="mb-3" align="center"><a class="navbar-brand" href="/">Binary Table</a></div>
     <form action="/registration" method="post">
-        <div><label>{{#i18n}}fields.name{{/i18n}} <input type="text" name="name" placeholder="{{#i18n}}placeholder.name{{/i18n}}"/></label></div>
-        <div><label>{{#i18n}}fields.email{{/i18n}}<input type="text" name="username" placeholder="{{#i18n}}placeholder.email{{/i18n}}"/></label></div>
-        <div><label>{{#i18n}}fields.password{{/i18n}}<input type="password" name="password" placeholder="{{#i18n}}placeholder.password{{/i18n}}"/></label></div>
-        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-        <div><input type="submit" value="{{#i18n}}meta.signup{{/i18n}}"/></div>
-        {{#i18n}}login.registrationAgreeMessage{{/i18n}} <a href="/terms">{{#i18n}}login.termsForSignUp{{/i18n}}</a>
+        <div class="form-group">
+            <label for="name">{{#i18n}}fields.name{{/i18n}}</label>
+            <input class="form-control" id="name" type="text" name="name" placeholder="{{#i18n}}placeholder.name{{/i18n}}" value="{{#nameVal}}{{nameVal}}{{/nameVal}}">
+        </div>
+        <div class="form-group">
+            <label for="email">{{#i18n}}fields.email{{/i18n}}</label>
+            <input class="form-control" id="email" type="text" name="username" placeholder="{{#i18n}}placeholder.email{{/i18n}}" value="{{#emailVal}}{{emailVal}}{{/emailVal}}">
+        </div>
+        <div class="form-group">
+            <label for="password">{{#i18n}}fields.password{{/i18n}}</label>
+            <input class="form-control" id="password" type="password" name="password" placeholder="{{#i18n}}placeholder.password{{/i18n}}" value="{{#passwordVal}}{{passwordVal}}{{/passwordVal}}">
+        </div>
+        <div class="form-group">
+            <label for="repeatPassword">{{#i18n}}fields.repeatPassword{{/i18n}}</label>
+            <input class="form-control" id="repeatPassword" type="password" name="repeatPassword" placeholder="{{#i18n}}placeholder.password{{/i18n}}">
+        </div>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+        <input class="btn btn-primary mt-1 mb-3" type="submit" value="{{#i18n}}meta.signup{{/i18n}}"/>
+        <div align="center">{{#i18n}}login.registrationAgreeMessage{{/i18n}} <a href="/terms">{{#i18n}}login.termsForSignUp{{/i18n}}</a></div>
     </form>
 </div>
+<footer class="mx-auto" style="width: 50%" align="center">
+    Binary Table, 2018 <a href="/about">{{#i18n}}meta.about{{/i18n}}</a>
+</footer>
 </body>
 </html>
