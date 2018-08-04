@@ -1,13 +1,15 @@
 var maxSquareNum = 13 // Максимальный ближайший квадрат числа для поиска
 
 var data = {
-  numString: '',
+  // GET from server
+  numString: '',              
   id: 0,
-  saved: true,
-  lastState: '',
-  userId: 0,
+  userId: 0,  
   title: 'Loading...',
   note: '',
+  // web-only variables
+  saved: true,
+  lastState: '',
   findClosestSquare: function(steps) {
     for (var i = 1; i < maxSquareNum; i++) { // Поставить ограничение на количество шагов!
       if (i * i >= steps || i === maxSquareNum) {
@@ -26,12 +28,11 @@ function setCharAt(str, index, chr) {
 }
 
 // Если заменить numstring.length на squareSide, то таблица будет полной 
-function createCells(thisData) {
-  for (var i = 0 ; i < thisData.numString.length; i++){
+function createCells() {
+  for (var i = 0 ; i < data.numString.length; i++){
     var newBox = document.createElement('td');
-    var myCellIndex = i;
-    newBox.myCellIndex = myCellIndex;
-    thisData.cells.push(newBox);
+    newBox.cellRealIndex = i;
+    data.cells.push(newBox);
   }
 }
 
@@ -42,11 +43,15 @@ var titleAndProgress = document.getElementsByClassName('mytitle')[0];
 function changeNumber() {
   if (this.innerHTML === "1") {
     this.innerHTML = "0";
-    data.numString = setCharAt(data.numString, this.myCellIndex, '0');
+    $(this).css("color", 'white');
+    data.numString = setCharAt(data.numString, this.cellRealIndex, '0');
   }
   else {
     this.innerHTML = "1";
-    data.numString = setCharAt(data.numString, this.myCellIndex, '1');
+    if (this.savedValue === '0') {
+      $(this).css("color", 'rgb(140, 190, 140)');
+    }
+    data.numString = setCharAt(data.numString, this.cellRealIndex, '1');
   }
 
   // Появление кнопки сохранения
@@ -59,18 +64,20 @@ function changeNumber() {
 }
 
 // создание таблицы из ячеек 
-function createTable(cellTable, thisData) {
-  thisData.squareSide = thisData.findClosestSquare(thisData.numString.length);
-  for (var j = 0 ; j < thisData.squareSide; j++){
+function createTable(cellTable) {
+  data.squareSide = data.findClosestSquare(data.numString.length);
+  for (var j = 0 ; j < data.squareSide; j++){
     var tableRow = document.createElement('tr');
     cellTable.appendChild(tableRow);
-    for (var i = 0; i < thisData.squareSide; i++) {
-      var realI = j * thisData.squareSide + i;
-      var showBox = thisData.cells[realI];
-      var textToShow = thisData.numString[realI];
-      if (textToShow){
-        showBox.appendChild(document.createTextNode(textToShow));
-        tableRow.appendChild(showBox);
+    for (var i = 0; i < data.squareSide; i++) {
+      var realI = j * data.squareSide + i;
+      var showBox = data.cells[realI];
+      var numberInCell = data.numString[realI];                 // Начальное содержимое ячейки
+      if (numberInCell){
+        data.cells[realI].savedValue = numberInCell;            // Запоминаем сохраненное значение
+        data.cells[realI].cellRealIndex = realI;
+        showBox.appendChild(document.createTextNode(numberInCell)); // Добавляем его в ячейку
+        tableRow.appendChild(showBox);                              // И добавляем ячейку в таблицу
       }
     }
   }
@@ -151,8 +158,8 @@ function getGoalInfo() {
       //==============================================//
       calculateProgressString(data.title);
       var cellTable = document.querySelector('table');
-      createCells(data);
-      createTable(cellTable, data);
+      createCells();
+      createTable(cellTable);
       makeButtons();
       $("button.saveState").on('click', function(event) {
         updateGoal();
@@ -178,7 +185,7 @@ if (!isJavaEnabled) {
 
   calculateProgressString(data.title);
   var cellTable = document.querySelector('table');
-  createCells(data);
+  createCells();
   createTable(cellTable, data);
   makeButtons();
   $("button.saveState").on('click', function(event) {
@@ -220,12 +227,14 @@ function updateGoal() {
       data.saved = true;
       $("button.saveState").fadeTo(500, 0.001);
       $("button.saveState").prop('disabled', true);
+      for (var i = data.cells.length - 1; i >= 0; i--) {
+        data.cells[i].savedValue = data.cells[i].innerHTML; // Клетки снова
+        $(data.cells[i]).css("color", 'white');             // становятся белыми
+      }
       console.log("State saved!");
     })
     .fail(function(res) {
       data.saved = true;
-      $("button.saveState").fadeTo(500, 0.001);
-      $("button.saveState").prop('disabled', true);
       console.log("Saving state went wrong!");
       console.log(JSON.stringify(res));
     });

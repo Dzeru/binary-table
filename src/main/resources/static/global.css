@@ -4,6 +4,7 @@ html {
 
 body {
   background:#9370DB;
+  margin: 100px;
 	font-family: 'Share Tech Mono', monospace;
 	color: #FFFFFF;
 }
@@ -24,13 +25,23 @@ td {
   font-size: 48px;
 }
 
+td:hover {
+	transition: background 0.5s;
+	background: #8360CB;
+}
+
 .saveState {
 	visibility: hidden;
+	vertical-align: middle;
 }
 
 .mytitle {
   width: auto;
   font-size: 30px;
+}
+
+.mytitle:hover {
+	background: #9370DB;
 }
 
 .confNumber {
@@ -44,6 +55,7 @@ td {
 }
 
 .arrowBack {
+	vertical-align: middle;
 	position: relative;
 	font-size: 45px;
 	font-weight: 900;
@@ -53,6 +65,10 @@ td {
 	background-color: Transparent;
 	font-family: 'Share Tech Mono', monospace;
 	color: #FFFFFF;
+}
+
+.deleteGoal {
+	vertical-align: middle;
 }
 
 @font-face {												/* А вообще наш стандартный шрифт СЛИШКОМ похож на этот. Они одинаковые? */
