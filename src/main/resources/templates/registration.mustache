@@ -4,13 +4,13 @@
     {{> meta}}
     <title>BiT | {{#i18n}}meta.signup{{/i18n}}</title>
 </head>
-<body>
+<body style="background: #ad33ff">
 <div>
     {{#errorMessage}}
         {{#i18n}}{{errorMessage}}{{/i18n}}
     {{/errorMessage}}
 </div>
-<div class="mx-auto border my-5 py-3 px-3" style="width: 50%;">
+<div class="mx-auto border my-5 py-3 px-3 form">
     <div class="mb-3" align="center"><a class="navbar-brand" href="/">Binary Table</a></div>
     <form action="/registration" method="post">
         <div class="form-group">
@@ -31,11 +31,9 @@
         </div>
         <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
         <input class="btn btn-primary mt-1 mb-3" type="submit" value="{{#i18n}}meta.signup{{/i18n}}"/>
-        <div align="center">{{#i18n}}login.registrationAgreeMessage{{/i18n}} <a href="/terms">{{#i18n}}login.termsForSignUp{{/i18n}}</a></div>
+        <div align="center">{{#i18n}}login.registrationAgreeMessage{{/i18n}} <a class="link-for-light-background" href="/terms">{{#i18n}}login.termsForSignUp{{/i18n}}</a></div>
     </form>
 </div>
-<footer class="mx-auto" style="width: 50%" align="center">
-    Binary Table, 2018 <a href="/about">{{#i18n}}meta.about{{/i18n}}</a>
-</footer>
+{{> formfooter}}
 </body>
 </html>

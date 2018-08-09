@@ -3,16 +3,18 @@
 <head>
     {{> meta}}
     <title>Binary Table</title>
+    <meta name="description" content="Binary Table - minimalistic progress tracker & counter">
+    <meta name="keywords" content="minimalistic, progress, tracker, counter, binary, table, минималистичный, прогресс, трекер, бинарная, таблица, счетчик">
 </head>
-<body class="bg-dark text-white" style="display: flex; min-height: 100vh; flex-direction: column;">
+<body class="sticky-footer-body">
 {{> scripts}}
 {{> navbar}}
-<section class="container" style="flex: 1">
-    0. Create the goal<br>
+<section class="container pt-5 sticky-footer-section" align="center">
+    <h4>0. Create the goal<br>
     1. Set count of steps<br>
     10. Change 0 to 1<br>
-    11. When all 0 become 1, you'll reach the goal!<br>
+    11. When all 0 become 1, you'll reach the goal!<br></h4>
 </section>
-    {{> footer}}
+{{> footer}}
 </body>
 </html>

@@ -3,10 +3,12 @@
 <head>
     {{> meta}}
     <title>BiT | {{#i18n}}meta.login{{/i18n}}</title>
+    <meta name="description" content="Log in Binary Table - minimalistic progress tracker & counter">
+    <meta name="keywords" content="login, log in, minimalistic, progress, tracker, counter, binary, table, войти, минималистичный, прогресс, трекер, бинарная, таблица, счетчик">
 </head>
 <body>
-<div class="mx-auto border my-5 py-3 px-3" style="width: 50%;">
-    <div align="center"><a class="navbar-brand" href="/">Binary Table</a></div>
+<div class="mx-auto border my-5 py-3 px-3 form">
+    <div align="center"><a class="navbar-brand link-for-light-background" href="/">Binary Table</a></div>
     <form action="/login" method="post">
         <div class="form-group">
             <label for="email">{{#i18n}}fields.email{{/i18n}}</label>
@@ -20,12 +22,10 @@
         <input class="btn btn-primary mt-1 mb-3" type="submit" value="{{#i18n}}meta.login{{/i18n}}">
     </form>
     <div align="center">
-        <span class="mr-5"><a href="/forgotpassword">{{#i18n}}login.forgotPassword{{/i18n}}</a></span>
-        <span class="ml-5"><a href="/registration">{{#i18n}}login.wantToSignUp{{/i18n}}</a></span>
+        <span class="mr-5 form"><a class="link-for-light-background" href="/forgotpassword">{{#i18n}}login.forgotPassword{{/i18n}}</a></span>
+        <span class="ml-5 form"><a class="link-for-light-background" href="/registration">{{#i18n}}login.wantToSignUp{{/i18n}}</a></span>
     </div>
 </div>
-<footer class="mx-auto" style="width: 50%" align="center">
-    Binary Table, 2018 <a href="/about">{{#i18n}}meta.about{{/i18n}}</a>
-</footer>
+{{> formfooter}}
 </body>
 </html>

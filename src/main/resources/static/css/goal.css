@@ -1,10 +1,10 @@
 html {
-  font-family: sans-serif;
+	font-family: sans-serif;
 }
 
 body {
-  background:#9370DB;
-  margin: 100px;
+	background:#9370DB;
+	margin: 100px;
 	font-family: 'Share Tech Mono', monospace;
 	color: #FFFFFF;
 }
@@ -14,15 +14,15 @@ table {
 }
 
 tr {
-  width: 50%;
-  margin: 0 auto;
+	width: 50%;
+	margin: 0 auto;
   
 }
 
 td {
-  width: 90px;
-  height: 60px;
-  font-size: 48px;
+	width: 90px;
+	height: 60px;
+	font-size: 48px;
 }
 
 td:hover {
@@ -36,8 +36,8 @@ td:hover {
 }
 
 .mytitle {
-  width: auto;
-  font-size: 30px;
+	width: auto;
+	font-size: 30px;
 }
 
 .mytitle:hover {
@@ -45,13 +45,13 @@ td:hover {
 }
 
 .confNumber {
-  background-color: Transparent;
-  border: none;
-  outline: none;
+	background-color: Transparent;
+	border: none;
+	outline: none;
 }
 
 .confNumberText {
-  font-size: 30px;
+	font-size: 30px;
 }
 
 .arrowBack {
@@ -73,7 +73,7 @@ td:hover {
 
 @font-face {												/* А вообще наш стандартный шрифт СЛИШКОМ похож на этот. Они одинаковые? */
 	font-family: consola;							
-	src: url(resources/consola.ttf) ; /* Добавить первую черточку в рабочем проекте! */
+	src: url(../resources/consola.ttf) ; /* Добавить первую черточку в рабочем проекте! */
 }
 
 #note {
@@ -100,7 +100,5 @@ td:hover {
 } */
 
 .tabel1 {
-
 	font-size: 60px;
-
 }

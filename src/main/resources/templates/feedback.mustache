@@ -4,10 +4,10 @@
 	{{> meta}}
     <title>BiT | {{#i18n}}meta.feedback{{/i18n}}</title>
 </head>
-<body>
+<body class="sticky-footer-body">
 {{> scripts}}
 {{> navbar}}
-<section>
+<section class="sticky-footer-section">
     Want to share an opinion about Binary Table? Fill the form below or <a href="https://goo.gl/forms/jIARUsiHMU96qQWu1" target="_blank">answer the questions here</a>. It is absolutely anonymous.
 	<form action="/feedback" method="post" accept-charset="utf-8">
 		<textarea name="feedback" placeholder="{{#i18n}}placeholder.feedback{{/i18n}}"></textarea>
@@ -18,6 +18,6 @@
 		{{thanks}}
 	{{/thanks}}
 </section>
-	{{> footer}}
+{{> footer}}
 </body>
 </html>

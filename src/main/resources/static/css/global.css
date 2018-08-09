@@ -1,0 +1,55 @@
+body
+{
+    background: #ad33ff;
+    color: #fff;
+}
+
+a
+{
+    text-decoration: none;
+}
+
+a:hover
+{
+    color: #f8d7da;
+}
+
+.link-for-dark-background
+{
+    color: #fff;
+}
+
+.link-for-light-background
+{
+    color: #ad33ff;
+}
+
+.form
+{
+    background: #fff;
+    color: #ad33ff;
+    width: 50%;
+}
+
+.form-footer
+{
+    width: 50%;
+}
+
+/*
+For sticky footer
+ */
+
+.sticky-footer-body
+{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    margin: 0px;
+}
+
+.sticky-footer-section
+{
+    flex: 1;
+    margin: 0px;
+}
