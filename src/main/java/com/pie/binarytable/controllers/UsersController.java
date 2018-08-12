@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -89,6 +90,7 @@ public class UsersController
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user.setActive(true);
 			user.setRoles(Collections.singleton(Role.USER));
+			user.setRegistrationDate(LocalDateTime.now().toString());
 			userDAO.save(user);
 
 			mailSender.sendGreetingMessage(user.getUsername());
@@ -151,6 +153,7 @@ public class UsersController
 			{
 				status = "status.successUpdatePassword";
 				user.setUpdatePassword("");
+				userDAO.save(user);
 				mailSender.sendNotificationAboutUpdatePasswordMessage(email);
 			}
 			else

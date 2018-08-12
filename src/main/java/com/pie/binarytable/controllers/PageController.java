@@ -9,12 +9,6 @@ Controller for simple pages
 @Controller
 public class PageController
 {
-	@GetMapping("/about")
-	public String about()
-	{
-		return "about";
-	}
-
 	@GetMapping("/terms")
 	public String terms()
 	{

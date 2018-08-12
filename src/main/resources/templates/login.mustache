@@ -10,6 +10,7 @@
 <div class="mx-auto border my-5 py-3 px-3 form">
     <div align="center"><a class="navbar-brand link-for-light-background" href="/">Binary Table</a></div>
     <form action="/login" method="post">
+        {{#error}}{{error}}{{/error}}
         <div class="form-group">
             <label for="email">{{#i18n}}fields.email{{/i18n}}</label>
             <input class="form-control" id="email" type="text" name="username" placeholder="{{#i18n}}placeholder.email{{/i18n}}">
@@ -26,6 +27,5 @@
         <span class="ml-5 form"><a class="link-for-light-background" href="/registration">{{#i18n}}login.wantToSignUp{{/i18n}}</a></span>
     </div>
 </div>
-{{> formfooter}}
 </body>
 </html>

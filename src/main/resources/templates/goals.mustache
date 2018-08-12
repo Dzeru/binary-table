@@ -6,18 +6,7 @@
 </head>
 <body class="container">
 {{> scripts}}
-<nav class="navbar navbar-expand-md">
-    <a class="navbar-brand" href="/">BiT</a>
-    <div class="navbar-nav mr-auto">
-        <span class="nav-item nav-link active">{{#user}}{{#i18n}}goal.greeting{{/i18n}},&nbsp;{{name}}!{{/user}}</span>
-        <span class="nav-item nav-link active">{{#i18n}}goal.countOfGoals{{/i18n}}{{countOfGoals}}</span>
-        <a class="nav-item btn btn-outline-primary ml-3" href="/addgoal">{{#i18n}}goal.addGoal{{/i18n}}</a>
-        <form class="bg-dark" action="/logout" method="post">
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-            <input class="nav-item nav-link active bg-dark border-0 ml-5" type="submit" value="{{#i18n}}meta.logout{{/i18n}}"/>
-        </form>
-    </div>
-</nav>
+{{> usernavbar}}
 <div>
     <table class="table table-striped table-dark">
         <thead>
