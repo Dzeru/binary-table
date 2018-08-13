@@ -1,8 +1,11 @@
 package com.pie.binarytable.controllers;
 
 import com.pie.binarytable.dao.GoalDAO;
+import com.pie.binarytable.dao.GroupGoalDAO;
+import com.pie.binarytable.dao.UserDAO;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.User;
+import com.pie.binarytable.entities.GroupGoal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,13 +25,29 @@ public class GoalsController
 	@Autowired
 	private GoalDAO goalDAO;
 
+	@Autowired
+	private GroupGoalDAO groupGoalDAO;
+
+	@Autowired
+	private UserDAO userDAO;
+
 	/*
 	Forms list of goals and so on
 	 */
 	@GetMapping("/goals")
 	public String goals(@AuthenticationPrincipal User user, Model model)
 	{
-		ArrayList<Goal> goals = new ArrayList(goalDAO.findByUserId(user.getId()));
+		Long userId = user.getId();
+		ArrayList<Goal> goals = new ArrayList(goalDAO.findByUserId(userId));
+		ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalDAO.findByUserId(userId));
+
+		if(!groupGoals.isEmpty())
+		{
+			for(GroupGoal goal : groupGoals)
+			{
+				goals.add(goalDAO.findByIdEquals(goal.getGoalId()));
+			}
+		}
 
 		int countOfGoals = goals.size();
 
@@ -56,6 +75,7 @@ public class GoalsController
 	                 @RequestParam String name,
 	                 @RequestParam Integer steps,
 	                 @RequestParam String note,
+	                 @RequestParam String emails,
 	                 Model model)
 	{
 		if(name == null || name.isEmpty())
@@ -86,6 +106,31 @@ public class GoalsController
 		goal.setCurrentState(sb.toString());
 
 		goalDAO.save(goal);
+
+		/*
+		Only for group goals
+		 */
+		if(!emails.isEmpty() && emails != null)
+		{
+			String[] emailList = emails.split(", ");
+			Goal newGoal = goalDAO.findByGoalNameEqualsAndUserIdEquals(name, user.getId());
+
+			for(String email : emailList)
+			{
+				User username = userDAO.findByUsername(email);
+				if(username != null)
+				{
+					GroupGoal groupGoal = new GroupGoal(newGoal.getId(), username.getId());
+					groupGoalDAO.save(groupGoal);
+				}
+				else
+				{
+					groupGoalDAO.deleteByGoalId(newGoal.getId());
+					goalDAO.deleteById(newGoal.getId());
+					model.addAttribute("error", "Email does not exist");
+				}
+			}
+		}
 
 		return "redirect:/goals";
 	}

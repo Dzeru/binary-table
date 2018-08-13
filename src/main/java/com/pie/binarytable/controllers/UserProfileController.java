@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/*
+Controller for user profile, where user can change email and password
+ */
 @Controller
 public class UserProfileController
 {

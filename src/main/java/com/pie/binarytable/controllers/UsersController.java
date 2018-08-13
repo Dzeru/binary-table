@@ -93,7 +93,7 @@ public class UsersController
 			user.setRegistrationDate(LocalDateTime.now().toString());
 			userDAO.save(user);
 
-			mailSender.sendGreetingMessage(user.getUsername());
+			//mailSender.sendGreetingMessage(user.getUsername());
 		}
 
 		return "redirect:/login";
@@ -131,7 +131,11 @@ public class UsersController
 	}
 
 	@PostMapping("/updatepassword")
-	public String updatePassword(@RequestParam String email, @RequestParam String password, @RequestParam String repeatPassword, @RequestParam String updatePassword, Model model)
+	public String updatePassword(@RequestParam String email,
+	                             @RequestParam String password,
+	                             @RequestParam String repeatPassword,
+	                             @RequestParam String updatePassword,
+	                             Model model)
 	{
 		String status = "";
 		if(!password.equals(repeatPassword))
