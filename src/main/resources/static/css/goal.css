@@ -10,13 +10,9 @@ body {
 }
 
 table {
+	min-width: 600px;
+	min-height: 125px;
 	text-align: center;
-}
-
-tr {
-	width: 50%;
-	margin: 0 auto;
-  
 }
 
 td {

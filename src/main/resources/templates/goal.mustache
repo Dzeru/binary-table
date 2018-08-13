@@ -6,12 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="_csrf" content="{{_csrf.token}}">
     <meta name="_csrf_header" content="X-CSRF-TOKEN">
+    <meta property="og:image" content=""/>
     <title>BiT | Goal</title>
 
     <link rel="stylesheet" href="/css/goal.css">
     <link rel="stylesheet" href="/css/jquery-ui.min.css">
     <script src="/js/jquery.min.js"></script>
     <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/html2canvas.min.js"></script>
+    <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 
     <style>
       .cross { cursor: pointer; }
@@ -45,40 +48,44 @@ style="display: none">
   <button class="deleteGoal" style="float: right">
     <img src="/pictures/deleteButtonImg.png" alt="Delete">
   </button>
+
+  <button class="screenShotter"> SHARE </button>
 </div>
 
 <p> </p>
 
-<table class="cross" onmousedown="return false" onselectstart="return false" cellspacing="0" border="0" cols="7" align="center" caption-side="bottom">
+<div id="content">
+  <table class="cross" onmousedown="return false" onselectstart="return false" cellspacing="0" border="0" cols="7" align="center" caption-side="bottom">
+    <caption align="top"> 
+      <table id="binTable" bordercolor="white" cellspacing="0" border="1" cols="1" align="center">
+        <tbody><tr>
+          <td class="mytitle" width="auto" align="center">
+            Loading, please, wait... 
+          </td>
+        </tr></tbody>
+      </table>
+      <p id="note"> </p>
+    </caption>
 
-<caption align="top">
-  <table bordercolor="white" cellspacing="0" border="1" cols="1" align="center">
-    <tbody><tr>
-      <td class="mytitle" width="auto" align="center">
-        Loading, please, wait...
-      </td>
-    </tr></tbody>
-  </table>
-  <p id="note"> </p>
-</caption>
 
-  <caption align="bottom">
-    <!--<script type="text/javascript">(function() {
-        if (window.pluso) if (typeof window.pluso.start == "function") return;
-        if (window.ifpluso==undefined)
-        { window.ifpluso = 1;
-         var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
-         s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
-         s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
-         var h=d[g]('body')[0];
-         h.appendChild(s);
-        }})();</script>
-    <div class="pluso" data-background="transparent" data-options="medium,square,line,horizontal,counter,theme=04" data-services="vkontakte,facebook,twitter,google"></div> -->
-  </caption>
+    <caption align="bottom"> 
+      <!--<script type="text/javascript">(function() {
+          if (window.pluso) if (typeof window.pluso.start == "function") return;
+          if (window.ifpluso==undefined) 
+          { window.ifpluso = 1;
+           var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+           s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+           s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+           var h=d[g]('body')[0];
+           h.appendChild(s);
+          }})();</script>
+      <div class="pluso" data-background="transparent" data-options="medium,square,line,horizontal,counter,theme=04" data-services="vkontakte,facebook,twitter,google"></div> -->
+    </caption> 
   <!-- Конец блока кнопок -->
   <script src="/js/goal-logic.js"></script>
-
-</table>
+  
+  </table>
+</div>  
 
 <!-- <script type="text/javascript" charset="UTF-8" async="" src="https://share.pluso.ru/pluso-like.js"></script> -->
 

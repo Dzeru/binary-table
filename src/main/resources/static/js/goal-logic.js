@@ -60,7 +60,7 @@ function changeNumber() {
     $("button.saveState").hide().css("visibility", "visible").fadeIn();
     data.saved = false;
   }
-	calculateProgressString(data.title);
+  calculateProgressString(data.title);
 }
 
 // создание таблицы из ячеек 
@@ -153,9 +153,7 @@ function getGoalInfo() {
       data.id = res.id;
       data.userId = res.userId;
       data.note = res.note;
-      //==============================================//
-      //==============Запуск скриптов=================//
-      //==============================================//
+
       calculateProgressString(data.title);
       var cellTable = document.querySelector('table');
       createCells();
@@ -174,30 +172,40 @@ function getGoalInfo() {
     }
   })
 }
-var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
-if (!isJavaEnabled) {
-  var goalNumber = 5;
-  data.numString = '00100';
-  data.title = 'client-only testing';
-  data.id = 9000;
-  data.userId = 0;
-  data.note = 'this feature is not implemented probably';
 
-  calculateProgressString(data.title);
-  var cellTable = document.querySelector('table');
-  createCells();
-  createTable(cellTable, data);
-  makeButtons();
-  $("button.saveState").on('click', function(event) {
-    updateGoal();
-  });
-  $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
-    typeWriterCall();
-  });
-}
-else {
-  getGoalInfo();
-}
+/////////////////////////-------------------//////////////////////////
+/////////////////////////////////////////////////////////////////////////
+//                          Запуск скриптов                            //
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////-------------------//////////////////////////
+
+$(document).ready(function() {
+  var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
+  if (!isJavaEnabled) {
+    var goalNumber = 5;
+    data.numString = '00100';
+    data.title = 'client-only testing';
+    data.id = 9000;
+    data.userId = 0;
+    data.note = 'this feature is not implemented probably';
+
+    calculateProgressString(data.title);
+    var cellTable = document.querySelector('table');
+    createCells();
+    createTable(cellTable, data);
+    makeButtons();
+    $("button.saveState").on('click', function(event) {
+      updateGoal();
+    });
+    $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
+      typeWriterCall();
+    });
+  }
+  else {
+    getGoalInfo();
+  }
+});
+
 
 ///////////////////////////////////////////////////////////////////////
 // Магия с кнопкой сохранения состояния
@@ -294,7 +302,7 @@ function deleteGoal() {
       console.log("Delete request sended!");
     })
     .fail(function(res) {
-      llocation.replace('/goals');
+      location.replace('/goals');
       console.log("Goal deletion went wrong!");
       console.log(JSON.stringify(res));
     });
@@ -332,6 +340,67 @@ function typeWriterCall() {
 
 ///////////////////////////////////////////////////////////////////////
 // Потенциальная нереализованная магия
+
+function makeScreenshot() {
+  var tbl_width = document.getElementsByClassName('cross')[0].offsetWidth;
+  var tbl_height = document.getElementsByClassName('cross')[0].offsetHeight;
+  var options = { 
+    backgroundColor: '#ad33ff',
+    height: tbl_height,
+    width: tbl_width,
+  };
+
+  $("table.cross").css('float', 'left');
+  html2canvas(document.getElementsByClassName("cross")[0], options).then(canvas => {
+  $("table.cross").css('float', 'none');
+    var postData = {
+      file: canvas.toDataURL(),
+      upload_preset: "k25wiy42"
+    };
+
+  // Запрос на облачное хранилище изображений
+  $.ajax({
+    //url:'http://www.mocky.io/v2/5afffe89310000730076ded3'
+    url:'https://api.cloudinary.com/v1_1/pie2table/raw/upload',
+    method:'POST',
+    //dataType: 'jsonp',                                // Здесь это не нужно!
+    //contentType: 'application/json; charset=utf-8',   // Потому что гладиолус
+    data: postData
+    })
+    .done(function(res) {
+      console.log("Screenshot saved!")
+      console.log(JSON.stringify(res));
+      $("button.screenShotter").on("click", function() {
+
+      });
+      imgSource = res.url;
+      $("meta[property='og:image']").attr('content', imgSource);
+      document.getElementsByClassName('screenShotter')[0].innerHTML = 
+        VK.Share.button(
+          {
+            url: 'https://binarytable.neocities.org/',
+            image: imgSource
+          },
+          {
+            type: 'custom',
+            text: '<img src="http://vk.com/images/vk32.png" />',
+          }); 
+    })
+    .fail(function(res) {
+      console.log("Too bad! Image was not saved on server!");
+      console.log(JSON.stringify(res));
+    });
+
+  });
+
+
+}
+
+$("button.screenShotter").on("click", function() {
+  makeScreenshot();
+});
+
+
 
 // var angryButton = document.querySelector('.yelling'); 
 // angryButton.addEventListener('click', spawnBox); 
