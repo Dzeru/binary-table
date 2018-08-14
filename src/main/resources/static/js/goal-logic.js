@@ -180,7 +180,7 @@ function getGoalInfo() {
 /////////////////////////-------------------//////////////////////////
 
 $(document).ready(function() {
-  var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
+  var isJavaEnabled = 0; // Изменять вручную, 0 для debug'а без сервера
   if (!isJavaEnabled) {
     var goalNumber = 5;
     data.numString = '00100';
@@ -199,6 +199,9 @@ $(document).ready(function() {
     });
     $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
       typeWriterCall();
+    });
+    $("button.screenShotter").on("click", function() {
+      makeScreenshot();
     });
   }
   else {
@@ -336,8 +339,6 @@ function typeWriterCall() {
   opened = !opened;
 }
 
-
-
 ///////////////////////////////////////////////////////////////////////
 // Потенциальная нереализованная магия
 
@@ -350,12 +351,11 @@ function makeScreenshot() {
     width: tbl_width,
   };
 
-  $("table.cross").css('float', 'left');
   html2canvas(document.getElementsByClassName("cross")[0], options).then(canvas => {
-  $("table.cross").css('float', 'none');
     var postData = {
       file: canvas.toDataURL(),
-      upload_preset: "k25wiy42"
+      upload_preset: "k25wiy42",
+      public_id: data.userId + '_' + data.id + '.jpg'
     };
 
   // Запрос на облачное хранилище изображений
@@ -370,12 +370,12 @@ function makeScreenshot() {
     .done(function(res) {
       console.log("Screenshot saved!")
       console.log(JSON.stringify(res));
-      $("button.screenShotter").on("click", function() {
 
-      });
       imgSource = res.url;
+
       $("meta[property='og:image']").attr('content', imgSource);
-      document.getElementsByClassName('screenShotter')[0].innerHTML = 
+      $("#vkshare").css('visibility', 'visible');
+      document.getElementById('vkshare').innerHTML = 
         VK.Share.button(
           {
             url: 'https://binarytable.neocities.org/',
@@ -395,12 +395,6 @@ function makeScreenshot() {
 
 
 }
-
-$("button.screenShotter").on("click", function() {
-  makeScreenshot();
-});
-
-
 
 // var angryButton = document.querySelector('.yelling'); 
 // angryButton.addEventListener('click', spawnBox); 

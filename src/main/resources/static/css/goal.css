@@ -81,6 +81,11 @@ td:hover {
 	border-color: #6666ff;
 }
 
+#additional {
+	display: flex;
+	justify-content: center;
+}
+
 /*body{
 	background:#9370DB;
 	font-family: 'Share Tech Mono', monospace;
