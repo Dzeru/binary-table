@@ -3,8 +3,10 @@ html {
 }
 
 body {
-	background:#9370DB;
-	margin: 100px;
+	background:#B172C5;
+	margin-left: 10%;
+	margin-right: 10%;
+	margin-top: 5%;
 	font-family: 'Share Tech Mono', monospace;
 	color: #FFFFFF;
 }
@@ -23,42 +25,48 @@ td {
 
 td:hover {
 	transition: background 0.5s;
-	background: #8360CB;
+	background: #A656CD;
 }
 
 .saveState {
-	visibility: hidden;
 	vertical-align: middle;
 }
 
 .mytitle {
 	width: auto;
 	font-size: 30px;
+	align: center;
+	border-width: 4px;
 }
 
 .mytitle:hover {
-	background: #9370DB;
+	background: #B172C5;
 }
 
-.confNumber {
+.ui-borders {
+	color: #fff;
+	border-color: #FFFFFF;
+	border-style: solid;
+	border-width: 4px;
 	background-color: Transparent;
-	border: none;
-	outline: none;
 }
 
-.confNumberText {
-	font-size: 30px;
+.ui-noborders {
+	border: none;
+	background-color: Transparent;
+}
+
+.screenShotter {
+	font-family: 'Share Tech Mono', monospace;
+	color: #fff;
+	font-size: 18px;
 }
 
 .arrowBack {
 	vertical-align: middle;
 	position: relative;
-	font-size: 45px;
+	font-size: 50px;
 	font-weight: 900;
-	border-color: #FFFFFF;
-	border-style: solid;
-	border-width: 2px;
-	background-color: Transparent;
 	font-family: 'Share Tech Mono', monospace;
 	color: #FFFFFF;
 }
@@ -81,7 +89,16 @@ td:hover {
 	border-color: #6666ff;
 }
 
+#deleteConfirmation {
+
+}
+
+.screenShotter {
+
+}
+
 #additional {
+	margin-top: 10px;
 	display: flex;
 	justify-content: center;
 }
@@ -103,3 +120,30 @@ td:hover {
 .tabel1 {
 	font-size: 60px;
 }
+
+/* UI-Widget setup */
+
+.confNumber {
+	background-color: Transparent;
+	border: none;
+	outline: none;
+	font-family: 'Share Tech Mono', monospace;
+	color: #FFFFFF;
+}
+
+.confNumberText {
+	font-size: 45px;
+}
+
+.ui-widget-content {
+
+}
+
+.deleteWidget {
+	background:#B172C5;
+	border-color: #FFFFFF !important;
+	border-style: solid !important;
+	border-width: 4px !important;
+}
+
+/* ends here */

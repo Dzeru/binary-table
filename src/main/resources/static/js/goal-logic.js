@@ -49,7 +49,7 @@ function changeNumber() {
   else {
     this.innerHTML = "1";
     if (this.savedValue === '0') {
-      $(this).css("color", 'rgb(140, 190, 140)');
+      $(this).css("color", 'rgb(60, 221, 86)');
     }
     data.numString = setCharAt(data.numString, this.cellRealIndex, '1');
   }
@@ -57,7 +57,7 @@ function changeNumber() {
   // Появление кнопки сохранения
   if (data.saved === true) {
     $("button.saveState").prop('disabled', false);
-    $("button.saveState").hide().css("visibility", "visible").fadeIn();
+    $("button.saveState").hide().css("visibility", "visible").fadeTo("slow", 1);
     data.saved = false;
   }
   calculateProgressString(data.title);
@@ -114,7 +114,7 @@ function calculateProgress() {
 function calculateProgressString(original) {
   $("#openNoteBtn").appendTo("body");
   var ones = calculateProgress();
-  titleAndProgress.innerHTML = original + ' (' + ones + '/' + data.numString.length + ')';
+  titleAndProgress.innerHTML = original + ' (' + ones + '/' + data.numString.length + ') ';
   $("#openNoteBtn").appendTo("td.mytitle");
 }
 
@@ -180,7 +180,7 @@ function getGoalInfo() {
 /////////////////////////-------------------//////////////////////////
 
 $(document).ready(function() {
-  var isJavaEnabled = 0; // Изменять вручную, 0 для debug'а без сервера
+  var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
   if (!isJavaEnabled) {
     var goalNumber = 5;
     data.numString = '00100';
@@ -194,12 +194,20 @@ $(document).ready(function() {
     createCells();
     createTable(cellTable, data);
     makeButtons();
+    $("button.saveState").fadeTo("fast", 0.25);
+    $("#vkshare").fadeTo("fast", 0.25);
+    $("button.saveState").prop('disabled', true);
     $("button.saveState").on('click', function(event) {
       updateGoal();
     });
-    $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
-      typeWriterCall();
-    });
+    if (data.note) {
+      $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
+        typeWriterCall();
+      });
+    }
+    else {
+      $("#openNoteBtn").css('visibility', 'hidden');
+    }
     $("button.screenShotter").on("click", function() {
       makeScreenshot();
     });
@@ -236,7 +244,7 @@ function updateGoal() {
     }})
     .done(function(res) {
       data.saved = true;
-      $("button.saveState").fadeTo(500, 0.001);
+      $("button.saveState").fadeTo("slow", 0.5);
       $("button.saveState").prop('disabled', true);
       for (var i = data.cells.length - 1; i >= 0; i--) {
         data.cells[i].savedValue = data.cells[i].innerHTML; // Клетки снова
@@ -257,9 +265,11 @@ function askDeleteConfirmation() {
   console.log("Showing dialog");
   $('#deleteConfirmation').dialog({
     classes: {
-      "ui-dialog-content": "confNumberText"
+      "ui-dialog-content": "confNumberText",
+      "ui-dialog-titlebar": "ui-borders"
     }
   });
+  $('#deleteConfirmation').dialog('option', 'classes.ui-dialog', 'deleteWidget');
 
   //$('deleteConfirmation').dialog("open");
 }
@@ -374,7 +384,7 @@ function makeScreenshot() {
       imgSource = res.url;
 
       $("meta[property='og:image']").attr('content', imgSource);
-      $("#vkshare").css('visibility', 'visible');
+      $("#vkshare").fadeTo("fast", 1);
       document.getElementById('vkshare').innerHTML = 
         VK.Share.button(
           {

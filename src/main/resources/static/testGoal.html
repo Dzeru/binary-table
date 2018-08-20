@@ -6,10 +6,10 @@
     <meta name="_csrf_header" content="X-CSRF-TOKEN"/>
     <meta property="og:image" content=""/>
 
+    <link rel="stylesheet" href="css/jquery-ui.min.css"> <!-- Порядок важен!! -->
     <link rel="stylesheet" type="text/css" href="css/global.css">
     <link rel="stylesheet" type="text/css" href="css/goal.css">
   
-    <link rel="stylesheet" href="css/jquery-ui.min.css">
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
     <script src="js/html2canvas.min.js"></script>
@@ -22,8 +22,7 @@
 
   <body>
     <span id="openNoteBtn"><img src = "images/note-image.png" alt="[Note]"></span>
-    <div id="deleteConfirmation" title="Are you sure to DELETE? 0->1 " 
-    style="display: none">
+    <div id="deleteConfirmation" title="Are you sure to DELETE? 0->1 " style="display: none">
       <p align="center"> 
         <button class="confNumber"> 0 </button>
         <button class="confNumber"> 0 </button>
@@ -36,15 +35,15 @@
     
     <div>
       <a href="/goals" style="text-decoration: none;">
-        <button class="arrowBack"> 
+        <button class="arrowBack ui-borders"> 
           < - -  
         </button>
       </a>
-      <button class="saveState"> 
+      <button class="saveState ui-noborders"> 
         <img src="pictures/saveButtonImg.png" alt="Save">
       </button>
 
-      <button class="deleteGoal" style="float: right">
+      <button class="deleteGoal ui-noborders" style="float: right">
         <img src="pictures/deleteButtonImg.png" alt="Delete">
       </button>
 
@@ -57,7 +56,7 @@
         <caption align="top"> 
           <table id="binTable" bordercolor="white" cellspacing="0" border="1" cols="1" align="center">
             <tbody><tr>
-              <td class="mytitle" width="auto" align="center">
+              <td class="mytitle">
                 Loading, please, wait... 
               </td>
             </tr></tbody>
@@ -85,10 +84,11 @@
       </table>
     </div>  
     <div id="additional">
-      <button class="screenShotter"> SHARE </button>
-      <button id="vkshare" style="visibility: hidden;"> </button>
+      <button class="screenShotter ui-borders"> S H A R E </button>
+      <button id="vkshare" class="ui-borders"> <img src="http://vk.com/images/vk32.png" </button>
     </div>  
     <!-- <script type="text/javascript" charset="UTF-8" async="" src="https://share.pluso.ru/pluso-like.js"></script> -->
 
   </body>
+  flaticons
 </html>
