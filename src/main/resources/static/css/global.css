@@ -2,38 +2,93 @@ body
 {
     background: #ad33ff;
     color: #fff;
+    font-family: 'Share Tech Mono', monospace;
 }
 
-a
+a, a:hover
 {
     text-decoration: none;
 }
 
-a:hover
-{
-    color: #f8d7da;
-}
 
-.link-for-dark-background
+.link-white
 {
     color: #fff;
 }
 
-.link-for-light-background
+.link-white:hover
+{
+    color: #f0acb2;
+}
+
+.link-semidark
+{
+    color: #f0acb2;
+}
+
+.link-dark
 {
     color: #ad33ff;
+}
+
+.link-dark:hover, .link-semidark:hover
+{
+    color: #42006e;
+}
+
+.button
+{
+    border-radius: 5px;
+    padding: 6px 8px;
+    font-size: 18px;
+}
+
+.button-dark
+{
+    border: 2px #fff solid;
+    color: #fff;
+    background: #ad33ff;
+}
+
+.button-dark:hover
+{
+    color: #f0acb2;
+    text-decoration: none;
+}
+
+.button-white
+{
+    border: 2px #fff solid;
+    color: #ad33ff;
+    background: #fff;
+}
+
+.button-white:hover
+{
+    color: #42006e;
+    text-decoration: none;
 }
 
 .form
 {
     background: #fff;
     color: #ad33ff;
-    width: 50%;
+    width: 60%;
 }
 
 .form-footer
 {
     width: 50%;
+}
+
+.logo
+{
+    font-size: 50px;
+}
+
+.index-promo
+{
+    font-size: 40px;
 }
 
 /*
@@ -45,11 +100,32 @@ For sticky footer
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    margin: 0px;
+    margin: 0;
 }
 
 .sticky-footer-section
 {
     flex: 1;
-    margin: 0px;
+    margin: 0;
+}
+
+/*
+End of sticky footer style
+ */
+
+table
+{
+    border: 2px #fff solid;
+}
+
+th
+{
+    font-size: 24px;
+    padding: 8px 8px;
+}
+
+td
+{
+    font-size: 18px;
+    padding: 8px 8px;
 }

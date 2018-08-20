@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="mx-auto border my-5 py-3 px-3 form">
-    <div align="center"><a class="navbar-brand link-for-light-background" href="/">Binary Table</a></div>
+    <div align="center"><a class="navbar-brand link-dark logo" href="/">Binary Table</a></div>
     <form action="/login" method="post">
         {{#error}}{{error}}{{/error}}
         <div class="form-group">
@@ -20,11 +20,11 @@
             <input class="form-control" id="password" type="password" name="password" placeholder="{{#i18n}}placeholder.password{{/i18n}}">
         </div>
         <input type="hidden" name="_csrf" value="{{_csrf.token}}">
-        <input class="btn btn-primary mt-1 mb-3" type="submit" value="{{#i18n}}meta.login{{/i18n}}">
+        <input class="button button-dark mt-1 mb-3" type="submit" value="{{#i18n}}meta.login{{/i18n}}">
     </form>
     <div align="center">
-        <span class="mr-5 form"><a class="link-for-light-background" href="/forgotpassword">{{#i18n}}login.forgotPassword{{/i18n}}</a></span>
-        <span class="ml-5 form"><a class="link-for-light-background" href="/registration">{{#i18n}}login.wantToSignUp{{/i18n}}</a></span>
+        <span class="mr-5 form"><a class="link-dark" href="/forgotpassword">{{#i18n}}login.forgotPassword{{/i18n}}</a></span>
+        <span class="ml-5 form"><a class="link-dark" href="/registration">{{#i18n}}login.wantToSignUp{{/i18n}}</a></span>
     </div>
 </div>
 </body>

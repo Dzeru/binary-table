@@ -5,13 +5,13 @@
     <title>BiT | {{#i18n}}meta.signup{{/i18n}}</title>
 </head>
 <body style="background: #ad33ff">
-<div>
-    {{#errorMessage}}
-        {{#i18n}}{{errorMessage}}{{/i18n}}
-    {{/errorMessage}}
-</div>
 <div class="mx-auto border my-5 py-3 px-3 form">
-    <div class="mb-3" align="center"><a class="navbar-brand link-for-light-background" href="/">Binary Table</a></div>
+    <div class="mb-3" align="center"><a class="navbar-brand link-dark logo" href="/">Binary Table</a></div>
+    <div>
+        {{#errorMessage}}
+        {{#i18n}}{{errorMessage}}{{/i18n}}
+        {{/errorMessage}}
+    </div>
     <form action="/registration" method="post">
         <div class="form-group">
             <label for="name">{{#i18n}}fields.name{{/i18n}}</label>
@@ -30,8 +30,8 @@
             <input class="form-control" id="repeatPassword" type="password" name="repeatPassword" placeholder="{{#i18n}}placeholder.password{{/i18n}}">
         </div>
         <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <input class="btn btn-primary mt-1 mb-3" type="submit" value="{{#i18n}}meta.signup{{/i18n}}"/>
-        <div align="center">{{#i18n}}login.registrationAgreeMessage{{/i18n}} <a class="link-for-light-background" href="/terms">{{#i18n}}login.termsForSignUp{{/i18n}}</a></div>
+        <input class="button button-dark mt-1 mb-3" type="submit" value="{{#i18n}}meta.signup{{/i18n}}"/>
+        <div align="center">{{#i18n}}login.registrationAgreeMessage{{/i18n}} <a class="link-semidark" href="/terms">{{#i18n}}login.termsForSignUp{{/i18n}}</a></div>
     </form>
 </div>
 </body>

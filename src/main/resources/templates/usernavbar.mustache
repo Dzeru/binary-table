@@ -1,12 +1,14 @@
 <nav class="navbar navbar-expand-md">
-    <a class="navbar-brand" href="/">BiT</a>
-    <div class="navbar-nav mr-auto">
-        <span class="nav-item nav-link active">{{#user}}{{#i18n}}goal.greeting{{/i18n}},&nbsp;<a class="link-for-dark-background" href="/profile">{{name}}</a>!{{/user}}</span>
-        {{#countOfGoals}}<span class="nav-item nav-link active">{{#i18n}}goal.countOfGoals{{/i18n}}{{countOfGoals}}</span>{{/countOfGoals}}
-        <a class="nav-item btn btn-outline-primary ml-3" href="/addgoal">{{#i18n}}goal.addGoal{{/i18n}}</a>
-        <form class="bg-dark" action="/logout" method="post">
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-            <input class="nav-item nav-link active bg-dark border-0 ml-5" type="submit" value="{{#i18n}}meta.logout{{/i18n}}"/>
+    <a class="navbar-brand link-white logo" href="/">BiT</a>
+    <div class="navbar-nav mr-auto" style="float: left; width: 85%;">
+            <span class="nav-item nav-link active">{{#user}}{{#i18n}}goal.greeting{{/i18n}},&nbsp;<a class="button button-dark" href="/profile">{{name}}!</a>{{/user}}</span>
+            {{#countOfGoals}}<span class="nav-item nav-link active">{{#i18n}}goal.countOfGoals{{/i18n}}{{countOfGoals}}</span>{{/countOfGoals}}
+            <a class="nav-item button button-white ml-3" href="/addgoal">{{#i18n}}goal.addGoal{{/i18n}}</a>
+    </div>
+    <div class="navbar-nav mr-auto" style="float: right; width: 15%;" align="right">
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+            <input class="nav-item nav-link button button-dark ml-5" type="submit" value="{{#i18n}}meta.logout{{/i18n}}">
         </form>
     </div>
 </nav>

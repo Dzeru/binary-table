@@ -7,16 +7,18 @@
 <body class="sticky-footer-body">
 {{> scripts}}
 {{> navbar}}
-<section class="sticky-footer-section">
-    Want to share an opinion about Binary Table? Fill the form below or <a href="https://goo.gl/forms/jIARUsiHMU96qQWu1" target="_blank">answer the questions here</a>. It is absolutely anonymous.
-	<form action="/feedback" method="post" accept-charset="utf-8">
-		<textarea name="feedback" placeholder="{{#i18n}}placeholder.feedback{{/i18n}}"></textarea>
-		<input type="submit" value="Send your feedback"/>
-		<input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-	</form>
-	{{#thanks}}
-		{{thanks}}
-	{{/thanks}}
+<section class="container sticky-footer-section">
+	<p>{{#i18n}}feedback.wantToShare{{/i18n}} {{#i18n}}feedback.fill{{/i18n}} <a class="link-semidark" href="https://goo.gl/forms/jIARUsiHMU96qQWu1" target="_blank">{{#i18n}}feedback.answer{{/i18n}}</a>. {{#i18n}}feedback.anonymous{{/i18n}}</p>
+	<div>
+		<form action="/feedback" method="post" accept-charset="utf-8">
+			<textarea name="feedback" rows=10 cols=50 placeholder="{{#i18n}}placeholder.feedback{{/i18n}}"></textarea>
+			<div><input class="button button-white mt-3" type="submit" value="{{#i18n}}feedback.sendFeedback{{/i18n}}"/></div>
+			<input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+		</form>
+		<div>
+			{{#thanks}}{{thanks}}{{/thanks}}
+		</div>
+	</div>
 </section>
 {{> footer}}
 </body>

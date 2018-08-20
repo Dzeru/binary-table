@@ -90,6 +90,8 @@ public class UsersController
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user.setActive(true);
 			user.setRoles(Collections.singleton(Role.USER));
+
+			String prepareRegistrationDate = LocalDateTime.now().toString();
 			user.setRegistrationDate(LocalDateTime.now().toString());
 			userDAO.save(user);
 

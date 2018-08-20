@@ -33,7 +33,20 @@ public class UserProfileController
 	{
 		model.addAttribute("name", user.getName());
 		model.addAttribute("email", user.getUsername());
-		model.addAttribute("regDate", user.getRegistrationDate());
+
+		/*
+		from yyyy-mm-ddThh:mi:se.ms
+		 */
+		String regDate = user.getRegistrationDate();
+		String year = regDate.substring(0, 4);
+		String month = regDate.substring(5, 7);
+		String day = regDate.substring(8, 10);
+		String time = regDate.substring(11, 16);
+
+		model.addAttribute("year", year);
+		model.addAttribute("month", month);
+		model.addAttribute("day", day);
+		model.addAttribute("time", time);
 
 		return "profile";
 	}
