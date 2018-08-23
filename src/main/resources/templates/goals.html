@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<head th:replace="fragments/meta :: meta(~{::title})">
+    <title th:text="#{goal.goals}"/></title>
+</head>
+<body class="sticky-footer-body">
+<th:block th:replace="fragments/usernavbar :: usernavbar"/>
+<section class="sticky-footer-section">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" th:text="#{fields.goal}"><b>Goal</b></th>
+                <th scope="col" th:text="#{fields.steps}"><b>Steps</b></th>
+                <th scope="col" th:text="#{fields.note}"><b>Note</b></th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="goal : ${goals}">
+            <td><a class="link-semidark" th:href="@{goal(id=${goal.id})}" th:text="${goal.goalName}"></a></td>
+            <td><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></td>
+            <td th:text="${goal.note}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#finishedGoals" aria-controls="finishedGoals" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="button button-dark mt-5" th:text="#{goal.finishedGoals}"/>
+    </button>
+    <div id="finishedGoals" class="mt-3 collapse">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col" th:text="#{fields.goal}"><b>Goal</b></th>
+                <th scope="col" th:text="#{fields.steps}"><b>Steps</b></th>
+                <th scope="col" th:text="#{fields.note}"><b>Note</b></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="goal : ${finishedGoals}">
+                <td><a class="link-semidark" th:href="@{goal(id=${goal.id})}" th:text="${goal.goalName}"></a></td>
+                <td><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></td>
+                <td th:text="${goal.note}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+<th:block th:replace="fragments/footer :: footer"/>
+</body>
+</html>

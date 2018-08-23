@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<body>
+<th:block th:fragment="navbar">
+<nav class="navbar navbar-expand-md">
+    <a class="navbar-brand link-white logo" href="/">Binary Table</a>
+    <div class="navbar-nav mr-auto" style="float: left; width: 65%">
+        <a class="nav-item nav-link link-white" href="?lang=en">En</a>
+        <a class="nav-item nav-link link-white" href="?lang=ru">Ru</a>
+    </div>
+    <button class="navbar-toggler button-collapse" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon button-collapse"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" style="float: right; width: 35%;" align="right">
+        <div class="navbar-nav mr-auto">
+                <a class="nav-item button button-dark my-3 my-sm-0 ml-2" th:href="@{/signup}" th:text="#{meta.signup}"></a>
+                <a class="nav-item button button-white my-2 my-sm-0 ml-3" th:href="@{/goals}" th:text="#{meta.login}"></a>
+        </div>
+    </div>
+</nav>
+</th:block>
+</body>
+</html>

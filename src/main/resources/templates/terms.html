@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<head th:replace="fragments/meta :: meta(~{::title})">
+    <title th:text="#{meta.terms}"/></title>
+</head>
+<body class="sticky-footer-body">
+<th:block th:replace="fragments/navbar :: navbar"/>
+<section class="sticky-footer-section">
+    <p th:text="#{meta.terms}"></p>
+</section>
+<th:block th:replace="fragments/footer :: footer"/>
+</body>
+</html>

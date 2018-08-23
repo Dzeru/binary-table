@@ -41,6 +41,7 @@ a, a:hover
     border-radius: 5px;
     padding: 6px 8px;
     font-size: 18px;
+    text-align: center;
 }
 
 .button-dark
@@ -128,4 +129,9 @@ td
 {
     font-size: 18px;
     padding: 8px 8px;
+}
+
+.button-collapse
+{
+    border: 2px #fff solid;
 }

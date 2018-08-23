@@ -29,6 +29,9 @@ public class Goal
 	@NotNull
 	private Long userId;
 
+	@NotNull
+	private boolean isFinished;
+
 /*
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id", nullable = false)
@@ -119,6 +122,16 @@ public class Goal
 	public void setUserId(Long userId)
 	{
 		this.userId = userId;
+	}
+
+	public boolean isFinished()
+	{
+		return isFinished;
+	}
+
+	public void setFinished(boolean finished)
+	{
+		isFinished = finished;
 	}
 
 	@Override

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<head th:replace="fragments/meta :: meta(~{::title})">
+    <title th:text="#{meta.feedback}"></title>
+</head>
+<body class="sticky-footer-body">
+<th:block th:replace="fragments/navbar :: navbar"/>
+<section class="sticky-footer-section" align="center">
+	<p><span th:text="#{feedback.wantToShare}"/> <span th:text="#{feedback.fill}"/> <a class="link-semidark" href="https://goo.gl/forms/jIARUsiHMU96qQWu1" target="_blank" th:text="#{feedback.answer}"></a>. <span th:text="#{feedback.anonymous}"/></p>
+	<div align="center">
+		<form action="@{/feedback}" method="post" accept-charset="utf-8">
+			<textarea name="feedback" rows=10 cols=50 th:placeholder="#{placeholder.feedback}"></textarea>
+			<div><input class="button button-white mt-3" type="submit" th:value="#{feedback.sendFeedback}"/></div>
+		</form>
+		<div th:if="${thanks}">
+			<span th:text="${thanks}"/>
+		</div>
+	</div>
+</section>
+<th:block th:replace="fragments/footer :: footer"/>
+</body>
+</html>

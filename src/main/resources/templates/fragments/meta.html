@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<head th:fragment="meta(title)">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link href="/css/global.css" th:href="@{/css/global.css}" rel="stylesheet">
+	<title th:replace="${title}">Binary Table</title>
+	<meta name="description" content="Binary Table - minimalistic progress tracker & counter">
+    <meta name="keywords" content="minimalistic, progress, tracker, counter, binary, table, минималистичный, прогресс, трекер, бинарная, таблица, счетчик">
+	<script src="/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+	<script src="/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+	<script src="/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</head>

@@ -6,13 +6,11 @@ import com.pie.binarytable.entities.User;
 
 import com.pie.binarytable.services.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -33,10 +31,10 @@ public class UsersController
 	@Autowired
 	private MailSender mailSender;
 
-	@GetMapping("/registration")
+	@GetMapping("/signup")
 	public String registration()
 	{
-		return "registration";
+		return "signup";
 	}
 
 	/*
@@ -44,7 +42,7 @@ public class UsersController
 	If registration is successful, redirects to log in,
 	else shows error on the registration page.
 	*/
-	@PostMapping("/registration")
+	@PostMapping("/signup")
 	public String addUser(User user, @RequestParam String repeatPassword, Model model)
 	{
 		if(!user.getPassword().equals(repeatPassword))
@@ -52,7 +50,7 @@ public class UsersController
 			model.addAttribute("errorMessage", "error.equalPasswords");
 			model.addAttribute("nameVal", user.getName());
 			model.addAttribute("emailVal", user.getUsername());
-			return "registration";
+			return "signup";
 		}
 		else
 		{
@@ -60,38 +58,37 @@ public class UsersController
 
 			if(userFromDB != null)
 			{
-				model.addAttribute("errorMessage", "error.emailExists");
+				model.addAttribute("error", "error.emailExists");
 				model.addAttribute("nameVal", user.getName());
 				model.addAttribute("passwordVal", user.getPassword());
-				return "registration";
+				return "signup";
 			}
 			if(user.getPassword().length() < 6)
 			{
-				model.addAttribute("errorMessage", "error.shortPassword");
+				model.addAttribute("error", "error.shortPassword");
 				model.addAttribute("nameVal", user.getName());
 				model.addAttribute("emailVal", user.getUsername());
-				return "registration";
+				return "signup";
 			}
 			if(user.getUsername() == null || user.getUsername().isEmpty())
 			{
-				model.addAttribute("errorMessage", "error.emptyEmail");
+				model.addAttribute("error", "error.emptyEmail");
 				model.addAttribute("nameVal", user.getName());
 				model.addAttribute("passwordVal", user.getPassword());
-				return "registration";
+				return "signup";
 			}
 			if(user.getName() == null || user.getName().isEmpty())
 			{
-				model.addAttribute("errorMessage", "error.emptyName");
+				model.addAttribute("error", "error.emptyName");
 				model.addAttribute("emailVal", user.getUsername());
 				model.addAttribute("passwordVal", user.getPassword());
-				return "registration";
+				return "signup";
 			}
 
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user.setActive(true);
 			user.setRoles(Collections.singleton(Role.USER));
 
-			String prepareRegistrationDate = LocalDateTime.now().toString();
 			user.setRegistrationDate(LocalDateTime.now().toString());
 			userDAO.save(user);
 

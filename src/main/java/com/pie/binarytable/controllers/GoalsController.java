@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /*
 Controller for goals.
@@ -38,8 +40,9 @@ public class GoalsController
 	public String goals(@AuthenticationPrincipal User user, Model model)
 	{
 		Long userId = user.getId();
-		ArrayList<Goal> goals = new ArrayList(goalDAO.findByUserId(userId));
-		ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalDAO.findByUserId(userId));
+		ArrayList<Goal> allGoals = new ArrayList(goalDAO.findByUserId(userId));
+
+		/*ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalDAO.findByUserId(userId));
 
 		if(!groupGoals.isEmpty())
 		{
@@ -47,11 +50,15 @@ public class GoalsController
 			{
 				goals.add(goalDAO.findByIdEquals(goal.getGoalId()));
 			}
-		}
+		}*/
+
+		List<Goal> finishedGoals = allGoals.stream().filter((g) -> g.isFinished()).collect(Collectors.toList());
+		List<Goal> goals = allGoals.stream().filter((g) -> !g.isFinished()).collect(Collectors.toList());
 
 		int countOfGoals = goals.size();
 
 		model.addAttribute("goals", goals);
+		model.addAttribute("finishedGoals", finishedGoals);
 		model.addAttribute("user", user);
 		model.addAttribute("countOfGoals", countOfGoals);
 
@@ -74,20 +81,20 @@ public class GoalsController
 	public String addGoal(@AuthenticationPrincipal User user,
 	                 @RequestParam String name,
 	                 @RequestParam Integer steps,
-	                 @RequestParam String note,
-	                 @RequestParam String emails,
+	                 @RequestParam(required = false) String note,
+	                 @RequestParam(required = false) String emails,
 	                 Model model)
 	{
 		if(name == null || name.isEmpty())
 		{
-			model.addAttribute("errorMessage", "error.emptyGoalName");
+			model.addAttribute("error", "error.emptyGoal");
 			model.addAttribute("stepsVal", steps);
 			model.addAttribute("noteVal", note);
 			return "addgoal";
 		}
 		if(steps == null || steps <= 0)
 		{
-			model.addAttribute("errorMessage", "error.wrongSteps");
+			model.addAttribute("error", "error.wrongSteps");
 			model.addAttribute("goalNameVal", name);
 			model.addAttribute("noteVal", note);
 			return "addgoal";
@@ -104,13 +111,14 @@ public class GoalsController
 			sb.append("0");
 
 		goal.setCurrentState(sb.toString());
+		goal.setFinished(false);
 
 		goalDAO.save(goal);
 
 		/*
 		Only for group goals
 		 */
-		if(!emails.isEmpty() && emails != null)
+		/*if(!emails.isEmpty() && emails != null)
 		{
 			String[] emailList = emails.split(", ");
 			Goal newGoal = goalDAO.findByGoalNameEqualsAndUserIdEquals(name, user.getId());
@@ -130,7 +138,7 @@ public class GoalsController
 					model.addAttribute("error", "Email does not exist");
 				}
 			}
-		}
+		}*/
 
 		return "redirect:/goals";
 	}

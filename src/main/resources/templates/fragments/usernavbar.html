@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<body>
+<th:block th:fragment="usernavbar">
+<nav class="navbar navbar-expand-md">
+    <a class="navbar-brand link-white logo" th:href="@{/}">BiT</a>
+    <div class="navbar-nav mr-auto" style="float: left; width: 85%;">
+        <a class="nav-item nav-link link-white" href="?lang=en">En</a>
+        <a class="nav-item nav-link link-white" href="?lang=ru">Ru</a>
+        <span class="nav-item nav-link active" th:text="#{goal.greeting}">,&nbsp;<a class="button button-dark" th:href="@{/profile}" th:text="${user.name}"></a></span>
+        <a class="nav-item button button-white ml-3" th:href="@{/addgoal}" th:text="#{goal.addGoal}"></a>
+    </div>
+    <div class="navbar-nav mr-auto" style="float: right; width: 15%;" align="right">
+        <form action="@{/logout}" method="post">
+            <input class="nav-item nav-link button button-dark ml-5" type="submit" th:value="#{meta.logout}">
+        </form>
+    </div>
+</nav>
+</th:block>
+</body>
+</html>

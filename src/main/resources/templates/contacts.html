@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:=http://www.w3.org/1999/xhtml">
-<head>
-    {{> meta}}
-    <title>{{#i18n}}meta.contacts{{/i18n}}</title>
+<html xmlns:th="thymeleaf.org">
+<head th:replace="fragments/meta :: meta(~{::title})">
+<title th:text="#{meta.contacts}"/></title>
 </head>
 <body class="sticky-footer-body">
-{{> scripts}}
-{{> navbar}}
+<th:block th:replace="fragments/navbar :: navbar"/>
 <section class="container pl-3 sticky-footer-section">
     <p>Pie team: Alexflames, Dzeru</p>
 	
@@ -20,6 +18,6 @@
 
     <p>Binary Table, v. 1.0.0</p>
 </section>
-    {{> footer}}
+<th:block th:replace="fragments/footer :: footer"/>
 </body>
 </html>
