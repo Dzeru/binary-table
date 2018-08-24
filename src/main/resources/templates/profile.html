@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<head th:replace="fragments/meta :: meta(~{::title})">
+    <title th:text="#{meta.profile}"></title>
+</head>
+<body class="sticky-footer-body">
+<th:block th:replace="fragments/usernavbar :: usernavbar"/>
+<section class="sticky-footer-section">
+<div class="container mt-3">
+<table>
+    <tbody>
+        <tr>
+            <th><b th:text="#{fields.name}"></b></th>
+            <th th:text="${name}"></th>
+        </tr>
+        <tr>
+            <th><b th:text="#{fields.email}"></b></th>
+            <th th:text="${email}"></th>
+        </tr>
+        <tr>
+            <th class="pr-3"><b th:text="#{fields.registrationDate}"></b></th>
+            <th> <span th:text="#{fields.day}"/> <span th:text="${day}"/> <span th:text="#{fields.month}"/> <span th:text="${month}"/> <span th:text="#{fields.year}"/> <span th:text="${year}"/> <span th:text="#{fields.time}"/> <span th:text="${time}"/></th>
+        </tr>
+    </tbody>
+</table>
+</div>
+<div class="container mt-5">
+    <h3 th:text="#{login.updatePassword}"></h3>
+    <div th:if="${passwordStatus}">
+        <span th:text="#{${passwordStatus}}"/>
+    </div>
+    <form th:action="@{/updatepasswordprofile}" method="post" style="width: 50%">
+        <div class="form-group">
+            <label for="password" th:text="#{fields.oldPassword}"></label>
+            <input class="form-control" id="password" type="password" name="oldPassword" th:placeholder="#{placeholder.oldPassword}"/>
+        </div>
+        <div class="form-group">
+            <label for="newPassword" th:text="#{fields.newPassword}"></label>
+            <input class="form-control" id="newPassword" type="password" name="newPassword" th:placeholder="#{placeholder.newPassword}"/>
+        </div>
+        <div class="form-group">
+            <label for="repeatPassword" th:text="#{fields.repeatPassword}"></label>
+            <input class="form-control" id="repeatPassword" type="password" name="repeatPassword" th:placeholder="#{placeholder.newPassword}"/>
+        </div>
+        <input class="button button-dark" type="submit" th:value="#{login.updatePassword}"/>
+    </form>
+</div>
+<div class="container mt-5">
+    <h3 th:text="#{login.updateEmail}"></h3>
+    <div th:if="${emailStatus}">
+        <span th:text="#{${emailStatus}}"/>
+    </div>
+    <form th:action="@{/updateemailprofile}" method="post" style="width: 50%">
+        <div class="form-group">
+            <label for="email" th:text="#{fields.oldEmail}"></label>
+            <input class="form-control" id="email" type="text" name="oldEmail" th:placeholder="#{placeholder.oldEmail}"/>
+        </div>
+        <div class="form-group">
+            <label for="newEmail" th:text="#{fields.newEmail}"></label>
+            <input class="form-control" id="newEmail" type="text" name="newEmail" th:placeholder="#{placeholder.newEmail}"/>
+        </div>
+        <div class="form-group">
+            <label for="repeatEmail" th:text="#{fields.repeatEmail}"></label>
+            <input class="form-control" id="repeatEmail" type="text" name="repeatEmail" th:placeholder="#{placeholder.newEmail}"/>
+        </div>
+        <div class="form-group">
+            <label for="passwordEmail" th:text="#{fields.password}"></label>
+            <input class="form-control" id="passwordEmail" type="password" name="password" th:placeholder="#{placeholder.password}"/>
+        </div>
+        <input class="button button-dark" type="submit" th:value="#{login.updateEmail}"/>
+    </form>
+</div>
+<div class="container my-5">
+    <a class="button button-white" th:href="@{/goals}" href="/goals" th:text="#{meta.back}"></a>
+</div>
+</section>
+<th:block th:replace="fragments/footer :: footer"/>
+</body>
+</html>

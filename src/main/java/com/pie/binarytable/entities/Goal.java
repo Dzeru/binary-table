@@ -32,6 +32,9 @@ public class Goal
 	@NotNull
 	private boolean isFinished;
 
+	@NotNull
+	private boolean isGroupGoal;
+
 /*
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id", nullable = false)
@@ -132,6 +135,16 @@ public class Goal
 	public void setFinished(boolean finished)
 	{
 		isFinished = finished;
+	}
+
+	public boolean isGroupGoal()
+	{
+		return isGroupGoal;
+	}
+
+	public void setGroupGoal(boolean groupGoal)
+	{
+		isGroupGoal = groupGoal;
 	}
 
 	@Override

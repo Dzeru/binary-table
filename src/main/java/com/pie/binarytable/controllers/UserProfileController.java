@@ -31,6 +31,7 @@ public class UserProfileController
 	@GetMapping("/profile")
 	public String profile(@AuthenticationPrincipal User user, Model model)
 	{
+		model.addAttribute("user", user);
 		model.addAttribute("name", user.getName());
 		model.addAttribute("email", user.getUsername());
 

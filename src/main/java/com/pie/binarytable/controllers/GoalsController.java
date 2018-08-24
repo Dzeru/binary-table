@@ -41,16 +41,15 @@ public class GoalsController
 	{
 		Long userId = user.getId();
 		ArrayList<Goal> allGoals = new ArrayList(goalDAO.findByUserId(userId));
-
-		/*ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalDAO.findByUserId(userId));
+		ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalDAO.findByUserId(userId));
 
 		if(!groupGoals.isEmpty())
 		{
 			for(GroupGoal goal : groupGoals)
 			{
-				goals.add(goalDAO.findByIdEquals(goal.getGoalId()));
+				allGoals.add(goalDAO.findByIdEquals(goal.getGoalId()));
 			}
-		}*/
+		}
 
 		List<Goal> finishedGoals = allGoals.stream().filter((g) -> g.isFinished()).collect(Collectors.toList());
 		List<Goal> goals = allGoals.stream().filter((g) -> !g.isFinished()).collect(Collectors.toList());
@@ -69,7 +68,7 @@ public class GoalsController
 	Gets page /addgoal, where user can add the goal
 	 */
 	@GetMapping("/addgoal")
-	public String newGoal(Model model)
+	public String newGoal()
 	{
 		return "addgoal";
 	}
@@ -79,13 +78,13 @@ public class GoalsController
 	 */
 	@PostMapping("/addgoal")
 	public String addGoal(@AuthenticationPrincipal User user,
-	                 @RequestParam String name,
+	                 @RequestParam String goal,
 	                 @RequestParam Integer steps,
 	                 @RequestParam(required = false) String note,
 	                 @RequestParam(required = false) String emails,
 	                 Model model)
 	{
-		if(name == null || name.isEmpty())
+		if(goal == null || goal.isEmpty())
 		{
 			model.addAttribute("error", "error.emptyGoal");
 			model.addAttribute("stepsVal", steps);
@@ -95,50 +94,50 @@ public class GoalsController
 		if(steps == null || steps <= 0)
 		{
 			model.addAttribute("error", "error.wrongSteps");
-			model.addAttribute("goalNameVal", name);
+			model.addAttribute("goalNameVal", goal);
 			model.addAttribute("noteVal", note);
 			return "addgoal";
 		}
 
-		Goal goal = new Goal(user.getId(), name, steps, note);
+		Goal newGoal = new Goal(user.getId(), goal, steps, note);
 
 		if(note == null)
-			goal.setNote("");
+			newGoal.setNote("");
 
 		StringBuilder sb = new StringBuilder();
 
 		for(int i = 0; i < steps; i++)
 			sb.append("0");
 
-		goal.setCurrentState(sb.toString());
-		goal.setFinished(false);
+		newGoal.setCurrentState(sb.toString());
+		newGoal.setFinished(false);
 
-		goalDAO.save(goal);
+		goalDAO.save(newGoal);
 
 		/*
 		Only for group goals
 		 */
-		/*if(!emails.isEmpty() && emails != null)
+		if(!emails.isEmpty() && emails != null)
 		{
 			String[] emailList = emails.split(", ");
-			Goal newGoal = goalDAO.findByGoalNameEqualsAndUserIdEquals(name, user.getId());
+			newGoal = goalDAO.findByGoalNameEqualsAndUserIdEquals(goal, user.getId());
+			Long goalId = newGoal.getId();
 
 			for(String email : emailList)
 			{
 				User username = userDAO.findByUsername(email);
 				if(username != null)
 				{
-					GroupGoal groupGoal = new GroupGoal(newGoal.getId(), username.getId());
+					GroupGoal groupGoal = new GroupGoal(goalId, username.getId());
 					groupGoalDAO.save(groupGoal);
 				}
 				else
 				{
-					groupGoalDAO.deleteByGoalId(newGoal.getId());
-					goalDAO.deleteById(newGoal.getId());
 					model.addAttribute("error", "Email does not exist");
+					return "addgoal";
 				}
 			}
-		}*/
+		}
 
 		return "redirect:/goals";
 	}

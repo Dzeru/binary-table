@@ -1,6 +1,5 @@
 package com.pie.binarytable.config;
 
-import com.pie.binarytable.controllers.UsersController;
 import com.pie.binarytable.services.AuthProvider;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
 
 @Configuration
 @EnableWebSecurity
@@ -36,9 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 				.authorizeRequests()
 				.antMatchers("/resources/**", "/", "/index",
 						"/signup", "/forgotpassword", "/updatepassword/**",
-						"/about", "/terms", "/feedback", "/contacts").permitAll()
+						"/about", "/terms", "/feedback", "/contacts","/error").permitAll()
 				.anyRequest().authenticated()
-				.and().formLogin().loginPage("/login").defaultSuccessUrl("/goals").failureUrl("/login?error").permitAll();
+				.and().formLogin().loginPage("/login").defaultSuccessUrl("/goals").failureUrl("/login?error").permitAll()
+				.and().logout().logoutSuccessUrl("/").permitAll();
 	}
 
 	@Override

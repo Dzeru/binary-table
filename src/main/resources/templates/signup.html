@@ -6,11 +6,11 @@
 <body onload="document.registrationForm.name.focus()" class="sticky-footer-body">
 <section class="sticky-footer-section">
     <div class="mx-auto border my-5 py-3 px-3 form">
-    <div class="mb-3" align="center"><a class="navbar-brand link-dark logo" href="/">Binary Table</a></div>
+    <div class="mb-3" align="center"><a class="navbar-brand link-dark logo" th:href="@{/}" href="/">Binary Table</a></div>
     <div th:if="${error}">
         <span th:text="#{${error}}"/>
     </div>
-    <form name="registrationForm" action="@{/registration}}" method="post">
+    <form name="registrationForm" action="@{/registration}" method="post">
         <div class="form-group">
             <label for="name" th:text="#{fields.name}"></label>
             <input class="form-control" id="name" type="text" name="name" th:placeholder="#{placeholder.name}">
