@@ -6,6 +6,7 @@
     <meta name="_csrf_header" content="X-CSRF-TOKEN"/>
     <meta property="og:image" content=""/>
 
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="css/jquery-ui.min.css"> <!-- Порядок важен!! -->
     <link rel="stylesheet" type="text/css" href="css/global.css">
     <link rel="stylesheet" type="text/css" href="css/goal.css">
@@ -22,6 +23,7 @@
 
   <body>
     <span id="openNoteBtn"><img src = "images/note-image.png" alt="[Note]"></span>
+    <span id="stepsCounter"> </span>
     <div id="deleteConfirmation" title="Are you sure to DELETE? 0->1 " style="display: none">
       <p align="center"> 
         <button class="confNumber"> 0 </button>
@@ -52,43 +54,38 @@
     <p> </p>
 
     <div id="content">
-      <table class="cross" onmousedown="return false" onselectstart="return false" cellspacing="0" border="0" cols="7" align="center" caption-side="bottom">
-        <caption align="top"> 
+      <table class="cross" cellspacing="0" border="0" cols="7" align="center">
+        <caption style="caption-side: top;"> 
           <table id="binTable" bordercolor="white" cellspacing="0" border="1" cols="1" align="center">
-            <tbody><tr>
+            <tr>
               <td class="mytitle">
-                Loading, please, wait... 
+                <span id="titleString" contenteditable="true">
+                  Loading, please, wait... 
+                </span>
               </td>
-            </tr></tbody>
+            </tr>
           </table>
-          <p id="note"> </p>
+          <p id="note" contenteditable="true"> </p>
         </caption>
     
-
         <caption align="bottom"> 
-          <!--<script type="text/javascript">(function() {
-              if (window.pluso) if (typeof window.pluso.start == "function") return;
-              if (window.ifpluso==undefined) 
-              { window.ifpluso = 1;
-               var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
-               s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
-               s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
-               var h=d[g]('body')[0];
-               h.appendChild(s);
-              }})();</script>
-          <div class="pluso" data-background="transparent" data-options="medium,square,line,horizontal,counter,theme=04" data-services="vkontakte,facebook,twitter,google"></div> -->
+          <p id="endGoal"> I've reached the goal! </p>
         </caption> 
-      <!-- Конец блока кнопок -->
-      <script src="js/goal-logic.js"></script>
-      
+    
       </table>
     </div>  
-    <div id="additional">
-      <button class="screenShotter ui-borders"> S H A R E </button>
-      <button id="vkshare" class="ui-borders"> <img src="http://vk.com/images/vk32.png" </button>
-    </div>  
-    <!-- <script type="text/javascript" charset="UTF-8" async="" src="https://share.pluso.ru/pluso-like.js"></script> -->
 
+    <div class="additional">
+      <button class="screenShotter ui-borders"> S H A R E </button>
+      <button id="vkshare" class="ui-borders"> <img src="http://vk.com/images/vk32.png"> </button>
+    </div>  
+
+    <div class="additional">
+      <button id="collaborators" class="ui-borders"> Collaborators </button>
+    </div>
+
+    <!-- Конец блока кнопок -->
+    <script src="js/goal-logic.js"></script>
   </body>
   flaticons
 </html>

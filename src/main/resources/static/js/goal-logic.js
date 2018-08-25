@@ -9,6 +9,7 @@ var data = {
   note: '',
   // web-only variables
   saved: true,
+  isFinished: false, // Option used in update request
   lastState: '',
   findClosestSquare: function(steps) {
     for (var i = 1; i < maxSquareNum; i++) { // Поставить ограничение на количество шагов!
@@ -38,7 +39,8 @@ function createCells() {
 
 // функция срабатывает при клике. Изменяет у ячейки на которую нажали цифру
 // Затем вызывает обновление прогресса
-var titleAndProgress = document.getElementsByClassName('mytitle')[0];
+var tableTitleString = document.getElementById('titleString');
+var stepsCount = document.getElementById('stepsCounter');
 
 function changeNumber() {
   if (this.innerHTML === "1") {
@@ -57,7 +59,7 @@ function changeNumber() {
   // Появление кнопки сохранения
   if (data.saved === true) {
     $("button.saveState").prop('disabled', false);
-    $("button.saveState").hide().css("visibility", "visible").fadeTo("slow", 1);
+    $("button.saveState").fadeTo("slow", 1);
     data.saved = false;
   }
   calculateProgressString(data.title);
@@ -109,13 +111,27 @@ function calculateProgress() {
       onesCount++;
     }
   }
+  if (onesCount == data.numString.length) {
+    // Activate goal finisher
+    $("#endGoal").css('visibility', 'visible'); 
+  }
+  else {
+    $("#endGoal").css('visibility', 'hidden');
+  }
   return onesCount;
 }
+
 function calculateProgressString(original) {
-  $("#openNoteBtn").appendTo("body");
+
   var ones = calculateProgress();
-  titleAndProgress.innerHTML = original + ' (' + ones + '/' + data.numString.length + ') ';
-  $("#openNoteBtn").appendTo("td.mytitle");
+  stepsCounter.innerHTML = ' (' + ones + '/' + data.numString.length + ') '
+  tableTitleString.innerHTML = original;
+
+}
+
+function initializeTitle() {
+  $("#openNoteBtn").insertAfter("#titleString");
+  $("#stepsCounter").insertAfter("#titleString");
 }
 
 /////////////////////////////////////////////////////////////////////// 
@@ -153,18 +169,7 @@ function getGoalInfo() {
       data.id = res.id;
       data.userId = res.userId;
       data.note = res.note;
-
-      calculateProgressString(data.title);
-      var cellTable = document.querySelector('table');
-      createCells();
-      createTable(cellTable);
-      makeButtons();
-      $("button.saveState").on('click', function(event) {
-        updateGoal();
-      });
-      $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
-        typeWriterCall();
-      });
+      data.isFinished = res.isFinished;
     },
     error: function(err) {
       console.log("request failed");
@@ -175,7 +180,7 @@ function getGoalInfo() {
 
 /////////////////////////-------------------//////////////////////////
 /////////////////////////////////////////////////////////////////////////
-//                          Запуск скриптов                            //
+//            Запуск скриптов, инициализация элементов                 //
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////-------------------//////////////////////////
 
@@ -188,39 +193,53 @@ $(document).ready(function() {
     data.id = 9000;
     data.userId = 0;
     data.note = 'this feature is not implemented probably';
-
-    calculateProgressString(data.title);
-    var cellTable = document.querySelector('table');
-    createCells();
-    createTable(cellTable, data);
-    makeButtons();
-    $("button.saveState").fadeTo("fast", 0.25);
-    $("#vkshare").fadeTo("fast", 0.25);
-    $("button.saveState").prop('disabled', true);
-    $("button.saveState").on('click', function(event) {
-      updateGoal();
-    });
-    if (data.note) {
-      $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
-        typeWriterCall();
-      });
-    }
-    else {
-      $("#openNoteBtn").css('visibility', 'hidden');
-    }
-    $("button.screenShotter").on("click", function() {
-      makeScreenshot();
-    });
   }
   else {
     getGoalInfo();
   }
+  // Логика странички
+  calculateProgressString(data.title);
+  initializeTitle();
+  var cellTable = document.querySelector('table');
+  createCells();
+  createTable(cellTable, data);
+  makeButtons();
+  $("button.saveState").fadeTo("fast", 0.25);
+  $("#vkshare").fadeTo("fast", 0.25);
+  $("button.saveState").prop('disabled', true);
+  $("button.saveState").on('click', function(event) {
+    updateGoal();
+  });
+  document.getElementById('titleString').addEventListener('focus', function() {
+    $("button.saveState").prop('disabled', false);
+    $("button.saveState").fadeTo("slow", 1);
+  });
+  document.getElementById('note').addEventListener('focus', function() {
+    $("button.saveState").prop('disabled', false);
+    $("button.saveState").fadeTo("slow", 1);
+  });
+  $("#endGoal").on('click', function() {
+    finishGoal();
+  }); // TODO Добавить подтверждение 
+  if (data.note) {
+    $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
+      typeWriterCall();
+    });
+  }
+  else {
+    $("#openNoteBtn").css('visibility', 'hidden');
+  }
+  $("button.screenShotter").on("click", function() {
+    makeScreenshot();
+  });
 });
 
 
 ///////////////////////////////////////////////////////////////////////
 // Магия с кнопкой сохранения состояния
 function updateGoal() {
+  data.title = document.getElementById('titleString').innerHTML;
+  data.note = document.getElementById('note').innerHTML;
   var formData = {
     "id": data.id,
     "goalName": data.title,
@@ -228,7 +247,8 @@ function updateGoal() {
     "doneSteps": calculateProgress(),
     "currentState": data.numString,
     "note": data.note,
-    "userId": data.userId
+    "userId": data.userId,
+    "isFinished": data.isFinished
   };
 
   $.ajax({
@@ -244,13 +264,16 @@ function updateGoal() {
     }})
     .done(function(res) {
       data.saved = true;
-      $("button.saveState").fadeTo("slow", 0.5);
+      $("button.saveState").fadeTo("slow", 0.25);
       $("button.saveState").prop('disabled', true);
       for (var i = data.cells.length - 1; i >= 0; i--) {
         data.cells[i].savedValue = data.cells[i].innerHTML; // Клетки снова
         $(data.cells[i]).css("color", 'white');             // становятся белыми
       }
       console.log("State saved!");
+      if (data.isFinished) {
+        location.replace('/goals');
+      }
     })
     .fail(function(res) {
       data.saved = true;
@@ -350,7 +373,7 @@ function typeWriterCall() {
 }
 
 ///////////////////////////////////////////////////////////////////////
-// Потенциальная нереализованная магия
+// Sharing
 
 function makeScreenshot() {
   var tbl_width = document.getElementsByClassName('cross')[0].offsetWidth;
@@ -405,6 +428,20 @@ function makeScreenshot() {
 
 
 }
+
+///////////////////////////////////////////////////////////////////////
+// Потенциальная нереализованная магия
+
+function finishGoal() {
+  data.isFinished = true;
+  updateGoal();
+}
+
+function restoreGoal() {
+  data.isFinished = false;
+  updateGoal();
+}
+
 
 // var angryButton = document.querySelector('.yelling'); 
 // angryButton.addEventListener('click', spawnBox); 
