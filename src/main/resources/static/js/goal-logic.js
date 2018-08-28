@@ -170,6 +170,42 @@ function getGoalInfo() {
       data.userId = res.userId;
       data.note = res.note;
       data.isFinished = res.isFinished;
+
+      // Логика странички
+      calculateProgressString(data.title);
+      initializeTitle();
+      var cellTable = document.querySelector('table');
+      createCells();
+      createTable(cellTable, data);
+      makeButtons();
+      $("button.saveState").fadeTo("fast", 0.25);
+      $("#vkshare").fadeTo("fast", 0.25);
+      $("button.saveState").prop('disabled', true);
+      $("button.saveState").on('click', function(event) {
+        updateGoal();
+      });
+      document.getElementById('titleString').addEventListener('focus', function() {
+        $("button.saveState").prop('disabled', false);
+        $("button.saveState").fadeTo("slow", 1);
+      });
+      document.getElementById('note').addEventListener('focus', function() {
+        $("button.saveState").prop('disabled', false);
+        $("button.saveState").fadeTo("slow", 1);
+      });
+      $("#endGoal").on('click', function() {
+        finishGoal();
+      }); // TODO Добавить подтверждение 
+      if (data.note) {
+        $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
+          typeWriterCall();
+        });
+      }
+      else {
+        $("#openNoteBtn").css('visibility', 'hidden');
+      }
+      $("button.screenShotter").on("click", function() {
+        makeScreenshot();
+      });
     },
     error: function(err) {
       console.log("request failed");
@@ -185,7 +221,7 @@ function getGoalInfo() {
 /////////////////////////-------------------//////////////////////////
 
 $(document).ready(function() {
-  var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
+  var isJavaEnabled = 0; // Изменять вручную, 0 для debug'а без сервера
   if (!isJavaEnabled) {
     var goalNumber = 5;
     data.numString = '00100';
@@ -193,45 +229,47 @@ $(document).ready(function() {
     data.id = 9000;
     data.userId = 0;
     data.note = 'this feature is not implemented probably';
+
+    // Логика странички
+    calculateProgressString(data.title);
+    initializeTitle();
+    var cellTable = document.querySelector('table');
+    createCells();
+    createTable(cellTable, data);
+    makeButtons();
+    $("button.saveState").fadeTo("fast", 0.25);
+    $("#vkshare").fadeTo("fast", 0.25);
+    $("button.saveState").prop('disabled', true);
+    $("button.saveState").on('click', function(event) {
+      updateGoal();
+    });
+    document.getElementById('titleString').addEventListener('focus', function() {
+      $("button.saveState").prop('disabled', false);
+      $("button.saveState").fadeTo("slow", 1);
+    });
+    document.getElementById('note').addEventListener('focus', function() {
+      $("button.saveState").prop('disabled', false);
+      $("button.saveState").fadeTo("slow", 1);
+    });
+    $("#endGoal").on('click', function() {
+      finishGoal();
+    }); // TODO Добавить подтверждение 
+    if (data.note) {
+      $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
+        typeWriterCall();
+      });
+    }
+    else {
+      $("#openNoteBtn").css('visibility', 'hidden');
+    }
+    $("button.screenShotter").on("click", function() {
+      makeScreenshot();
+    });
   }
   else {
     getGoalInfo();
   }
-  // Логика странички
-  calculateProgressString(data.title);
-  initializeTitle();
-  var cellTable = document.querySelector('table');
-  createCells();
-  createTable(cellTable, data);
-  makeButtons();
-  $("button.saveState").fadeTo("fast", 0.25);
-  $("#vkshare").fadeTo("fast", 0.25);
-  $("button.saveState").prop('disabled', true);
-  $("button.saveState").on('click', function(event) {
-    updateGoal();
-  });
-  document.getElementById('titleString').addEventListener('focus', function() {
-    $("button.saveState").prop('disabled', false);
-    $("button.saveState").fadeTo("slow", 1);
-  });
-  document.getElementById('note').addEventListener('focus', function() {
-    $("button.saveState").prop('disabled', false);
-    $("button.saveState").fadeTo("slow", 1);
-  });
-  $("#endGoal").on('click', function() {
-    finishGoal();
-  }); // TODO Добавить подтверждение 
-  if (data.note) {
-    $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
-      typeWriterCall();
-    });
-  }
-  else {
-    $("#openNoteBtn").css('visibility', 'hidden');
-  }
-  $("button.screenShotter").on("click", function() {
-    makeScreenshot();
-  });
+
 });
 
 
@@ -384,47 +422,47 @@ function makeScreenshot() {
     width: tbl_width,
   };
 
-  html2canvas(document.getElementsByClassName("cross")[0], options).then(canvas => {
+  html2canvas(document.getElementsByClassName("cross")[0], options).then(function(canvas) {
     var postData = {
       file: canvas.toDataURL(),
       upload_preset: "k25wiy42",
       public_id: data.userId + '_' + data.id + '.jpg'
     };
 
-  // Запрос на облачное хранилище изображений
-  $.ajax({
-    //url:'http://www.mocky.io/v2/5afffe89310000730076ded3'
-    url:'https://api.cloudinary.com/v1_1/pie2table/raw/upload',
-    method:'POST',
-    //dataType: 'jsonp',                                // Здесь это не нужно!
-    //contentType: 'application/json; charset=utf-8',   // Потому что гладиолус
-    data: postData
-    })
-    .done(function(res) {
-      console.log("Screenshot saved!")
-      console.log(JSON.stringify(res));
+    // Запрос на облачное хранилище изображений
+    $.ajax({
+      //url:'http://www.mocky.io/v2/5afffe89310000730076ded3'
+      url:'https://api.cloudinary.com/v1_1/pie2table/raw/upload',
+      method:'POST',
+      //dataType: 'jsonp',                                // Здесь это не нужно!
+      //contentType: 'application/json; charset=utf-8',   // Потому что гладиолус
+      data: postData
+      })
+      .done(function(res) {
+        console.log("Screenshot saved!")
+        console.log(JSON.stringify(res));
 
-      imgSource = res.url;
+        imgSource = res.url;
 
-      $("meta[property='og:image']").attr('content', imgSource);
-      $("#vkshare").fadeTo("fast", 1);
-      document.getElementById('vkshare').innerHTML = 
-        VK.Share.button(
-          {
-            url: 'https://binarytable.neocities.org/',
-            image: imgSource
-          },
-          {
-            type: 'custom',
-            text: '<img src="http://vk.com/images/vk32.png" />',
-          }); 
-    })
-    .fail(function(res) {
-      console.log("Too bad! Image was not saved on server!");
-      console.log(JSON.stringify(res));
+        $("meta[property='og:image']").attr('content', imgSource);
+        $("#vkshare").fadeTo("fast", 1);
+        document.getElementById('vkshare').innerHTML = 
+          VK.Share.button(
+            {
+              url: 'https://binarytable.neocities.org/',
+              image: imgSource
+            },
+            {
+              type: 'custom',
+              text: '<img src="http://vk.com/images/vk32.png" />',
+            }); 
+      })
+      .fail(function(res) {
+        console.log("Too bad! Image was not saved on server!");
+        console.log(JSON.stringify(res));
+      });
+
     });
-
-  });
 
 
 }
