@@ -1,6 +1,7 @@
 package com.pie.binarytable.controllers;
 
 import com.pie.binarytable.dao.GoalDAO;
+import com.pie.binarytable.dao.GroupGoalDAO;
 import com.pie.binarytable.dto.GoalId;
 import com.pie.binarytable.entities.Goal;
 
@@ -13,6 +14,9 @@ public class RestGoalsController
 {
 	@Autowired
 	GoalDAO goalDAO;
+
+	@Autowired
+	GroupGoalDAO groupGoalDAO;
 
 	/*
 	Sends JSON with Goal object to JavaScript functions in /goal
@@ -48,6 +52,17 @@ public class RestGoalsController
 	{
 		boolean result = false; //error by default
 		Long id = goalId.getId();
+
+		if(goalDAO.findByIdEquals(id).isGroupGoal())
+		{
+			groupGoalDAO.deleteByGoalId(id);
+
+			if(groupGoalDAO.findByGoalId(id) != null)
+			{
+				return ResponseEntity.badRequest().body(result);
+			}
+		}
+
 		goalDAO.deleteById(id);
 
 		if(goalDAO.findByIdEquals(id) == null)

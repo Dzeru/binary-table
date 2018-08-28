@@ -1,6 +1,6 @@
 body
 {
-    background: #ad33ff;
+    background: #b172c5;
     color: #fff;
     font-family: 'Share Tech Mono', monospace;
 }
@@ -8,6 +8,11 @@ body
 a, a:hover
 {
     text-decoration: none;
+}
+
+table
+{
+	table-layout: fixed;
 }
 
 
@@ -28,7 +33,7 @@ a, a:hover
 
 .link-dark
 {
-    color: #ad33ff;
+    color: #b172c5;
 }
 
 .link-dark:hover, .link-semidark:hover
@@ -48,7 +53,7 @@ a, a:hover
 {
     border: 2px #fff solid;
     color: #fff;
-    background: #ad33ff;
+    background: #b172c5;
 }
 
 .button-dark:hover
@@ -60,11 +65,18 @@ a, a:hover
 .button-white
 {
     border: 2px #fff solid;
-    color: #ad33ff;
+    color: #b172c5;
     background: #fff;
 }
 
-.button-white:hover
+.button-white-dark-border
+{
+    border: 2px #b172c5 solid;
+    color: #b172c5;
+    background: #fff;
+}
+
+.button-white:hover, .button-white-dark-border:hover
 {
     color: #42006e;
     text-decoration: none;
@@ -73,7 +85,7 @@ a, a:hover
 .form
 {
     background: #fff;
-    color: #ad33ff;
+    color: #b172c5;
     width: 60%;
 }
 
@@ -134,4 +146,58 @@ td
 .button-collapse
 {
     border: 2px #fff solid;
+}
+
+/*
+Atomic styles
+*/
+
+.fr
+{
+	float: right;
+}
+
+.fl
+{
+	float: left;
+}
+
+.w15
+{
+	width: 15%;
+}
+
+.w20
+{
+    width: 20%;
+}
+
+.w35
+{
+	width: 35%;
+}
+
+.w40
+{
+    width: 40%;
+}
+
+.w50
+{
+	width: 50%;
+}
+
+.w65
+{
+	width: 65%;
+}
+
+.w85
+{
+	width: 85%;
+}
+
+.w100
+{
+	width: 100%;
 }

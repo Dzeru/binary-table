@@ -22,8 +22,8 @@
             <label for="note" th:text="#{fields.note}"></label>
             <textarea class="form-control" id="note" name="note" th:placeholder="#{placeholder.note}"></textarea>
         </div>
-        <a class="button button-white my-4" style="border: 2px #ad33ff solid;" data-toggle="collapse" href="#groupGoal" role="button" aria-expanded="false" aria-controls="groupGoal" th:text="#{goal.groupGoal}"></a>
-        <div class="collapse" id="groupGoal" style="width: 100%">
+        <a class="button button-white-dark-border my-4" data-toggle="collapse" href="#groupGoal" role="button" aria-expanded="false" aria-controls="groupGoal" th:text="#{goal.groupGoal}"></a>
+        <div class="collapse w100" id="groupGoal">
             <div th:if="${error}">
                 <span th:text="#{${error}}"/>
             </div>
@@ -34,7 +34,7 @@
         </div>
         <div class="my-5">
             <input class="button button-dark" type="submit" th:value="#{goal.addGoal}">
-            <a class="button button-white" style="margin-left: 50%; border: 2px #ad33ff solid" th:href="@{/goals}" href="/goals" th:text="#{meta.back}"></a>
+            <a class="button button-white-dark-border" style="margin-left: 50%;" th:href="@{/goals}" href="/goals" th:text="#{meta.back}"></a>
         </div>
     </form>
 </div>

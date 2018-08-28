@@ -119,6 +119,8 @@ public class GoalsController
 		 */
 		if(!emails.isEmpty() && emails != null)
 		{
+			newGoal.setGroupGoal(true);
+			goalDAO.save(newGoal);
 			String[] emailList = emails.split(", ");
 			newGoal = goalDAO.findByGoalNameEqualsAndUserIdEquals(goal, user.getId());
 			Long goalId = newGoal.getId();

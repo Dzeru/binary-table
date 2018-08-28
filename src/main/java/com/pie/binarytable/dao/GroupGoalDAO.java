@@ -12,5 +12,6 @@ import java.util.ArrayList;
 public interface GroupGoalDAO extends CrudRepository<GroupGoal, Long>
 {
 	ArrayList<GroupGoal> findByUserId(Long id);
+	ArrayList<GroupGoal> findByGoalId(Long id);
 	void deleteByGoalId(Long id);
 }

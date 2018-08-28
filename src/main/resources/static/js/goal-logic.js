@@ -201,6 +201,7 @@ $(document).ready(function() {
   calculateProgressString(data.title);
   initializeTitle();
   var cellTable = document.querySelector('table');
+  console.log(cellTable);
   createCells();
   createTable(cellTable, data);
   makeButtons();
@@ -384,7 +385,7 @@ function makeScreenshot() {
     width: tbl_width,
   };
 
-  html2canvas(document.getElementsByClassName("cross")[0], options).then(canvas => {
+  html2canvas(document.getElementsByClassName("cross")[0], options).then(function(canvas) {
     var postData = {
       file: canvas.toDataURL(),
       upload_preset: "k25wiy42",

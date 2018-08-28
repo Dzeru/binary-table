@@ -9,16 +9,16 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col" th:text="#{fields.goal}"><b>Goal</b></th>
-                <th scope="col" th:text="#{fields.steps}"><b>Steps</b></th>
-                <th scope="col" th:text="#{fields.note}"><b>Note</b></th>
+                <th class="w40" valign="center" scope="col" th:text="#{fields.goal}"><b>Goal</b></th>
+                <th class="w20" valign="center" scope="col" th:text="#{fields.steps}"><b>Steps</b></th>
+                <th class="w40" valign="center" scope="col" th:text="#{fields.note}"><b>Note</b></th>
             </tr>
         </thead>
         <tbody>
         <tr th:each="goal : ${goals}">
-            <td><a class="link-semidark" th:href="@{goal(id=${goal.id})}" th:text="${goal.goalName}"></a></td>
-            <td><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></td>
-            <td th:text="${goal.note}"></td>
+            <td valign="center"><a class="link-semidark" th:href="@{goal(id=${goal.id})}" th:text="${goal.goalName}"></a></td>
+            <td valign="center"><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></td>
+            <td valign="center" th:text="${goal.note}"></td>
         </tr>
         </tbody>
     </table>
@@ -30,16 +30,16 @@
         <table class="table">
             <thead>
             <tr>
-                <th scope="col" th:text="#{fields.goal}"><b>Goal</b></th>
-                <th scope="col" th:text="#{fields.steps}"><b>Steps</b></th>
-                <th scope="col" th:text="#{fields.note}"><b>Note</b></th>
+                <th class="w40" valign="center" scope="col" th:text="#{fields.goal}"><b>Goal</b></th>
+                <th class="w20" valign="center" scope="col" th:text="#{fields.steps}"><b>Steps</b></th>
+                <th class="w40" valign="center" scope="col" th:text="#{fields.note}"><b>Note</b></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="goal : ${finishedGoals}">
-                <td><a class="link-semidark" th:href="@{goal(id=${goal.id})}" th:text="${goal.goalName}"></a></td>
-                <td><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></td>
-                <td th:text="${goal.note}"></td>
+                <td valign="center"><a class="link-semidark" th:href="@{goal(id=${goal.id})}" th:text="${goal.goalName}"></a></td>
+                <td valign="center"><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></td>
+                <td valign="center" th:text="${goal.note}"></td>
             </tr>
             </tbody>
         </table>
