@@ -57,7 +57,7 @@ public class RestGoalsController
 		{
 			groupGoalDAO.deleteByGoalId(id);
 
-			if(groupGoalDAO.findByGoalId(id) != null)
+			if(!groupGoalDAO.findByGoalId(id).isEmpty()) //list!
 			{
 				return ResponseEntity.badRequest().body(result);
 			}
@@ -65,7 +65,7 @@ public class RestGoalsController
 
 		goalDAO.deleteById(id);
 
-		if(goalDAO.findByIdEquals(id) == null)
+		if(goalDAO.findByIdEquals(id) == null) //one object!
 		{
 			result = true; //success
 			return ResponseEntity.ok().body(result);
