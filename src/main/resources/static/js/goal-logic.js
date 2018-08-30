@@ -1,25 +1,26 @@
 var maxSquareNum = 13 // Максимальный ближайший квадрат числа для поиска
 
 var data = {
-    // GET from server
-    numString: '',
-    id: 0,
-    userId: 0,
-    title: 'Loading...',
-    note: '',
-    // web-only variables
-    saved: true,
-    isFinished: false, // Option used in update request
-    lastState: '',
-    findClosestSquare: function(steps) {
-        for (var i = 1; i < maxSquareNum; i++) { // Поставить ограничение на количество шагов!
-            if (i * i >= steps || i === maxSquareNum) {
-                return i;
-            }
-        }
-    },
-    cells: [],
-    squareSide: 0
+  // GET from server
+  numString: '',              
+  id: 0,
+  userId: 0,  
+  title: 'Loading...',
+  note: '',
+  isFinished: false, // Option used in update request
+  isGroupGoal: false,
+  // web-only variables
+  saved: true,
+  lastState: '',
+  findClosestSquare: function(steps) {
+    for (var i = 1; i < maxSquareNum; i++) { // Поставить ограничение на количество шагов!
+      if (i * i >= steps || i === maxSquareNum) {
+        return i;
+      }
+    }
+  },
+  cells: [],
+  squareSide: 0
 };
 
 // Функция замены символа в строке
@@ -158,60 +159,65 @@ var id = getUrlParameter('id');
 var url = "/getgoal?id=" + id;
 
 function getGoalInfo() {
-    $.ajax({
-        url: url,
-        type: 'GET',
-        // dataType: 'jsonp',
-        // url: /goal
-        success: function(res) {
-            data.numString = res.currentState;
-            data.title = res.goalName;
-            data.id = res.id;
-            data.userId = res.userId;
-            data.note = res.note;
-            data.isFinished = res.isFinished;
+  $.ajax({
+    url: url,
+    type: 'GET',
+    // dataType: 'jsonp',
+    // url: /goal
+    success: function(res) {
+      data.numString = res.currentState;
+      data.title = res.goalName;
+      data.id = res.id;
+      data.userId = res.userId;
+      data.note = res.note;
+      data.isFinished = res.isFinished;
+      data.isGroupGoal = res.isGroupGoal;
 
-            // Логика странички
-            calculateProgressString(data.title);
-            initializeTitle();
-            var cellTable = document.querySelector('table');
-            createCells();
-            createTable(cellTable, data);
-            makeButtons();
-            $("button.saveState").fadeTo("fast", 0.25);
-            $("#vkshare").fadeTo("fast", 0.25);
-            $("button.saveState").prop('disabled', true);
-            $("button.saveState").on('click', function(event) {
-                updateGoal();
-            });
-            document.getElementById('titleString').addEventListener('focus', function() {
-                $("button.saveState").prop('disabled', false);
-                $("button.saveState").fadeTo("slow", 1);
-            });
-            document.getElementById('note').addEventListener('focus', function() {
-                $("button.saveState").prop('disabled', false);
-                $("button.saveState").fadeTo("slow", 1);
-            });
-            $("#endGoal").on('click', function() {
-                finishGoal();
-            }); // TODO Добавить подтверждение
-            if (data.note) {
-                $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
-                    typeWriterCall();
-                });
-            }
-            else {
-                $("#openNoteBtn").css('visibility', 'hidden');
-            }
-            $("button.screenShotter").on("click", function() {
-                makeScreenshot();
-            });
-        },
-        error: function(err) {
-            console.log("request failed");
-            console.log(err);
-        }
-    })
+      // Логика странички
+      calculateProgressString(data.title);
+      initializeTitle();
+      var cellTable = document.querySelector('table');
+      createCells();
+      createTable(cellTable, data);
+      makeButtons();
+      $("button.saveState").fadeTo("fast", 0.25);
+      $("#vkshare").fadeTo("fast", 0.25);
+      $("button.saveState").prop('disabled', true);
+      $("button.saveState").on('click', function(event) {
+        updateGoal();
+      });
+      document.getElementById('titleString').addEventListener('focus', function() {
+        $("button.saveState").prop('disabled', false);
+        $("button.saveState").fadeTo("slow", 1);
+      });
+      document.getElementById('note').addEventListener('focus', function() {
+        $("button.saveState").prop('disabled', false);
+        $("button.saveState").fadeTo("slow", 1);
+      });
+      $("#endGoal").on('click', function() {
+        finishGoal();
+      }); // TODO Добавить подтверждение 
+      if (data.note) {
+        $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
+          typeWriterCall();
+        });
+      }
+      else {
+        $("#openNoteBtn").css('visibility', 'hidden');
+      }
+      $("button.screenShotter").on("click", function() {
+        makeScreenshot();
+      });
+      if (data.isGroupGoal) {     // User may see collaborators in group goals
+        collapseCollabsButton();
+      }
+      document.title = "BIT | " + data.title;
+    },
+    error: function(err) {
+      console.log("request failed");
+      console.log(err);
+    }
+  })
 }
 
 /////////////////////////-------------------//////////////////////////
@@ -223,53 +229,55 @@ function getGoalInfo() {
 $(document).ready(function() {
     var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
     if (!isJavaEnabled) {
-        var goalNumber = 5;
-        data.numString = '00100';
-        data.title = 'client-only testing';
-        data.id = 9000;
-        data.userId = 0;
-        data.note = 'this feature is not implemented probably';
+      var goalNumber = 5;
+      data.numString = '00100';
+      data.title = 'client-only testing';
+      data.id = 9000;
+      data.userId = 0;
+      data.note = 'this feature is not implemented probably';
 
-        // Логика странички
-        calculateProgressString(data.title);
-        initializeTitle();
-        var cellTable = document.querySelector('table');
-        createCells();
-        createTable(cellTable, data);
-        makeButtons();
-        $("button.saveState").fadeTo("fast", 0.25);
-        $("#vkshare").fadeTo("fast", 0.25);
-        $("button.saveState").prop('disabled', true);
-        $("button.saveState").on('click', function(event) {
-            updateGoal();
-        });
-        document.getElementById('titleString').addEventListener('focus', function() {
-            $("button.saveState").prop('disabled', false);
-            $("button.saveState").fadeTo("slow", 1);
-        });
-        document.getElementById('note').addEventListener('focus', function() {
-            $("button.saveState").prop('disabled', false);
-            $("button.saveState").fadeTo("slow", 1);
-        });
-        $("#endGoal").on('click', function() {
-            finishGoal();
-        }); // TODO Добавить подтверждение
-        if (data.note) {
-            $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
-                typeWriterCall();
-            });
-        }
-        else {
-            $("#openNoteBtn").css('visibility', 'hidden');
-        }
-        $("button.screenShotter").on("click", function() {
-            makeScreenshot();
-        });
+      // Логика странички
+      calculateProgressString(data.title);
+      initializeTitle();
+      var cellTable = document.querySelector('table');
+      createCells();
+      createTable(cellTable, data);
+      makeButtons();
+      $("button.saveState").fadeTo("fast", 0.25);
+      $("#vkshare").fadeTo("fast", 0.25);
+      $("button.saveState").prop('disabled', true);
+      $("button.saveState").on('click', function(event) {
+          updateGoal();
+      });
+      document.getElementById('titleString').addEventListener('focus', function() {
+          $("button.saveState").prop('disabled', false);
+          $("button.saveState").fadeTo("slow", 1);
+      });
+      document.getElementById('note').addEventListener('focus', function() {
+          $("button.saveState").prop('disabled', false);
+          $("button.saveState").fadeTo("slow", 1);
+      });
+      $("#endGoal").on('click', function() {
+          finishGoal();
+      }); // TODO Добавить подтверждение
+      if (data.note) {
+          $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
+              typeWriterCall();
+          });
+      }
+      else {
+          $("#openNoteBtn").css('visibility', 'hidden');
+      }
+      $("button.screenShotter").on("click", function() {
+          makeScreenshot();
+      });
+      collapseCollabsButton();
+      document.title = "BIT | " + data.title;
+
     }
     else {
-        getGoalInfo();
+      getGoalInfo();
     }
-
 });
 
 
@@ -356,30 +364,31 @@ $("button.deleteGoal").on('click', function(event) {
 });
 
 function deleteGoal() {
-    var formData = {
-        "id": data.id
-    };
+  var formData = {
+    "id": data.id,
+    "isGroupGoal": data.isGroupGoal
+  };
 
-    $.ajax({
-        //url:'http://www.mocky.io/v2/5afffe89310000730076ded3'
-        url:'/deletegoal',
-        method:'POST',
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(formData),
-        headers:
-            {
-                'X-CSRF-TOKEN' : $('meta[name="_csrf"]').attr('content')
-            }})
-        .done(function(res) {
-            location.replace('/goals'); //location.href = '/goals' (?)
-            console.log("Delete request sended!");
-        })
-        .fail(function(res) {
-            location.replace('/goals');
-            console.log("Goal deletion went wrong!");
-            console.log(JSON.stringify(res));
-        });
+  $.ajax({
+    //url:'http://www.mocky.io/v2/5afffe89310000730076ded3'
+    url:'/deletegoal',
+    method:'POST',
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify(formData),
+    headers:
+    {
+        'X-CSRF-TOKEN' : $('meta[name="_csrf"]').attr('content')
+    }})
+    .done(function(res) {
+      location.replace('/goals'); //location.href = '/goals' (?)
+      console.log("Delete request sended!");
+    })
+    .fail(function(res) {
+      location.replace('/goals');
+      console.log("Goal deletion went wrong!");
+      console.log(JSON.stringify(res));
+    });
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -423,44 +432,44 @@ function makeScreenshot() {
     };
 
     html2canvas(document.getElementsByClassName("cross")[0], options).then(function(canvas) {
-        var postData = {
-            file: canvas.toDataURL(),
-            upload_preset: "k25wiy42",
-            public_id: data.userId + '_' + data.id + '.jpg'
-        };
+      var postData = {
+          file: canvas.toDataURL(),
+          upload_preset: "k25wiy42",
+          public_id: data.userId + '_' + data.id + '.jpg'
+      };
 
-        // Запрос на облачное хранилище изображений
-        $.ajax({
-            //url:'http://www.mocky.io/v2/5afffe89310000730076ded3'
-            url:'https://api.cloudinary.com/v1_1/pie2table/raw/upload',
-            method:'POST',
-            //dataType: 'jsonp',                                // Здесь это не нужно!
-            //contentType: 'application/json; charset=utf-8',   // Потому что гладиолус
-            data: postData
-        })
-            .done(function(res) {
-                console.log("Screenshot saved!")
-                console.log(JSON.stringify(res));
+      // Запрос на облачное хранилище изображений
+      $.ajax({
+          //url:'http://www.mocky.io/v2/5afffe89310000730076ded3'
+          url:'https://api.cloudinary.com/v1_1/pie2table/raw/upload',
+          method:'POST',
+          //dataType: 'jsonp',                                // Здесь это не нужно!
+          //contentType: 'application/json; charset=utf-8',   // Потому что гладиолус
+          data: postData
+      })
+      .done(function(res) {
+        console.log("Screenshot saved!")
+        console.log(JSON.stringify(res));
 
-                imgSource = res.url;
+        imgSource = res.url;
 
-                $("meta[property='og:image']").attr('content', imgSource);
-                $("#vkshare").fadeTo("fast", 1);
-                document.getElementById('vkshare').innerHTML =
-                    VK.Share.button(
-                        {
-                            url: 'https://binarytable.neocities.org/',
-                            image: imgSource
-                        },
-                        {
-                            type: 'custom',
-                            text: '<img src="http://vk.com/images/vk32.png" />',
-                        });
-            })
-            .fail(function(res) {
-                console.log("Too bad! Image was not saved on server!");
-                console.log(JSON.stringify(res));
+        $("meta[property='og:image']").attr('content', imgSource);
+        $("#vkshare").fadeTo("fast", 1);
+        document.getElementById('vkshare').innerHTML =
+          VK.Share.button(
+            {
+              url: 'https://binarytable.neocities.org/',
+              image: imgSource
+            },
+            {
+              type: 'custom',
+              text: '<img src="http://vk.com/images/vk32.png" />',
             });
+        })
+        .fail(function(res) {
+          console.log("Too bad! Image was not saved on server!");
+          console.log(JSON.stringify(res));
+        });
 
     });
 
@@ -479,6 +488,25 @@ function restoreGoal() {
     data.isFinished = false;
     updateGoal();
 }
+
+function collapseCollabsButton() {
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
+
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      console.log(content);
+      if (content.style.maxHeight){
+        content.style.maxHeight = null;
+      } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+      } 
+    });
+  }
+}
+
 
 
 // var angryButton = document.querySelector('.yelling'); 

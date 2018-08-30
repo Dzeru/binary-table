@@ -97,6 +97,8 @@ td:hover {
 }
 
 .additional {
+	margin-left: auto;
+	margin-right: auto;
 	margin-top: 10px;
 	display: flex;
 	justify-content: center;
@@ -105,6 +107,38 @@ td:hover {
 #endGoal {
 	visibility: hidden;
 	font-style: italic;
+}
+
+/* Collapse CSS */
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 40%;
+  border: none;
+  outline: none;
+  font-size: 15px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: #ccc;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.contentCollapse {
+	width: 40%;
+	margin-left: auto;
+	margin-right: auto;
+  padding: 0 18px;
+  text-align: center;
+  background-color: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
 }
 
 /* UI-Widget setup */
