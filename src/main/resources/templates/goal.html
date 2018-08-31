@@ -29,7 +29,9 @@
 
   <body>
     <span id="openNoteBtn"><img src = "/images/note-image.png" alt="[Note]"></span>
-    <span id="stepsCounter"> </span>
+    <span id="stepsCounter">
+      (<span id="stepsCurrent"></span>/<span id="stepsOutOf" contenteditable="true"></span>)
+    </span>
     <div id="deleteConfirmation" title="Are you sure to DELETE? 0->1 " style="display: none">
       <p align="center"> 
         <button class="confNumber"> 0 </button>
@@ -87,9 +89,9 @@
     </div>  
 
     <button class="additional collapsible ui-borders"> Collaborators </button>
-    <div class="contentCollapse">
-      <p> Some emails here! </p> 
-    </div>
+    <ul class="contentCollapse" id="collabs">
+      <li> Some emails here! </li>
+    </ul>>
 
     <!-- Конец блока кнопок -->
     <script src="/js/goal-logic.js"></script>

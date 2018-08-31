@@ -9,6 +9,7 @@ var data = {
   note: '',
   isFinished: false, // Option used in update request
   isGroupGoal: false,
+  collaborators: [],
   // web-only variables
   saved: true,
   lastState: '',
@@ -42,6 +43,8 @@ function createCells() {
 // Затем вызывает обновление прогресса
 var tableTitleString = document.getElementById('titleString');
 var stepsCount = document.getElementById('stepsCounter');
+var stepsCurrent = document.getElementById('stepsCurrent');
+var stepsOutOf = document.getElementById('stepsOutOf');
 
 function changeNumber() {
     if (this.innerHTML === "1") {
@@ -122,12 +125,10 @@ function calculateProgress() {
     return onesCount;
 }
 
-function calculateProgressString(original) {
-
+function calculateProgressString() {
     var ones = calculateProgress();
-    stepsCounter.innerHTML = ' (' + ones + '/' + data.numString.length + ') '
-    tableTitleString.innerHTML = original;
-
+    stepsCurrent.innerHTML = ones;
+    stepsOutOf.innerHTML = data.numString.length;
 }
 
 function initializeTitle() {
@@ -154,11 +155,13 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
 };
 
-var id = getUrlParameter('id');
-//var url = "http://www.mocky.io/v2/5b3fc7af3400002b00001c8a";
-var url = "/getgoal?id=" + id;
+
 
 function getGoalInfo() {
+  var id = getUrlParameter('id');
+  //var url = "http://www.mocky.io/v2/5b3fc7af3400002b00001c8a";
+  var url = "/getgoal?id=" + id;
+
   $.ajax({
     url: url,
     type: 'GET',
@@ -174,7 +177,8 @@ function getGoalInfo() {
       data.isGroupGoal = res.isGroupGoal;
 
       // Логика странички
-      calculateProgressString(data.title);
+      tableTitleString.innerHTML = data.title
+      calculateProgressString();
       initializeTitle();
       var cellTable = document.querySelector('table');
       createCells();
@@ -226,8 +230,8 @@ function getGoalInfo() {
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////-------------------//////////////////////////
 
+var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
 $(document).ready(function() {
-    var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
     if (!isJavaEnabled) {
       var goalNumber = 5;
       data.numString = '00100';
@@ -237,7 +241,8 @@ $(document).ready(function() {
       data.note = 'this feature is not implemented probably';
 
       // Логика странички
-      calculateProgressString(data.title);
+      tableTitleString.innerHTML = data.title
+      calculateProgressString();
       initializeTitle();
       var cellTable = document.querySelector('table');
       createCells();
@@ -271,8 +276,10 @@ $(document).ready(function() {
       $("button.screenShotter").on("click", function() {
           makeScreenshot();
       });
-      collapseCollabsButton();
       document.title = "BIT | " + data.title;
+
+      collapseCollabsButton();
+      getCollabsInfo();
 
     }
     else {
@@ -477,7 +484,7 @@ function makeScreenshot() {
 }
 
 ///////////////////////////////////////////////////////////////////////
-// Потенциальная нереализованная магия
+// Завершение цели
 
 function finishGoal() {
     data.isFinished = true;
@@ -489,6 +496,9 @@ function restoreGoal() {
     updateGoal();
 }
 
+///////////////////////////////////////////////////////////////////////
+// Collaborators - связанное
+
 function collapseCollabsButton() {
   var coll = document.getElementsByClassName("collapsible");
   var i;
@@ -497,7 +507,6 @@ function collapseCollabsButton() {
     coll[i].addEventListener("click", function() {
       this.classList.toggle("active");
       var content = this.nextElementSibling;
-      console.log(content);
       if (content.style.maxHeight){
         content.style.maxHeight = null;
       } else {
@@ -506,6 +515,47 @@ function collapseCollabsButton() {
     });
   }
 }
+
+function fillCollabsInfo(collabs) {
+  $('#collabs').empty();
+  var ulCollabs = document.getElementById('collabs');
+  collabs.forEach(function(collab) {
+    var item = document.createElement('ul');
+    item.innerHTML = collab;
+    ulCollabs.appendChild(item);
+  })
+}
+
+function getCollabsInfo() {
+  if (isJavaEnabled) {
+    var id = getUrlParameter('id');
+    //var url = "http://www.mocky.io/v2/5b3fc7af3400002b00001c8a";
+    var url = "/getcollaborators?id=" + id;
+    $.ajax({
+      url: url,
+      type: 'GET',
+      // dataType: 'jsonp',
+      // url: /goal
+      success: function(res) {
+        data.collaborators = res.collaborators;
+        fillCollabsInfo(collaborators);
+      },
+      error: function(err) {
+        console.log("request failed");
+        console.log(err);
+      }
+    });
+  }
+  else {
+    data.collaborators = ["mew@cat.com", "binary@table.bit", "synthwave.love@gmail.com"];
+    fillCollabsInfo(data.collaborators);
+  }
+}
+
+///////////////////////////////////////////////////////////////////////
+// Потенциальная нереализованная магия
+
+
 
 
 
