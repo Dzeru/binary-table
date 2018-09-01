@@ -7,8 +7,8 @@ var data = {
   userId: 0,  
   title: 'Loading...',
   note: '',
-  isFinished: false, // Option used in update request
-  isGroupGoal: false,
+  finished: false, // Option used in update request
+  groupGoal: false,
   collaborators: [],
   // web-only variables
   saved: true,
@@ -173,8 +173,8 @@ function getGoalInfo() {
       data.id = res.id;
       data.userId = res.userId;
       data.note = res.note;
-      data.isFinished = res.isFinished;
-      data.isGroupGoal = res.isGroupGoal;
+      data.finished = res.finished;
+      data.groupGoal = res.groupGoal;
 
       // Логика странички
       tableTitleString.innerHTML = data.title
@@ -301,7 +301,7 @@ function updateGoal() {
         "currentState": data.numString,
         "note": data.note,
         "userId": data.userId,
-        "isFinished": data.isFinished
+        "finished": data.finished
     };
 
     $.ajax({
@@ -324,7 +324,7 @@ function updateGoal() {
                 $(data.cells[i]).css("color", 'white');             // становятся белыми
             }
             console.log("State saved!");
-            if (data.isFinished) {
+            if (data.finished) {
                 location.replace('/goals');
             }
         })
@@ -487,12 +487,12 @@ function makeScreenshot() {
 // Завершение цели
 
 function finishGoal() {
-    data.isFinished = true;
+    data.finished = true;
     updateGoal();
 }
 
 function restoreGoal() {
-    data.isFinished = false;
+    data.finished = false;
     updateGoal();
 }
 

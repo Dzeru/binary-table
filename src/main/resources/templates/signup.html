@@ -10,7 +10,7 @@
     <div th:if="${error}">
         <span th:text="#{${error}}"/>
     </div>
-    <form name="registrationForm" th:action="@{/registration}" method="post">
+    <form name="registrationForm" th:action="@{/signup}" method="post">
         <div class="form-group">
             <label for="name" th:text="#{fields.name}"></label>
             <input class="form-control" id="name" type="text" name="name" th:placeholder="#{placeholder.name}">

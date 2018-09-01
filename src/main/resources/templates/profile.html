@@ -6,15 +6,15 @@
 <body class="sticky-footer-body">
 <th:block th:replace="fragments/usernavbar :: usernavbar"/>
 <section class="sticky-footer-section">
-<div class="container mt-3">
-<table>
+<div class="pt-3">
+<table align="center">
     <tbody>
         <tr>
-            <th><b th:text="#{fields.name}"></b></th>
+            <th class="pr-3"><b th:text="#{fields.name}"></b></th>
             <th th:text="${name}"></th>
         </tr>
         <tr>
-            <th><b th:text="#{fields.email}"></b></th>
+            <th class="pr-3"><b th:text="#{fields.email}"></b></th>
             <th th:text="${email}"></th>
         </tr>
         <tr>
@@ -24,7 +24,7 @@
     </tbody>
 </table>
 </div>
-<div class="container mt-5 w50">
+<div class="container pt-5 w50">
     <h3 th:text="#{login.updatePassword}"></h3>
     <div th:if="${passwordStatus}">
         <span th:text="#{${passwordStatus}}"/>
@@ -45,7 +45,7 @@
         <input class="button button-dark" type="submit" th:value="#{login.updatePassword}"/>
     </form>
 </div>
-<div class="container mt-5 w50">
+<div class="container pt-5 w50">
     <h3 th:text="#{login.updateEmail}"></h3>
     <div th:if="${emailStatus}">
         <span th:text="#{${emailStatus}}"/>
@@ -68,10 +68,10 @@
             <input class="form-control" id="passwordEmail" type="password" name="password" th:placeholder="#{placeholder.password}"/>
         </div>
         <input class="button button-dark" type="submit" th:value="#{login.updateEmail}"/>
+        <div class="pt-5">
+            <a class="button button-white" th:href="@{/goals}" href="/goals" th:text="#{meta.back}"></a>
+        </div>
     </form>
-</div>
-<div class="container my-5">
-    <a class="button button-white" th:href="@{/goals}" href="/goals" th:text="#{meta.back}"></a>
 </div>
 </section>
 <th:block th:replace="fragments/footer :: footer"/>

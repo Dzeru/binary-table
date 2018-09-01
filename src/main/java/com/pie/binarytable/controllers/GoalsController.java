@@ -54,6 +54,8 @@ public class GoalsController
 		List<Goal> finishedGoals = allGoals.stream().filter((g) -> g.isFinished()).collect(Collectors.toList());
 		List<Goal> goals = allGoals.stream().filter((g) -> !g.isFinished()).collect(Collectors.toList());
 
+		System.out.println("size = " + finishedGoals.size());
+
 		int countOfGoals = goals.size();
 
 		model.addAttribute("goals", goals);

@@ -90,6 +90,7 @@ public class UsersController
 			user.setRoles(Collections.singleton(Role.USER));
 
 			user.setRegistrationDate(LocalDateTime.now().toString());
+
 			userDAO.save(user);
 
 			//mailSender.sendGreetingMessage(user.getUsername());

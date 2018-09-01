@@ -5,10 +5,10 @@
 </head>
 <body class="sticky-footer-body">
 <section class="sticky-footer-section">
-<div th:if="${error}">
-    <span th:text="#{${error}}"/>
-</div>
 <div class="mx-auto border my-5 py-3 px-3 form">
+    <div th:if="${error}">
+        <span th:text="#{${error}}"/>
+    </div>
     <form th:action="@{/addgoal}" method="post" accept-charset="utf-8">
         <div class="form-group">
             <label for="goalName" th:text="#{fields.goal}"></label>

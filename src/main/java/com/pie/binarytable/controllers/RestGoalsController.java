@@ -35,6 +35,7 @@ public class RestGoalsController
 	{
 		boolean result = false; //error by default
 		goalDAO.save(goal);
+		System.out.println(goal.getGoalName() + " " + goal.isFinished());
 
 		if(goalDAO.findByIdEquals(goal.getId()).getCurrentState().equals(goal.getCurrentState()))
 		{

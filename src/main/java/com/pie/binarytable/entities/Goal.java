@@ -165,7 +165,6 @@ public class Goal
 	@Override
 	public int hashCode()
 	{
-
 		return Objects.hash(getId(), getGoalName(), getAllSteps(), getDoneSteps(), getCurrentState(), getNote(), getUserId());
 	}
 }
