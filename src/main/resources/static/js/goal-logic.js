@@ -1,4 +1,4 @@
-var maxSquareNum = 13 // Максимальный ближайший квадрат числа для поиска
+var maxSquareNum = 13 // Максимальный ближайший квадрат числа для поиска не включая
 
 var data = {
   // GET from server
@@ -14,7 +14,7 @@ var data = {
   saved: true,
   lastState: '',
   findClosestSquare: function(steps) {
-    for (var i = 1; i < maxSquareNum; i++) { // Поставить ограничение на количество шагов!
+    for (var i = 1; i <= maxSquareNum; i++) { // Поставить ограничение на количество шагов!
       if (i * i >= steps || i === maxSquareNum) {
         return i;
       }
@@ -30,14 +30,7 @@ function setCharAt(str, index, chr) {
     return str.substr(0, index) + chr + str.substr(index + 1);
 }
 
-// Если заменить numstring.length на squareSide, то таблица будет полной 
-function createCells() {
-    for (var i = 0 ; i < data.numString.length; i++){
-        var newBox = document.createElement('td');
-        newBox.cellRealIndex = i;
-        data.cells.push(newBox);
-    }
-}
+
 
 // функция срабатывает при клике. Изменяет у ячейки на которую нажали цифру
 // Затем вызывает обновление прогресса
@@ -49,13 +42,13 @@ var stepsOutOf = document.getElementById('stepsOutOf');
 function changeNumber() {
     if (this.innerHTML === "1") {
         this.innerHTML = "0";
-        $(this).css("color", 'white');
+        $(this).animate({ backgroundColor:'#B172C5' }, 200);
         data.numString = setCharAt(data.numString, this.cellRealIndex, '0');
     }
     else {
         this.innerHTML = "1";
         if (this.savedValue === '0') {
-            $(this).css("color", 'rgb(60, 221, 86)');
+          $(this).animate({ backgroundColor: '#A656CD'}, 200);
         }
         data.numString = setCharAt(data.numString, this.cellRealIndex, '1');
     }
@@ -67,6 +60,24 @@ function changeNumber() {
         data.saved = false;
     }
     calculateProgressString(data.title);
+}
+
+// Если заменить numstring.length на squareSide, то таблица будет полной 
+// Создаем ячейки без цифр, присваиваем каждой индекс. Записываются в массив ячеек
+function createCells() {
+    for (var i = 0 ; i < data.numString.length; i++){
+        var newBox = document.createElement('td');
+        newBox.cellRealIndex = i;
+        data.cells.push(newBox);
+    }
+}
+
+// Добавляем на каждую ячейку обработчик клика для смены цифры внутри
+function makeButtons() {
+    var elementList = data.cells;
+    for (var i = 0; i < elementList.length; i++) {
+        elementList[i].addEventListener('click', changeNumber);
+    }
 }
 
 // создание таблицы из ячеек 
@@ -96,12 +107,7 @@ function stringGoalProgressInit(n) {
     }
 }
 
-function makeButtons() {
-    var elementList = data.cells;
-    for (var i = 0; i < elementList.length; i++) {
-        elementList[i].addEventListener('click', changeNumber);
-    }
-}
+
 
 function convertStringToJson (stringToConvert) {
     var JsonObject = JSON.stringify(stringToConvert);
@@ -177,45 +183,7 @@ function getGoalInfo() {
       data.groupGoal = res.groupGoal;
 
       // Логика странички
-      tableTitleString.innerHTML = data.title
-      calculateProgressString();
-      initializeTitle();
-      var cellTable = document.querySelector('table');
-      createCells();
-      createTable(cellTable, data);
-      makeButtons();
-      $("button.saveState").fadeTo("fast", 0.25);
-      $("#vkshare").fadeTo("fast", 0.25);
-      $("button.saveState").prop('disabled', true);
-      $("button.saveState").on('click', function(event) {
-        updateGoal();
-      });
-      document.getElementById('titleString').addEventListener('focus', function() {
-        $("button.saveState").prop('disabled', false);
-        $("button.saveState").fadeTo("slow", 1);
-      });
-      document.getElementById('note').addEventListener('focus', function() {
-        $("button.saveState").prop('disabled', false);
-        $("button.saveState").fadeTo("slow", 1);
-      });
-      $("#endGoal").on('click', function() {
-        finishGoal();
-      }); // TODO Добавить подтверждение 
-      if (data.note) {
-        $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
-          typeWriterCall();
-        });
-      }
-      else {
-        $("#openNoteBtn").css('visibility', 'hidden');
-      }
-      $("button.screenShotter").on("click", function() {
-        makeScreenshot();
-      });
-      if (data.isGroupGoal) {     // User may see collaborators in group goals
-        collapseCollabsButton();
-      }
-      document.title = "BIT | " + data.title;
+      initializeTable();
     },
     error: function(err) {
       console.log("request failed");
@@ -241,51 +209,61 @@ $(document).ready(function() {
       data.note = 'this feature is not implemented probably';
 
       // Логика странички
-      tableTitleString.innerHTML = data.title
-      calculateProgressString();
-      initializeTitle();
-      var cellTable = document.querySelector('table');
-      createCells();
-      createTable(cellTable, data);
-      makeButtons();
-      $("button.saveState").fadeTo("fast", 0.25);
-      $("#vkshare").fadeTo("fast", 0.25);
-      $("button.saveState").prop('disabled', true);
-      $("button.saveState").on('click', function(event) {
-          updateGoal();
-      });
-      document.getElementById('titleString').addEventListener('focus', function() {
-          $("button.saveState").prop('disabled', false);
-          $("button.saveState").fadeTo("slow", 1);
-      });
-      document.getElementById('note').addEventListener('focus', function() {
-          $("button.saveState").prop('disabled', false);
-          $("button.saveState").fadeTo("slow", 1);
-      });
-      $("#endGoal").on('click', function() {
-          finishGoal();
-      }); // TODO Добавить подтверждение
-      if (data.note) {
-          $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
-              typeWriterCall();
-          });
-      }
-      else {
-          $("#openNoteBtn").css('visibility', 'hidden');
-      }
-      $("button.screenShotter").on("click", function() {
-          makeScreenshot();
-      });
-      document.title = "BIT | " + data.title;
-
-      collapseCollabsButton();
-      getCollabsInfo();
-
+      initializeTable();
     }
     else {
       getGoalInfo();
     }
 });
+
+function initializeTable() {
+  tableTitleString.innerHTML = data.title
+  calculateProgressString();
+  initializeTitle();
+  var cellTable = document.getElementById('tableBodyId');
+  createCells();
+  createTable(cellTable, data);
+  makeButtons();
+  $("button.saveState").fadeTo("fast", 0.25);
+  $("#vkshare").fadeTo("fast", 0.25);
+  $("button.saveState").prop('disabled', true);
+  $("button.saveState").on('click', function(event) {
+      updateGoal();
+  });
+  document.getElementById('titleString').addEventListener('focus', function() {
+      $("button.saveState").prop('disabled', false);
+      $("button.saveState").fadeTo("slow", 1);
+  });
+  document.getElementById('note').addEventListener('focus', function() {
+      $("button.saveState").prop('disabled', false);
+      $("button.saveState").fadeTo("slow", 1);
+  });
+  $("#endGoal").on('click', function() {
+      finishGoal();
+  }); // TODO Добавить подтверждение
+  if (data.note) {
+      $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
+          typeWriterCall();
+      });
+  }
+  else {
+      $("#openNoteBtn").css('visibility', 'hidden');
+  }
+  $("button.screenShotter").on("click", function() {
+      makeScreenshot();
+  });
+  document.title = "BIT | " + data.title;
+
+  if (data.isGroupGoal) {
+    collapseCollabsButton();
+    getCollabsInfo();
+  }
+
+  saveStepsCount();
+  $('#stepsOutOf').on('blur', function() {
+    checkInputStepsChange();
+  });
+}
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -320,8 +298,8 @@ function updateGoal() {
             $("button.saveState").fadeTo("slow", 0.25);
             $("button.saveState").prop('disabled', true);
             for (var i = data.cells.length - 1; i >= 0; i--) {
-                data.cells[i].savedValue = data.cells[i].innerHTML; // Клетки снова
-                $(data.cells[i]).css("color", 'white');             // становятся белыми
+                data.cells[i].savedValue = data.cells[i].innerHTML;           // Клетки снова
+                $(data.cells[i]).animate({ backgroundColor:'#B172C5' }, 200); // становятся белыми
             }
             console.log("State saved!");
             if (data.finished) {
@@ -439,10 +417,11 @@ function makeScreenshot() {
     };
 
     html2canvas(document.getElementsByClassName("cross")[0], options).then(function(canvas) {
+      var d = new Date();
       var postData = {
           file: canvas.toDataURL(),
           upload_preset: "k25wiy42",
-          public_id: data.userId + '_' + data.id + '.jpg'
+          public_id: data.userId + '_' + Math.floor(d.getTime()/15000) + '_' + data.id + '.jpg'
       };
 
       // Запрос на облачное хранилище изображений
@@ -499,6 +478,7 @@ function restoreGoal() {
 ///////////////////////////////////////////////////////////////////////
 // Collaborators - связанное
 
+// Make button like bootstrap-collapsible
 function collapseCollabsButton() {
   var coll = document.getElementsByClassName("collapsible");
   var i;
@@ -554,7 +534,63 @@ function getCollabsInfo() {
 
 ///////////////////////////////////////////////////////////////////////
 // Потенциальная нереализованная магия
+var previousSteps;
 
+// For actions to be done after steps are changed
+function saveStepsCount() {
+  previousSteps = Number($('#stepsOutOf').text());
+}
+
+function checkInputStepsChange() {
+  var currentSteps = $('#stepsOutOf').text();
+  currentSteps = currentSteps.trim()          
+  var currentStepsNum = Number(currentSteps);
+  if (!currentStepsNum) {                       // Check if string contains letters & strange symbols
+    $('#stepsOutOf').html(previousSteps);       // Revert changes
+  }
+  else if (currentSteps.indexOf(' ') !== -1 || currentSteps.indexOf('\n') !== -1) {
+    $('#stepsOutOf').html(previousSteps);       
+  }
+  else {                                        // Accept changes
+    currentStepsNum = Math.min(currentStepsNum, 169);
+
+    // Clear previous data
+    $('#tableBodyId').empty();  // Clear table body
+    data.cells = [];
+
+    // Set data (new string of numbers)
+    var numStringCopy = data.numString;
+
+    if (currentStepsNum > numStringCopy.length) { // If just new cells need to be added
+      for (var i = numStringCopy.length; i < currentStepsNum; i++) {
+        data.numString += '0';
+      }
+    }
+    else { // if max goal steps is less than before
+      var onesBefore = calculateProgress(); 
+      data.numString = data.numString.substr(0, currentStepsNum);
+      var onesAfter = calculateProgress();
+      var onesToAdd = onesBefore - onesAfter;   // Count '1' in cells to be deleted
+      for (var i = 0; i < currentStepsNum; i++) { // Share them between existing cells
+        if (onesToAdd > 0 && data.numString[i] === '0') {
+          data.numString = setCharAt(data.numString, i, '1');
+          onesToAdd = onesToAdd - 1;
+        }
+      }
+      calculateProgressString();      // recalculate progress in case max steps is less than ones
+    }
+
+    //////////////
+    // Re-create table
+    var cellTable = document.getElementById('tableBodyId');
+    createCells();
+    createTable(cellTable, data);
+    makeButtons();
+    //////////////
+
+    $('#stepsOutOf').html(currentStepsNum);
+  }
+}
 
 
 
