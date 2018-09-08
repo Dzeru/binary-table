@@ -2,12 +2,17 @@ package com.pie.binarytable.controllers;
 
 import com.pie.binarytable.dao.GoalDAO;
 import com.pie.binarytable.dao.GroupGoalDAO;
+import com.pie.binarytable.dao.UserDAO;
+import com.pie.binarytable.dto.CollaboratorsList;
 import com.pie.binarytable.dto.GoalId;
 import com.pie.binarytable.entities.Goal;
 
+import com.pie.binarytable.entities.GroupGoal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 public class RestGoalsController
@@ -17,6 +22,9 @@ public class RestGoalsController
 
 	@Autowired
 	GroupGoalDAO groupGoalDAO;
+
+	@Autowired
+	UserDAO userDAO;
 
 	/*
 	Sends JSON with Goal object to JavaScript functions in /goal
@@ -35,7 +43,6 @@ public class RestGoalsController
 	{
 		boolean result = false; //error by default
 		goalDAO.save(goal);
-		System.out.println(goal.getGoalName() + " " + goal.isFinished());
 
 		if(goalDAO.findByIdEquals(goal.getId()).getCurrentState().equals(goal.getCurrentState()))
 		{
@@ -72,5 +79,18 @@ public class RestGoalsController
 			return ResponseEntity.ok().body(result);
 		}
 		else return ResponseEntity.badRequest().body(result);
+	}
+
+	@RequestMapping(value = "/getcollaborators", method = RequestMethod.GET)
+	public CollaboratorsList getCollaborators(@RequestParam(value = "id") Long id)
+	{
+		ArrayList<GroupGoal> groupGoals = groupGoalDAO.findByGoalId(id);
+		CollaboratorsList collaboratorsList = new CollaboratorsList();
+
+		for(GroupGoal g : groupGoals)
+		{
+			collaboratorsList.addCollaborator(userDAO.findByIdEquals(g.getUserId()).getUsername());
+		}
+		return collaboratorsList;
 	}
 }
