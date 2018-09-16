@@ -1,9 +1,10 @@
 body {
 	background:#B172C5;
-	margin-left: 10%;
-	margin-right: 10%;
+	margin-left: 5%;
+	margin-right: 5%;
 	margin-top: 5%;
-	font-family: 'Share Tech Mono', monospace;
+	font-family: 'Courier New', monospace;
+	font-weight: 600;
 	color: #FFFFFF;
 }
 
@@ -22,13 +23,14 @@ td {
 }
 
 .saveState {
+	margin-left: auto;
+	margin-right: auto;
 	vertical-align: middle;
 }
 
 .mytitle {
 	width: auto;
 	font-size: 30px;
-	align: center;
 	border-width: 4px;
 }
 
@@ -46,32 +48,29 @@ td {
 }
 
 .screenShotter {
-	font-family: 'Share Tech Mono', monospace;
 	color: #fff;
 	font-size: 18px;
 }
 
 .arrowBack {
-	vertical-align: middle;
-	position: relative;
 	font-size: 50px;
 	font-weight: 900;
 	font-family: 'Share Tech Mono', monospace;
 	color: #FFFFFF;
 }
 
-.deleteGoal {
-	vertical-align: middle;
+#tools {
+	display: flex;
+	justify-content: center;
 }
 
-@font-face {												/* А вообще наш стандартный шрифт СЛИШКОМ похож на этот. Они одинаковые? */
-	font-family: consola;							
-	src: url(../resources/consola.ttf) ; /* Добавить первую черточку в рабочем проекте! */
+.deleteGoal {
+	vertical-align: middle;
+	float: right;
 }
 
 #note {
 	display: none;
-	font-family: consola;
 	background-color: #ad33ff;
 	border-style: solid;
 	border-width: 1px;
@@ -80,10 +79,6 @@ td {
 }
 
 #deleteConfirmation {
-
-}
-
-.screenShotter {
 
 }
 
@@ -104,19 +99,17 @@ td {
 
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
-  background-color: #eee;
-  color: #444;
   cursor: pointer;
   padding: 18px;
   width: 40%;
-  border: none;
-  outline: none;
-  font-size: 15px;
+  font-size: 18px;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .active, .collapsible:hover {
-  background-color: #ccc;
+  background-color: #A858CF;
 }
 
 /* Style the collapsible content. Note: hidden by default */
