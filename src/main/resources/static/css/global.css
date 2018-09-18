@@ -2,7 +2,7 @@ body
 {
     background: #b172c5;
     color: #fff;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'Courier New', monospace;
 }
 
 a, a:hover
@@ -97,6 +97,7 @@ table
 .logo
 {
     font-size: 50px;
+    font-weight: 700;
 }
 
 .index-promo
@@ -128,19 +129,21 @@ End of sticky footer style
 
 table
 {
-    border: 2px #fff solid;
+    border: 4px #fff solid;
 }
 
 th
 {
     font-size: 24px;
     padding: 8px 8px;
+    border: 4px #fff solid;
 }
 
 td
 {
     font-size: 18px;
     padding: 8px 8px;
+    4px #fff solid;
 }
 
 .button-collapse

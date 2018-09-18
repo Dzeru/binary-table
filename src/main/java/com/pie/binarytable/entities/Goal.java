@@ -35,6 +35,9 @@ public class Goal
 	@NotNull
 	private boolean isGroupGoal;
 
+	@NotNull
+	private String goalTimestamp;
+
 /*
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id", nullable = false)
@@ -43,18 +46,20 @@ public class Goal
 
 	public Goal(){}
 
-	public Goal(Long userId, String goalName, int allSteps)
+	public Goal(Long userId, String goalName, int allSteps, String goalTimestamp)
 	{
 		this.goalName = goalName;
 		this.allSteps = allSteps;
 		this.userId = userId;
+		this.goalTimestamp = goalTimestamp;
 	}
 
-	public Goal(Long userId, String goalName, int allSteps, String note)
+	public Goal(Long userId, String goalName, int allSteps, String note, String goalTimestamp)
 	{	this.goalName = goalName;
 		this.allSteps = allSteps;
 		this.note = note;
 		this.userId = userId;
+		this.goalTimestamp = goalTimestamp;
 	}
 
 	public Long getId()
@@ -147,24 +152,33 @@ public class Goal
 		isGroupGoal = groupGoal;
 	}
 
+	public String getGoalTimestamp() {
+		return goalTimestamp;
+	}
+
+	public void setGoalTimestamp(String goalTimestamp) {
+		this.goalTimestamp = goalTimestamp;
+	}
+
 	@Override
-	public boolean equals(Object o)
-	{
+	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof Goal)) return false;
+		if (o == null || getClass() != o.getClass()) return false;
 		Goal goal = (Goal) o;
 		return getAllSteps() == goal.getAllSteps() &&
 				getDoneSteps() == goal.getDoneSteps() &&
+				isFinished() == goal.isFinished() &&
+				isGroupGoal() == goal.isGroupGoal() &&
 				Objects.equals(getId(), goal.getId()) &&
 				Objects.equals(getGoalName(), goal.getGoalName()) &&
 				Objects.equals(getCurrentState(), goal.getCurrentState()) &&
 				Objects.equals(getNote(), goal.getNote()) &&
-				Objects.equals(getUserId(), goal.getUserId());
+				Objects.equals(getUserId(), goal.getUserId()) &&
+				Objects.equals(getGoalTimestamp(), goal.getGoalTimestamp());
 	}
 
 	@Override
-	public int hashCode()
-	{
-		return Objects.hash(getId(), getGoalName(), getAllSteps(), getDoneSteps(), getCurrentState(), getNote(), getUserId());
+	public int hashCode() {
+		return Objects.hash(getId(), getGoalName(), getAllSteps(), getDoneSteps(), getCurrentState(), getNote(), getUserId(), isFinished(), isGroupGoal(), getGoalTimestamp());
 	}
 }

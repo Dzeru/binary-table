@@ -26,10 +26,10 @@
 </div>
 <div class="container pt-5 w50">
     <h3 th:text="#{login.updatePassword}"></h3>
-    <div th:if="${passwordStatus}">
-        <span th:text="#{${passwordStatus}}"/>
-    </div>
     <form th:action="@{/updatepasswordprofile}" method="post">
+        <div class="my-3" align="center" th:if="${passwordStatus}">
+            <span th:text="#{${passwordStatus}}"/>
+        </div>
         <div class="form-group">
             <label for="password" th:text="#{fields.oldPassword}"></label>
             <input class="form-control" id="password" type="password" name="oldPassword" th:placeholder="#{placeholder.oldPassword}"/>
@@ -47,10 +47,10 @@
 </div>
 <div class="container pt-5 w50">
     <h3 th:text="#{login.updateEmail}"></h3>
-    <div th:if="${emailStatus}">
-        <span th:text="#{${emailStatus}}"/>
-    </div>
     <form th:action="@{/updateemailprofile}" method="post">
+        <div class="my-3" align="center" th:if="${emailStatus}">
+            <span th:text="#{${emailStatus}}"/>
+        </div>
         <div class="form-group">
             <label for="email" th:text="#{fields.oldEmail}"></label>
             <input class="form-control" id="email" type="text" name="oldEmail" th:placeholder="#{placeholder.oldEmail}"/>

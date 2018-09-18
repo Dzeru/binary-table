@@ -5,12 +5,18 @@
 </head>
 <body class="sticky-footer-body">
 <th:block th:replace="fragments/navbar :: navbar"/>
-<section class="mt-5 pt-5 sticky-footer-section" align="center">
-    <span class="index-promo">
-        0. Create the goal<br>
-        1. Set count of steps<br>
-        10. Change 0 to 1<br>
-        11. When all 0 become 1, you'll reach the goal!<br></span>
+<section class="pt-4 sticky-footer-section" align="center">
+    <table align="center" border="4" bordercolor="#fff">
+        <tbody>
+        <tr><th colspan="4" th:text="#{main.step0}"></th></tr>
+        <tr><th colspan="4" th:text="#{main.step1}"></th></tr>
+        <tr><th>0</th><th>0</th><th>0</th><th>0</th></tr>
+        <tr><th>0</th><th>0</th><th>0</th><th>0</th></tr>
+        <tr><th colspan="4" th:text="#{main.step10}"></th></tr>
+        <tr><th>1</th><th>0</th><th>0</th><th>1</th></tr>
+        <tr><th colspan="4" th:text="#{main.step11}"></th></tr>
+        </tbody>
+    </table>
 </section>
 <th:block th:replace="fragments/footer :: footer"/>
 </body>

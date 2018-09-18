@@ -4,15 +4,17 @@ import com.pie.binarytable.dao.GoalDAO;
 import com.pie.binarytable.dao.GroupGoalDAO;
 import com.pie.binarytable.dao.UserDAO;
 import com.pie.binarytable.entities.Goal;
-import com.pie.binarytable.entities.User;
 import com.pie.binarytable.entities.GroupGoal;
-
+import com.pie.binarytable.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,13 +80,13 @@ public class GoalsController
 	 */
 	@PostMapping("/addgoal")
 	public String addGoal(@AuthenticationPrincipal User user,
-	                 @RequestParam String goal,
-	                 @RequestParam Integer steps,
-	                 @RequestParam(required = false) String note,
-	                 @RequestParam(required = false) String emails,
-	                 Model model)
+						  @RequestParam String goalName,
+						  @RequestParam Integer steps,
+						  @RequestParam(required = false) String note,
+						  @RequestParam(required = false) String emails,
+						  Model model)
 	{
-		if(goal == null || goal.isEmpty())
+		if(goalName == null || goalName.isEmpty())
 		{
 			model.addAttribute("error", "error.emptyGoal");
 			model.addAttribute("stepsVal", steps);
@@ -94,12 +96,14 @@ public class GoalsController
 		if(steps == null || steps <= 0)
 		{
 			model.addAttribute("error", "error.wrongSteps");
-			model.addAttribute("goalNameVal", goal);
+			model.addAttribute("goalNameVal", goalName);
 			model.addAttribute("noteVal", note);
 			return "addgoal";
 		}
 
-		Goal newGoal = new Goal(user.getId(), goal, steps, note);
+		String goalTimestamp = new Timestamp(System.currentTimeMillis()).toString();
+
+		Goal newGoal = new Goal(user.getId(), goalName, steps, note, goalTimestamp);
 
 		if(note == null)
 			newGoal.setNote("");
@@ -122,7 +126,7 @@ public class GoalsController
 			newGoal.setGroupGoal(true);
 			goalDAO.save(newGoal);
 			String[] emailList = emails.split(", ");
-			newGoal = goalDAO.findByGoalNameEqualsAndUserIdEquals(goal, user.getId());
+			newGoal = goalDAO.findByGoalNameEqualsAndUserIdEqualsAndGoalTimestampEquals(goalName, user.getId(), goalTimestamp);
 			Long goalId = newGoal.getId();
 
 			for(String email : emailList)
@@ -135,11 +139,12 @@ public class GoalsController
 				}
 				else
 				{
-					model.addAttribute("error", "Email does not exist");
+					model.addAttribute("error", "error.emailDoesNotExist");
 					return "addgoal";
 				}
 			}
 		}
+		goalDAO.save(newGoal);
 
 		return "redirect:/goals";
 	}

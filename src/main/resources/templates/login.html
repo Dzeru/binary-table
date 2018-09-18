@@ -6,7 +6,7 @@
 <body onload="document.loginForm.username.focus()" class="sticky-footer-body">
 <section class="sticky-footer-section">
     <div class="mx-auto border my-5 py-3 px-3 form">
-    <div align="center"><a class="navbar-brand link-dark logo" href="@{/}">Binary Table</a></div>
+    <div align="center"><a class="navbar-brand link-dark logo" href="@{/}">Binary Table &beta;</a></div>
     <form name="loginForm" th:action="@{/login}" method="post" accept-charset="utf-8">
 	<div class="my-3" align="center" th:if="${param.error}">
 		<p th:text="#{error.invalidEmailOrPassword}"></p>

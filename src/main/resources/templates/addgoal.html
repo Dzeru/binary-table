@@ -6,13 +6,13 @@
 <body class="sticky-footer-body">
 <section class="sticky-footer-section">
 <div class="mx-auto border my-5 py-3 px-3 form">
-    <div th:if="${error}">
+    <div class="my-3" align="center" th:if="${error}">
         <span th:text="#{${error}}"/>
     </div>
     <form th:action="@{/addgoal}" method="post" accept-charset="utf-8">
         <div class="form-group">
             <label for="goalName" th:text="#{fields.goal}"></label>
-            <input class="form-control" id="goalName" type="text" name="goal" th:placeholder="#{placeholder.goal}">
+            <input class="form-control" id="goalName" type="text" name="goalName" th:placeholder="#{placeholder.goal}">
         </div>
         <div class="form-group">
             <label for="steps" th:text="#{fields.countOfSteps}"></label>
@@ -24,9 +24,6 @@
         </div>
         <a class="button button-white-dark-border my-4" data-toggle="collapse" href="#groupGoal" role="button" aria-expanded="false" aria-controls="groupGoal" th:text="#{goal.groupGoal}"></a>
         <div class="collapse w100" id="groupGoal">
-            <div th:if="${error}">
-                <span th:text="#{${error}}"/>
-            </div>
             <div class="form-group mt-3">
                 <label for="emails" th:text="#{goal.writeCollaborators}"></label>
                 <textarea class="form-control" id="emails" name="emails" th:placeholder="#{placeholder.collaborators}"></textarea>

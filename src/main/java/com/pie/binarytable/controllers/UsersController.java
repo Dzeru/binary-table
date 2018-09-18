@@ -93,7 +93,7 @@ public class UsersController
 
 			userDAO.save(user);
 
-			//mailSender.sendGreetingMessage(user.getUsername());
+			mailSender.sendGreetingMessage(user.getUsername(), user.getName());
 		}
 
 		return "redirect:/login";
@@ -146,6 +146,7 @@ public class UsersController
 		else
 		{
 			User user = userDAO.findByUsername(email);
+
 			if(user.getUpdatePassword().equals(updatePassword))
 			{
 				password = passwordEncoder.encode(password);
@@ -153,7 +154,7 @@ public class UsersController
 				userDAO.save(user);
 			}
 
-			if(userDAO.findByIdEquals(user.getId()).getPassword().equals(password))
+			if(password.equals(userDAO.findByIdEquals(user.getId()).getPassword()))
 			{
 				status = "status.successUpdatePassword";
 				user.setUpdatePassword("");
@@ -181,7 +182,7 @@ public class UsersController
 	{
 		mailSender.sendFeedbackMessage(feedback);
 
-		model.addAttribute("thanks", "Thank you for feedback!");
+		model.addAttribute("thanks", "feedback.thankYouForFeedback");
 
 		return "feedback";
 	}

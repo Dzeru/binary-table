@@ -136,6 +136,20 @@ public class User implements UserDetails
         this.registrationDate = registrationDate;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", active=" + active +
+                ", updatePassword='" + updatePassword + '\'' +
+                ", registrationDate='" + registrationDate + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
+
     /*
 	public Set<Goal> getGoals()
 	{

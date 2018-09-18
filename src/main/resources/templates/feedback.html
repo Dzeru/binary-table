@@ -12,8 +12,8 @@
 			<textarea class="w50" name="feedback" rows=10 th:placeholder="#{placeholder.feedback}"></textarea>
 			<div><input class="button button-white mt-3" type="submit" th:value="#{feedback.sendFeedback}"/></div>
 		</form>
-		<div th:if="${thanks}" align="center">
-			<span th:text="${thanks}"/>
+		<div class="my-3" align="center" th:if="${thanks}">
+			<span th:text="#{${thanks}}"/>
 		</div>
 	</div>
 </section>
