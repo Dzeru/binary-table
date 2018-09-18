@@ -8,7 +8,7 @@ var data = {
   title: 'Loading...',
   note: '',
   finished: false, // Option used in update request
-  groupGoal: false,
+  groupGoal: true,
   collaborators: [],
   // web-only variables
   saved: true,
@@ -254,7 +254,7 @@ function initializeTable() {
   });
   document.title = "BIT | " + data.title;
 
-  if (data.isGroupGoal) {
+  if (data.groupGoal) {
     collapseCollabsButton();
     getCollabsInfo();
   }
@@ -351,7 +351,7 @@ $("button.deleteGoal").on('click', function(event) {
 function deleteGoal() {
   var formData = {
     "id": data.id,
-    "isGroupGoal": data.isGroupGoal
+    "groupGoal": data.groupGoal
   };
 
   $.ajax({
