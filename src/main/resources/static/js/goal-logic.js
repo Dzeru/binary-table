@@ -509,8 +509,8 @@ function fillCollabsInfo(collabs) {
 function getCollabsInfo() {
   if (isJavaEnabled) {
     var id = getUrlParameter('id');
-    //var url = "http://www.mocky.io/v2/5b3fc7af3400002b00001c8a";
     var url = "/getcollaborators?id=" + id;
+    //var url = "http://www.mocky.io/v2/5ba1eaec3500004f005bbeb2?id=" + id;
     $.ajax({
       url: url,
       type: 'GET',
@@ -518,7 +518,7 @@ function getCollabsInfo() {
       // url: /goal
       success: function(res) {
         data.collaborators = res.collaborators;
-        fillCollabsInfo(collaborators);
+        fillCollabsInfo(data.collaborators);
       },
       error: function(err) {
         console.log("request failed");
