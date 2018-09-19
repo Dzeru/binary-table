@@ -9,6 +9,7 @@ var data = {
   note: '',
   finished: false, // Option used in update request
   groupGoal: true,
+  goalTimestamp: '0-0-0',
   collaborators: [],
   // web-only variables
   saved: true,
@@ -181,6 +182,7 @@ function getGoalInfo() {
       data.note = res.note;
       data.finished = res.finished;
       data.groupGoal = res.groupGoal;
+      data.goalTimestamp = res.goalTimestamp;
 
       // Логика странички
       initializeTable();
@@ -279,7 +281,8 @@ function updateGoal() {
         "currentState": data.numString,
         "note": data.note,
         "userId": data.userId,
-        "finished": data.finished
+        "finished": data.finished,
+        "goalTimestamp": data.goalTimestamp
     };
 
     $.ajax({

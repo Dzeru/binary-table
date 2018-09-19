@@ -3,7 +3,7 @@ body {
 	margin-left: 5%;
 	margin-right: 5%;
 	margin-top: 5%;
-	font-family: 'Courier New', monospace;
+	font-family: 'Jura', sans-serif;
 	font-weight: 600;
 	color: #FFFFFF;
 }
@@ -55,7 +55,7 @@ td {
 .arrowBack {
 	font-size: 50px;
 	font-weight: 900;
-	font-family: 'Share Tech Mono', monospace;
+	font-family: 'Jura', sans-serif;
 	color: #FFFFFF;
 }
 
@@ -103,7 +103,7 @@ td {
   padding: 18px;
   width: 40%;
   font-size: 18px;
-  font-family: 'Courier New', monospace;
+  font-family: 'Jura', sans-serif;
   font-weight: 600;
 }
 
@@ -131,7 +131,7 @@ td {
 	background-color: Transparent;
 	border: none;
 	outline: none;
-	font-family: 'Share Tech Mono', monospace;
+	font-family: 'Jura', sans-serif;
 	color: #FFFFFF;
 }
 
