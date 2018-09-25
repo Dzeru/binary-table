@@ -70,7 +70,7 @@ public class UserProfileController
 			if(passwordEncoder.matches(repeatPassword, user.getPassword()))
 			{
 				model.addAttribute("passwordStatus", "status.successUpdatePassword");
-				//mailSender.sendNotificationAboutUpdatePasswordMessage(user.getUsername());
+				mailSender.sendNotificationAboutUpdatePasswordMessage(user.getUsername());
 			}
 		}
 

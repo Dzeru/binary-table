@@ -43,11 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	@Override
 	public void configure(WebSecurity security)
 	{
-		security.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/pictures/**");
+		security.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/pictures/**", "/favicon.png");
 	}
 
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception
+	protected void configure(AuthenticationManagerBuilder auth)
 	{
 		auth.authenticationProvider(authProvider);
 	}

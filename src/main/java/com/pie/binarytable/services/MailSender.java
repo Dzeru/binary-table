@@ -40,13 +40,13 @@ public class MailSender
 
 	private String greetingEmail = "<p>Thanks for signing up to Binary Table! " +
 			                       "Now you can track your progress smarter. " +
-			                       "You can log in <a href=\"http://localhost:8080/login\">here</a> with the email address %s .</p>" +
+			                       "You can log in <a href=\"http://binarytable.herokuapp.com/login\">here</a> with the email address %s .</p>" +
 			                       "<p>We are open for dialog, so you can reply to this email or send " +
 			                       "a new one to our address to get in touch with us directly. " +
-			                       "You can find all our contacts <a href=\"http://localhost:8080/contacts\">here</a>. All sorts of feedback are welcomed!</p>";
+			                       "You can find all our contacts <a href=\"http://binarytable.herokuapp.com/contacts\">here</a>. All sorts of feedback are welcomed!</p>";
 
 	private String forgotPassword = "If you forgot password, visit next link to update it: " +
-			                        "http://localhost:8080/updatepassword/%s .</p>";
+			                        "http://binarytable.herokuapp.com/updatepassword/%s .</p>";
 
 	private String passwordWasUpdated = "Your password was successfully updated.</p>";
 
@@ -59,8 +59,8 @@ public class MailSender
 
 			helper.setTo(emailTo);
 			helper.setFrom(username);
-			helper.setSubject(subject);
-			mimeMessage.setContent(message, "text/html");
+			mimeMessage.setSubject(subject, "utf-8");
+			mimeMessage.setContent(message, "text/html;charset=utf-8");
 
 			mailSender.send(mimeMessage);
 		}

@@ -447,12 +447,12 @@ function makeScreenshot() {
         document.getElementById('vkshare').innerHTML =
           VK.Share.button(
             {
-              url: 'https://binarytable.neocities.org/',
+              url: 'https://binarytable.herokuapp.com/',
               image: imgSource
             },
             {
               type: 'custom',
-              text: '<img src="http://vk.com/images/vk32.png" />',
+              text: '<img src="/images/vk-icon.png">',
             });
         })
         .fail(function(res) {
