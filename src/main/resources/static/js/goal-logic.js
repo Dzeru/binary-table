@@ -243,14 +243,9 @@ function initializeTable() {
   $("#endGoal").on('click', function() {
       finishGoal();
   }); // TODO Добавить подтверждение
-  if (data.note) {
-      $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
-          typeWriterCall();
-      });
-  }
-  else {
-      $("#openNoteBtn").css('visibility', 'hidden');
-  }
+  $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
+      typeWriterCall();
+  });
   $("button.screenShotter").on("click", function() {
       makeScreenshot();
   });
@@ -414,7 +409,7 @@ function makeScreenshot() {
     var tbl_width = document.getElementsByClassName('cross')[0].offsetWidth;
     var tbl_height = document.getElementsByClassName('cross')[0].offsetHeight;
     var options = {
-        backgroundColor: '#ad33ff',
+        backgroundColor: '#b172c5',
         height: tbl_height,
         width: tbl_width,
     };

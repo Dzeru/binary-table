@@ -41,16 +41,17 @@
 
     <div id="tools">
       <a href="/goals" style="text-decoration: none">
-        <button class="arrowBack ui-borders">
+        <!-- <button class="arrowBack ui-borders">
           < - -
-        </button>
+        </button> -->
+          <img src="/images/leftArrowSmaller.png" alt="Back">
       </a>
       <button class="saveState ui-noborders">
-        <img src="/images/saveButtonImg.png" alt="Save">
+        <img src="/images/saveButtonImgSmaller.png" alt="Save">
       </button>
 
       <button class="deleteGoal ui-noborders">
-        <img src="/images/deleteButtonImg.png" alt="Delete">
+        <img src="/images/deleteButtonImgSmaller.png" alt="Delete">
       </button>
 
     </div>
@@ -73,7 +74,7 @@
         </caption>
         <tbody id="tableBodyId"> </tbody>
         <caption align="bottom">
-          <p id="endGoal"> I've reached the goal! </p>
+          <p id="endGoal" th:text="#{goal.reached}"/>
         </caption>
 
       </table>
