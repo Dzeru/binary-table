@@ -200,7 +200,7 @@ function getGoalInfo() {
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////-------------------//////////////////////////
 
-var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
+var isJavaEnabled = 0; // Изменять вручную, 0 для debug'а без сервера
 $(document).ready(function() {
     if (!isJavaEnabled) {
       var goalNumber = 5;
@@ -219,6 +219,20 @@ $(document).ready(function() {
 });
 
 function initializeTable() {
+  window.vkAsyncInit = function() {
+    VK.init({
+      apiId: 6700902
+    });
+  };
+
+  setTimeout(function() {
+    var el = document.createElement("script");
+    el.type = "text/javascript";
+    el.src = "https://vk.com/js/api/openapi.js?159";
+    el.async = true;
+    document.getElementById("vk_api_transport").appendChild(el);
+  }, 0);
+
   tableTitleString.innerHTML = data.title
   calculateProgressString();
   initializeTitle();
@@ -243,9 +257,14 @@ function initializeTable() {
   $("#endGoal").on('click', function() {
       finishGoal();
   }); // TODO Добавить подтверждение
-  $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
-      typeWriterCall();
-  });
+  if (data.note) {
+      $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
+          typeWriterCall();
+      });
+  }
+  else {
+      $("#openNoteBtn").css('visibility', 'hidden');
+  }
   $("button.screenShotter").on("click", function() {
       makeScreenshot();
   });
@@ -331,7 +350,7 @@ var confirmationsCount = 0;
 $("button.deleteGoal").on('click', function(event) {
     askDeleteConfirmation();
     $(".confNumber").on('click', function(event) {
-        if (this.innerHTML == 0) {
+        if (this.innerHTML === 0) {
             this.innerHTML = 1;
             confirmationsCount = confirmationsCount + 1;
         }
@@ -409,7 +428,7 @@ function makeScreenshot() {
     var tbl_width = document.getElementsByClassName('cross')[0].offsetWidth;
     var tbl_height = document.getElementsByClassName('cross')[0].offsetHeight;
     var options = {
-        backgroundColor: '#b172c5',
+        backgroundColor: '#ad33ff',
         height: tbl_height,
         width: tbl_width,
     };
@@ -432,23 +451,15 @@ function makeScreenshot() {
           data: postData
       })
       .done(function(res) {
-        console.log("Screenshot saved!")
-        console.log(JSON.stringify(res));
 
         imgSource = res.url;
 
         $("meta[property='og:image']").attr('content', imgSource);
         $("#vkshare").fadeTo("fast", 1);
-        document.getElementById('vkshare').innerHTML =
-          VK.Share.button(
-            {
-              url: 'https://binarytable.herokuapp.com/',
-              image: imgSource
-            },
-            {
-              type: 'custom',
-              text: '<img src="/images/vk-icon.png">',
-            });
+        $("#vkshare").on('click', function() {
+          vkPost(canvas);
+        });
+        
         })
         .fail(function(res) {
           console.log("Too bad! Image was not saved on server!");
@@ -456,9 +467,71 @@ function makeScreenshot() {
         });
 
     });
+}
 
+
+function vkPost(canvas) {
+  var settings = 8196;
+  VK.Auth.login(function(response) {
+    if (response.session) {
+      var urlToLoad = 
+      {
+        upload_url : "",
+        album_id : 0,
+        user_id : 0
+      };
+      
+      VK.Api.call('photos.getWallUploadServer', {v: 5.85}, function(r) {       
+        
+        urlToLoad.upload_url = r.response.upload_url;
+        urlToLoad.album_id = r.response.album_id;
+        urlToLoad.user_id = r.response.user_id;
+        
+        var uploadImageData = {
+          image_url: $("meta[property='og:image']").attr('content'),
+          upload_url: r.response.upload_url
+        }
+        
+        $.ajax({
+          //url:'http://www.mocky.io/v2/5afffe89310000730076ded3',
+          url: '/vkpostimage',
+          method:'POST',
+          //dataType: 'jsonp',                                // Здесь это не нужно!
+          //contentType: 'application/json; charset=utf-8',   // Потому что гладиолус
+          data: uploadImageData
+        })
+        .done(function(res) {
+          console.log("Yeah");
+          
+          })
+          .fail(function(res) {
+            console.log("Too bad! Image was not saved on server!");
+            console.log(JSON.stringify(res));
+          });
+      });
+    
+
+        /* Пользователь успешно авторизовался */
+      if (response.settings) {
+        /* Выбранные настройки доступа пользователя, если они были запрошены */
+      }
+    
+    } else {
+      /* Пользователь нажал кнопку Отмена в окне авторизации */
+    }
+  }, settings);
+  
+  
+    
+
+
+
+  
+  //VK.Api.call('wall.post', {attachments: , v: 5.85});
 
 }
+
+
 
 ///////////////////////////////////////////////////////////////////////
 // Завершение цели
