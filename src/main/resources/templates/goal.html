@@ -19,78 +19,79 @@
     <script src="/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
     <script src="/js/jquery-ui.min.js" th:src="@{/js/jquery-ui.min.js}"></script>
     <script src="/js/html2canvas.min.js" th:src="@{/js/html2canvas.min.js}"></script>
-    <script type="text/javascript" src="https://vk.com/js/api/share.js?93" th:src="@{https://vk.com/js/api/share.js?93}" charset="windows-1251"></script>
+    <script src="https://vk.com/js/api/openapi.js?159" type="text/javascript"></script>
     <style>.cross { cursor: pointer; }</style>
 </head>
 
 <body>
-    <span id="openNoteBtn"><img src = "/images/note-image.png" alt="[Note]"></span>
-    <span id="stepsCounter">
-      (<span id="stepsCurrent"></span>/<span id="stepsOutOf" contenteditable="true"></span>)
-    </span>
-    <div id="deleteConfirmation" title="Are you sure to DELETE? 0->1 " style="display: none">
-      <p align="center">
-        <button class="confNumber"> 0 </button>
-        <button class="confNumber"> 0 </button>
-      </p>
-      <p align="center">
-        <button class="confNumber"> 0 </button>
-        <button class="confNumber"> 0 </button>
-      </p>
-    </div>
+  <div id="vk_api_transport"></div>
+  <span id="openNoteBtn"><img src = "/images/note-image.png" alt="[Note]"></span>
+  <span id="stepsCounter">
+    (<span id="stepsCurrent"></span>/<span id="stepsOutOf" contenteditable="true"></span>)
+  </span>
+  <div id="deleteConfirmation" title="Are you sure to DELETE? 0->1 " style="display: none">
+    <p align="center">
+      <button class="confNumber"> 0 </button>
+      <button class="confNumber"> 0 </button>
+    </p>
+    <p align="center">
+      <button class="confNumber"> 0 </button>
+      <button class="confNumber"> 0 </button>
+    </p>
+  </div>
 
-    <div id="tools">
-      <a href="/goals" style="text-decoration: none">
-        <!-- <button class="arrowBack ui-borders">
-          < - -
-        </button> -->
-          <img src="/images/leftArrowSmaller.png" alt="Back">
-      </a>
-      <button class="saveState ui-noborders">
-        <img src="/images/saveButtonImgSmaller.png" alt="Save">
-      </button>
+  <div id="tools">
+    <a href="/goals" style="text-decoration: none">
+      <!-- <button class="arrowBack ui-borders">
+        < - -
+      </button> -->
+        <img src="/images/leftArrowSmaller.png" alt="Back">
+    </a>
+    <button class="saveState ui-noborders">
+      <img src="/images/saveButtonImgSmaller.png" alt="Save">
+    </button>
 
-      <button class="deleteGoal ui-noborders">
-        <img src="/images/deleteButtonImgSmaller.png" alt="Delete">
-      </button>
+    <button class="deleteGoal ui-noborders">
+      <img src="/images/deleteButtonImgSmaller.png" alt="Delete">
+    </button>
 
-    </div>
+  </div>
 
-    <p> </p>
+  <p> </p>
 
-    <div id="content">
-      <table class="cross" cellspacing="0" border="0" cols="7" align="center">
-        <caption style="caption-side: top;">
-          <table id="binTable" bordercolor="white" cellspacing="0" border="1" cols="1" align="center">
-            <tr>
-              <td class="mytitle">
-                <span id="titleString" contenteditable="true">
-                  Loading, please, wait...
-                </span>
-              </td>
-            </tr>
-          </table>
-          <p id="note" contenteditable="true"> </p>
-        </caption>
-        <tbody id="tableBodyId"> </tbody>
-        <caption align="bottom">
-          <p id="endGoal" th:text="#{goal.reached}"/>
-        </caption>
+  <div id="content">
+    <table class="cross" cellspacing="0" border="0" cols="7" align="center">
+      <caption style="caption-side: top;">
+        <table id="binTable" bordercolor="white" cellspacing="0" border="1" cols="1" align="center">
+          <tr>
+            <td class="mytitle">
+              <span id="titleString" contenteditable="true">
+                Loading, please, wait...
+              </span>
+            </td>
+          </tr>
+        </table>
+        <p id="note" contenteditable="true"> </p>
+      </caption>
+      <tbody id="tableBodyId"> </tbody>
+      <caption align="bottom">
+        <p id="endGoal" th:text="#{goal.reached}"/>
+      </caption>
 
-      </table>
-    </div>
+    </table>
+  </div>
 
-    <div class="additional">
-      <button class="screenShotter ui-borders"> S H A R E </button>
-      <button id="vkshare" class="ui-noborders"> <img src="/images/vk-icon.png"> </button>
-    </div>
+  <div class="additional">
+    <button class="screenShotter ui-borders"> S H A R E </button>
+    <button id="vkshare" class="ui-noborders"> <img src="/images/vk-icon.png"> </button>
+  </div>
 
-    <button class="additional collapsible ui-borders" th:text="#{goal.collaborators}">Collaborators</button>
-    <ul class="contentCollapse" id="collabs">
-      <li> Some emails here! </li>
-    </ul>
+  <button class="additional collapsible ui-borders" th:text="#{goal.collaborators}">Collaborators</button>
+  <ul class="contentCollapse" id="collabs">
+    <li> Some emails here! </li>
+  </ul>
 
-    <!-- Конец блока кнопок -->
-    <script src="/js/goal-logic.js"></script>
+  <!-- Конец блока кнопок -->
+  <script src="/js/goal-logic.js"></script>
 </body>
 </html>
