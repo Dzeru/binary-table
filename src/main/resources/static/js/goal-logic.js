@@ -428,7 +428,7 @@ function makeScreenshot() {
     var tbl_width = document.getElementsByClassName('cross')[0].offsetWidth;
     var tbl_height = document.getElementsByClassName('cross')[0].offsetHeight;
     var options = {
-        backgroundColor: '#ad33ff',
+        backgroundColor: '#B172C5',
         height: tbl_height,
         width: tbl_width,
     };
@@ -503,12 +503,29 @@ function vkPost(canvas) {
           {
               'X-CSRF-TOKEN' : $('meta[name="_csrf"]').attr('content')
           }})
-        .done(function(res) {
-          console.log("Yeah! Screenshot saved!");
-          
+          .done(function(res) {
+            console.log("Yeah! Screenshot saved!");
+            VK.Api.call('photos.saveWallPhoto', 
+              {
+                v: 5.85,
+                user_id: r.user_id,
+                photo: res.photo,
+                server: res.server,
+                hash: res.hash
+              }, 
+              function(saveRes) {
+                VK.Api.call('wall.post', 
+                {
+                  v: 5.85,
+                  attachments: "photo" + saveRes.owner_id + "_" + saveRes.id
+                },
+                function(wallPostRes) {
+                  console.log("IT IS FINALLY WORKING OH MY GOD OH MY GOD");
+                });
+              });
           })
           .fail(function(res) {
-            console.log("Too bad! Image was not saved on server!");
+            console.log("Too bad! Image was not send to bit server!");
             console.log(JSON.stringify(res));
           });
       });
