@@ -200,7 +200,7 @@ function getGoalInfo() {
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////-------------------//////////////////////////
 
-var isJavaEnabled = 0; // Изменять вручную, 0 для debug'а без сервера
+var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
 $(document).ready(function() {
     if (!isJavaEnabled) {
       var goalNumber = 5;
@@ -376,7 +376,7 @@ function deleteGoal() {
     url:'/deletegoal',
     method:'POST',
     dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
+    contentType: 'application/json;charset=utf-8',
     data: JSON.stringify(formData),
     headers:
     {
@@ -486,22 +486,25 @@ function vkPost(canvas) {
         urlToLoad.upload_url = r.response.upload_url;
         urlToLoad.album_id = r.response.album_id;
         urlToLoad.user_id = r.response.user_id;
-        
+
         var uploadImageData = {
-          image_url: $("meta[property='og:image']").attr('content'),
-          upload_url: r.response.upload_url
+          imageUrl: $("meta[property='og:image']").attr('content'),
+          uploadUrl: r.response.upload_url
         }
         
         $.ajax({
           //url:'http://www.mocky.io/v2/5afffe89310000730076ded3',
           url: '/vkpostimage',
-          method:'POST',
-          //dataType: 'jsonp',                                // Здесь это не нужно!
-          //contentType: 'application/json; charset=utf-8',   // Потому что гладиолус
-          data: uploadImageData
-        })
+          method: 'POST',
+          dataType: 'json',                                // Здесь это не нужно!
+          contentType: 'application/json;charset=utf-8',   // Потому что гладиолус
+          data: JSON.stringify(uploadImageData),
+          headers:
+          {
+              'X-CSRF-TOKEN' : $('meta[name="_csrf"]').attr('content')
+          }})
         .done(function(res) {
-          console.log("Yeah");
+          console.log("Yeah! Screenshot saved!");
           
           })
           .fail(function(res) {
