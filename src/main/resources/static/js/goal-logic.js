@@ -219,7 +219,7 @@ $(document).ready(function() {
 });
 
 function initializeTable() {
-  window.vkAsyncInit = function() {
+  /*window.vkAsyncInit = function() {
     VK.init({
       apiId: 6700902
     });
@@ -231,7 +231,7 @@ function initializeTable() {
     el.src = "https://vk.com/js/api/openapi.js?159";
     el.async = true;
     document.getElementById("vk_api_transport").appendChild(el);
-  }, 0);
+  }, 0);*/
 
   tableTitleString.innerHTML = data.title
   calculateProgressString();
@@ -472,6 +472,8 @@ function makeScreenshot() {
 
 function vkPost(canvas) {
   var settings = 8196;
+  VK.Auth.revokeGrants(function(revokeRes) {console.log(revokeRes)});
+
   VK.Auth.login(function(response) {
     if (response.session) {
       var urlToLoad = 
@@ -480,7 +482,7 @@ function vkPost(canvas) {
         album_id : 0,
         user_id : 0
       };
-      
+
       VK.Api.call('photos.getWallUploadServer', {v: 5.85}, function(r) {       
         
         urlToLoad.upload_url = r.response.upload_url;
@@ -508,7 +510,6 @@ function vkPost(canvas) {
             VK.Api.call('photos.saveWallPhoto', 
               {
                 v: 5.85,
-                user_id: r.user_id,
                 photo: res.photo,
                 server: res.server,
                 hash: res.hash
@@ -520,6 +521,7 @@ function vkPost(canvas) {
                   attachments: "photo" + saveRes.owner_id + "_" + saveRes.id
                 },
                 function(wallPostRes) {
+                  console.log(saveRes);
                   console.log("IT IS FINALLY WORKING OH MY GOD OH MY GOD");
                 });
               });
@@ -533,6 +535,8 @@ function vkPost(canvas) {
 
         /* Пользователь успешно авторизовался */
       if (response.settings) {
+      console.log("Настройки пользователя:");
+      console.log(response.settings);
         /* Выбранные настройки доступа пользователя, если они были запрошены */
       }
     
@@ -540,15 +544,7 @@ function vkPost(canvas) {
       /* Пользователь нажал кнопку Отмена в окне авторизации */
     }
   }, settings);
-  
-  
-    
-
-
-
-  
   //VK.Api.call('wall.post', {attachments: , v: 5.85});
-
 }
 
 
