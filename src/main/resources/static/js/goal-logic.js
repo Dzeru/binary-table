@@ -200,7 +200,7 @@ function getGoalInfo() {
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////-------------------//////////////////////////
 
-var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
+var isJavaEnabled = 0; // Изменять вручную, 0 для debug'а без сервера
 $(document).ready(function() {
     if (!isJavaEnabled) {
       var goalNumber = 5;
@@ -246,6 +246,7 @@ function initializeTable() {
   $("button.saveState").on('click', function(event) {
       updateGoal();
   });
+  // Изменение title или содержимого заметки делает кнопку сохранения активной
   document.getElementById('titleString').addEventListener('focus', function() {
       $("button.saveState").prop('disabled', false);
       $("button.saveState").fadeTo("slow", 1);
@@ -279,6 +280,17 @@ function initializeTable() {
   $('#stepsOutOf').on('blur', function() {
     checkInputStepsChange();
   });
+
+  // Копирование ссылки шэринга в буфер обмена
+  $('#photolink').on('click', function() {
+  const el = document.createElement('textarea');
+  el.value = $('#photolink').text();
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+  alert("Added to clipboard!");
+  })
 }
 
 
@@ -453,6 +465,7 @@ function makeScreenshot() {
       .done(function(res) {
 
         imgSource = res.url;
+        $("#photolink").text(res.url);
 
         $("meta[property='og:image']").attr('content', imgSource);
         $("#vkshare").fadeTo("fast", 1);
@@ -618,9 +631,9 @@ function getCollabsInfo() {
     fillCollabsInfo(data.collaborators);
   }
 }
-
 ///////////////////////////////////////////////////////////////////////
-// Потенциальная нереализованная магия
+// Изменение таблицы в связи с редактированием количества шагов
+
 var previousSteps;
 
 // For actions to be done after steps are changed
@@ -679,6 +692,16 @@ function checkInputStepsChange() {
   }
 }
 
+///////////////////////////////////////////////////////////////////////
+// Потенциальная нереализованная магия
+
+///////////////////////////////////////////////////////////////////////
+// Копирование содержимого ссылки на шэринг-картинку при клике
+
+function copyToClipboard(str) {
+  // Возможно, нужно перенести в click евент
+
+}
 
 
 

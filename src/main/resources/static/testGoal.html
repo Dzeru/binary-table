@@ -6,6 +6,7 @@
     <meta name="_csrf_header" content="X-CSRF-TOKEN"/>
     <meta property="og:image" content=""/>
 
+    <link href="https://fonts.googleapis.com/css?family=Jura" rel="stylesheet">
     <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="css/jquery-ui.min.css"> <!-- Порядок важен!! -->
     <link rel="stylesheet" type="text/css" href="css/global.css">
@@ -40,18 +41,16 @@
     </div>
     
     <div id="tools">
-      <a href="/goals" style="text-decoration: none;">
-        <button class="arrowBack ui-borders"> 
-          < - -  
-        </button>
+      <a href="/goals" style="text-decoration: none">
+          <img src="images/leftArrowSmaller.png" alt="Back">
       </a>
 
       <button class="saveState ui-noborders"> 
-        <img src="images/saveButtonImg.png" alt="Save">
+        <img src="images/saveButtonImgSmaller.png" alt="Save">
       </button>
 
       <button class="deleteGoal ui-noborders">
-        <img src="images/deleteButtonImg.png" alt="Delete">
+        <img src="images/deleteButtonImgSmaller.png" alt="Delete">
       </button>
 
     </div>
@@ -85,13 +84,17 @@
       <button id="vkshare" class="ui-noborders"> <img src="images/vk-icon.png"> </button>
     </div>  
 
+    <div class="additional">
+      <span>Click to copy link ->  </span>
+      <span id="photolink">this is random text to be added to cliboard</span>
+    </div>
+
     <button class="additional collapsible ui-borders"> Collaborators </button>
     <ul class="contentCollapse" id="collabs">
       <li> Some emails here! </li>
-    </ul>>
+    </ul>
     
     <!-- Конец блока кнопок -->
     <script src="js/goal-logic.js"></script>
   </body>
-  flaticons
 </html>
