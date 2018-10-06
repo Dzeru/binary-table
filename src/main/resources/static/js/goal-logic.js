@@ -208,7 +208,7 @@ $(document).ready(function() {
       data.title = 'client-only testing';
       data.id = 9000;
       data.userId = 0;
-      data.note = 'this feature is not implemented probably';
+      data.note = '';
 
       // Логика странички
       initializeTable();
@@ -258,14 +258,9 @@ function initializeTable() {
   $("#endGoal").on('click', function() {
       finishGoal();
   }); // TODO Добавить подтверждение
-  if (data.note) {
-      $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
-          typeWriterCall();
-      });
-  }
-  else {
-      $("#openNoteBtn").css('visibility', 'hidden');
-  }
+  $("#openNoteBtn").on('click', function(event) { // Кнопка просмотра заметки
+      typeWriterCall();
+  });
   $("button.screenShotter").on("click", function() {
       makeScreenshot();
   });
