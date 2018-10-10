@@ -4,6 +4,7 @@
     <title th:text="#{goal.addGoal}"></title>
 </head>
 <body class="sticky-footer-body">
+<th:block th:replace="fragments/usernavbar :: usernavbar"/>
 <section class="sticky-footer-section">
 <div class="mx-auto border my-5 py-3 px-3 form">
     <div class="my-3" align="center" th:if="${error}">
@@ -31,7 +32,6 @@
         </div>
         <div class="my-5">
             <input class="button button-dark" type="submit" th:value="#{goal.addGoal}">
-            <a class="button button-white-dark-border" style="margin-left: 50%;" th:href="@{/goals}" href="/goals" th:text="#{meta.back}"></a>
         </div>
     </form>
 </div>

@@ -70,8 +70,9 @@ public class GoalsController
 	Gets page /addgoal, where user can add the goal
 	 */
 	@GetMapping("/addgoal")
-	public String newGoal()
+	public String newGoal(@AuthenticationPrincipal User user, Model model)
 	{
+		model.addAttribute("user", user);
 		return "addgoal";
 	}
 
@@ -91,6 +92,7 @@ public class GoalsController
 			model.addAttribute("error", "error.emptyGoal");
 			model.addAttribute("stepsVal", steps);
 			model.addAttribute("noteVal", note);
+			model.addAttribute("user", user);
 			return "addgoal";
 		}
 		if(steps == null || steps <= 0)
@@ -98,6 +100,7 @@ public class GoalsController
 			model.addAttribute("error", "error.wrongSteps");
 			model.addAttribute("goalNameVal", goalName);
 			model.addAttribute("noteVal", note);
+			model.addAttribute("user", user);
 			return "addgoal";
 		}
 
@@ -140,6 +143,7 @@ public class GoalsController
 				else
 				{
 					model.addAttribute("error", "error.emailDoesNotExist");
+					model.addAttribute("user", user);
 					return "addgoal";
 				}
 			}

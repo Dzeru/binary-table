@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 				.authorizeRequests()
 				.antMatchers("/resources/**", "/", "/index",
 						"/signup", "/forgotpassword", "/updatepassword/**",
-						"/about", "/terms", "/feedback", "/contacts","/error").permitAll()
+						"/about", "/terms", "/feedback", "/contacts", "/usecases", "/error").permitAll()
 				.anyRequest().authenticated()
 				.and().formLogin().loginPage("/login").defaultSuccessUrl("/goals").failureUrl("/login?error").permitAll()
 				.and().logout().logoutSuccessUrl("/").permitAll();
@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	@Override
 	public void configure(WebSecurity security)
 	{
-		security.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/pictures/**", "/favicon.png");
+		security.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/favicon.png");
 	}
 
 	@Override

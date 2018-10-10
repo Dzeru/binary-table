@@ -83,18 +83,17 @@
   </div>
 
   <div class="additional">
-    <button class="screenShotter ui-borders"> S H A R E </button>
-    <button id="vkshare" class="ui-noborders"> <img src="/images/vk-icon.png"> </button>
+    <button class="screenShotter ui-borders" th:text="#{goal.screenshot}"/>
   </div>
 
   <div class="additional">
-    <span>Click to copy link ->  </span>
+    <!-- <span>Click to copy link ->&nbsp;&nbsp;&nbsp;</span> -->
     <span id="photolink"></span>
   </div>
 
-  <button class="additional collapsible ui-borders" th:text="#{goal.collaborators}">Collaborators</button>
+  <button class="additional collapsible ui-borders" th:text="#{goal.collaborators}"/>
   <ul class="contentCollapse" id="collabs">
-    <li> Some emails here! </li>
+    <li>Some emails here!</li>
   </ul>
 
   <!-- Конец блока кнопок -->

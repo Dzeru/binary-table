@@ -4,18 +4,22 @@
 <th:block th:fragment="navbar">
 <nav class="navbar navbar-expand-md">
     <a class="navbar-brand link-white logo" th:href="@{/}"href="/">Binary Table <small>&beta;eta</small></a>
-    <div class="navbar-nav mr-auto fl w65">
-        <a class="nav-item nav-link link-white" href="?lang=en">En</a>
-        <a class="nav-item nav-link link-white" href="?lang=ru">Ru</a>
-    </div>
     <button class="navbar-toggler button-collapse" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon button-collapse"></span>
     </button>
-    <div class="collapse navbar-collapse fr w35" id="navbarSupportedContent" align="right">
-        <div class="navbar-nav mr-auto">
-                <a class="nav-item button button-dark my-3 ml-2" th:href="@{/signup}" th:text="#{meta.signup}"></a>
-                <a class="nav-item button button-white my-3 ml-3" th:href="@{/login}" th:text="#{meta.login}"></a>
-        </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown mr-5">
+                <a class="nav-item dropdown-toggle link-white" href="#" data-toggle="dropdown">Lang</a>
+                <ul class="dropdown-menu" style="background:#b172c5">
+                    <li><a class="nav-item nav-link link-white" href="?lang=en">English</a></li>
+                    <li><a class="nav-item nav-link link-white" href="?lang=ru">Russian</a></li>
+                </ul>
+            </li>
+            <li><a class="nav-item link-white mr-4" th:href="@{/usecases}" th:text="#{meta.useCases}"></a></li>
+            <li><a class="nav-item button button-dark ml-2" th:href="@{/signup}" th:text="#{meta.signup}"></a></li>
+            <li><a class="nav-item button button-white ml-3" th:href="@{/login}" th:text="#{meta.login}"></a></li>
+        </ul>
     </div>
 </nav>
 </th:block>

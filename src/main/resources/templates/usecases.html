@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<head th:replace="fragments/meta :: meta(~{::title})">
+    <title th:text="#{meta.useCases}"/>
+</head>
+<body>
+<th:block th:replace="fragments/navbar :: navbar"/>
+<section class="sticky-footer-section">
+<div class="pr-4">
+    <div align="center"><img th:src="@{http://res.cloudinary.com/pie2table/raw/upload/v1539190991/goal/30_102612729_50.jpg}" alt="Go to the gym" vspace="5px"/></div>
+    <div align="center"><img th:src="@{http://res.cloudinary.com/pie2table/raw/upload/v1539191065/goal/30_102612734_51.jpg}" alt="Homework math" vspace="5px"/></div>
+    <div align="center"><img th:src="@{http://res.cloudinary.com/pie2table/raw/upload/v1539190918/goal/30_102612724_52.jpg}" alt="Days until the holidays" vspace="5px"/></div>
+</div>
+</section>
+<th:block th:replace="fragments/footer :: footer"/>
+</body>
+</html>

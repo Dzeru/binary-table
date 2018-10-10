@@ -200,7 +200,7 @@ function getGoalInfo() {
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////-------------------//////////////////////////
 
-var isJavaEnabled = 0; // Изменять вручную, 0 для debug'а без сервера
+var isJavaEnabled = 1; // Изменять вручную, 0 для debug'а без сервера
 $(document).ready(function() {
     if (!isJavaEnabled) {
       var goalNumber = 5;
@@ -219,19 +219,6 @@ $(document).ready(function() {
 });
 
 function initializeTable() {
-  /*window.vkAsyncInit = function() {
-    VK.init({
-      apiId: 6700902
-    });
-  };
-
-  setTimeout(function() {
-    var el = document.createElement("script");
-    el.type = "text/javascript";
-    el.src = "https://vk.com/js/api/openapi.js?159";
-    el.async = true;
-    document.getElementById("vk_api_transport").appendChild(el);
-  }, 0);*/
 
   tableTitleString.innerHTML = data.title
   calculateProgressString();
@@ -429,7 +416,7 @@ function typeWriterCall() {
 }
 
 ///////////////////////////////////////////////////////////////////////
-// Sharing
+// Screenshot
 
 function makeScreenshot() {
     var tbl_width = document.getElementsByClassName('cross')[0].offsetWidth;
@@ -458,104 +445,16 @@ function makeScreenshot() {
           data: postData
       })
       .done(function(res) {
-
-        imgSource = res.url;
-        $("#photolink").text(res.url);
-
-        $("meta[property='og:image']").attr('content', imgSource);
-        $("#vkshare").fadeTo("fast", 1);
-        $("#vkshare").on('click', function() {
-          vkPost(canvas);
-        });
-        
+         imgSource = res.url;
+         $("#photolink").text(res.url);
+         console.log("Screenshot was saved on Cloudinary.");
         })
-        .fail(function(res) {
-          console.log("Too bad! Image was not saved on server!");
-          console.log(JSON.stringify(res));
-        });
-
+      .fail(function(res) {
+         console.log("Too bad! Image was not saved on Cloudinary!");
+         console.log(JSON.stringify(res));
+      });
     });
 }
-
-
-function vkPost(canvas) {
-  var settings = 8196;
-  VK.Auth.revokeGrants(function(revokeRes) {console.log(revokeRes)});
-
-  VK.Auth.login(function(response) {
-    if (response.session) {
-      var urlToLoad = 
-      {
-        upload_url : "",
-        album_id : 0,
-        user_id : 0
-      };
-
-      VK.Api.call('photos.getWallUploadServer', {v: 5.85}, function(r) {       
-        
-        urlToLoad.upload_url = r.response.upload_url;
-        urlToLoad.album_id = r.response.album_id;
-        urlToLoad.user_id = r.response.user_id;
-
-        var uploadImageData = {
-          imageUrl: $("meta[property='og:image']").attr('content'),
-          uploadUrl: r.response.upload_url
-        }
-        
-        $.ajax({
-          //url:'http://www.mocky.io/v2/5afffe89310000730076ded3',
-          url: '/vkpostimage',
-          method: 'POST',
-          dataType: 'json',                                // Здесь это не нужно!
-          contentType: 'application/json;charset=utf-8',   // Потому что гладиолус
-          data: JSON.stringify(uploadImageData),
-          headers:
-          {
-              'X-CSRF-TOKEN' : $('meta[name="_csrf"]').attr('content')
-          }})
-          .done(function(res) {
-            console.log("Yeah! Screenshot saved!");
-            VK.Api.call('photos.saveWallPhoto', 
-              {
-                v: 5.85,
-                photo: res.photo,
-                server: res.server,
-                hash: res.hash
-              }, 
-              function(saveRes) {
-                VK.Api.call('wall.post', 
-                {
-                  v: 5.85,
-                  attachments: "photo" + saveRes.owner_id + "_" + saveRes.id
-                },
-                function(wallPostRes) {
-                  console.log(saveRes);
-                  console.log("IT IS FINALLY WORKING OH MY GOD OH MY GOD");
-                });
-              });
-          })
-          .fail(function(res) {
-            console.log("Too bad! Image was not send to bit server!");
-            console.log(JSON.stringify(res));
-          });
-      });
-    
-
-        /* Пользователь успешно авторизовался */
-      if (response.settings) {
-      console.log("Настройки пользователя:");
-      console.log(response.settings);
-        /* Выбранные настройки доступа пользователя, если они были запрошены */
-      }
-    
-    } else {
-      /* Пользователь нажал кнопку Отмена в окне авторизации */
-    }
-  }, settings);
-  //VK.Api.call('wall.post', {attachments: , v: 5.85});
-}
-
-
 
 ///////////////////////////////////////////////////////////////////////
 // Завершение цели

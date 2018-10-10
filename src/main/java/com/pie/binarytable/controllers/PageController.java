@@ -38,4 +38,10 @@ public class PageController
 	{
 		return "contacts";
 	}
+
+	@GetMapping("/usecases")
+	public String useCases()
+	{
+		return "usecases";
+	}
 }
