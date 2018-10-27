@@ -11,6 +11,7 @@ var data = {
   groupGoal: true,
   goalTimestamp: '0-0-0',
   collaborators: [],
+  hash: '0',
   // web-only variables
   saved: true,
   lastState: '',
@@ -183,6 +184,7 @@ function getGoalInfo() {
       data.finished = res.finished;
       data.groupGoal = res.groupGoal;
       data.goalTimestamp = res.goalTimestamp;
+      data.hash = res.hash;
 
       // Логика странички
       initializeTable();
@@ -209,6 +211,7 @@ $(document).ready(function() {
       data.id = 9000;
       data.userId = 0;
       data.note = '';
+      data.hash = '0';
 
       // Логика странички
       initializeTable();
@@ -290,7 +293,8 @@ function updateGoal() {
         "note": data.note,
         "userId": data.userId,
         "finished": data.finished,
-        "goalTimestamp": data.goalTimestamp
+        "goalTimestamp": data.goalTimestamp,
+        "hash": data.hash
     };
 
     $.ajax({

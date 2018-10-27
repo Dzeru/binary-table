@@ -16,7 +16,7 @@
         </thead>
         <tbody>
         <tr th:each="goal : ${goals}">
-            <td valign="center"><b><a class="link-semidark" th:href="@{goal(id=${goal.id})}" th:text="${goal.goalName}"></a></b></td>
+            <td valign="center"><b><a class="link-semidark" th:href="@{goal(id=${goal.id},hash=${goal.hash})}" th:text="${goal.goalName}"></a></b></td>
             <td valign="center"><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></td>
             <td valign="center" th:text="${goal.note}"></td>
         </tr>
@@ -37,7 +37,7 @@
             </thead>
             <tbody>
             <tr th:each="goal : ${finishedGoals}">
-                <td valign="center"><a class="link-semidark" th:href="@{goal(id=${goal.id})}" th:text="${goal.goalName}"></a></td>
+                <td valign="center"><b><a class="link-semidark" th:href="@{goal(id=${goal.id},hash=${goal.hash})}" th:text="${goal.goalName}"></a></b></td>
                 <td valign="center"><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></td>
                 <td valign="center" th:text="${goal.note}"></td>
             </tr>

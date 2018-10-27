@@ -3,6 +3,7 @@ package com.pie.binarytable.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name = "goal")
@@ -37,6 +38,9 @@ public class Goal
 
 	@NotNull
 	private String goalTimestamp;
+
+	@NotNull
+	private String hash;
 
 /*
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -160,10 +164,21 @@ public class Goal
 		this.goalTimestamp = goalTimestamp;
 	}
 
+	public String getHash()
+	{
+		return hash;
+	}
+
+	public void setHash(String hash)
+	{
+		this.hash = hash;
+	}
+
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
 		Goal goal = (Goal) o;
 		return getAllSteps() == goal.getAllSteps() &&
 				getDoneSteps() == goal.getDoneSteps() &&
@@ -174,11 +189,13 @@ public class Goal
 				Objects.equals(getCurrentState(), goal.getCurrentState()) &&
 				Objects.equals(getNote(), goal.getNote()) &&
 				Objects.equals(getUserId(), goal.getUserId()) &&
-				Objects.equals(getGoalTimestamp(), goal.getGoalTimestamp());
+				Objects.equals(getGoalTimestamp(), goal.getGoalTimestamp()) &&
+				Objects.equals(getHash(), goal.getHash());
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(getId(), getGoalName(), getAllSteps(), getDoneSteps(), getCurrentState(), getNote(), getUserId(), isFinished(), isGroupGoal(), getGoalTimestamp());
+	public int hashCode()
+	{
+		return Objects.hash(getId(), getGoalName(), getAllSteps(), getDoneSteps(), getCurrentState(), getNote(), getUserId(), isFinished(), isGroupGoal(), getGoalTimestamp(), getHash());
 	}
 }

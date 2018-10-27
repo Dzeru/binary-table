@@ -6,6 +6,7 @@ import com.pie.binarytable.dao.UserDAO;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /*
@@ -118,6 +120,9 @@ public class GoalsController
 
 		newGoal.setCurrentState(sb.toString());
 		newGoal.setFinished(false);
+
+		UUID hash = UUID.randomUUID();
+		newGoal.setHash(hash.toString());
 
 		goalDAO.save(newGoal);
 

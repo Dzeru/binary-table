@@ -35,18 +35,18 @@ public class MailSender
 	private String sign = "<br>We wish you reachable goals!<br>Pie Team";
 
 	private String aware = "<p>If you don't figure out what this email is about, ignore it. " +
-			               "If it isn't you who wants to update password," +
+			               "If it isn't you who wants to update password, " +
 			               "ignore it too or contact us to prevent account theft.</p>";
 
 	private String greetingEmail = "<p>Thanks for signing up to Binary Table! " +
 			                       "Now you can track your progress smarter. " +
-			                       "You can log in <a href=\"http://binarytable.herokuapp.com/login\">here</a> with the email address %s .</p>" +
+			                       "You can log in <a href=\"http://binarytable.tk/login\">here</a> with the email address %s .</p>" +
 			                       "<p>We are open for dialog, so you can reply to this email or send " +
 			                       "a new one to our address to get in touch with us directly. " +
-			                       "You can find all our contacts <a href=\"http://binarytable.herokuapp.com/contacts\">here</a>. All sorts of feedback are welcomed!</p>";
+			                       "You can find all our contacts <a href=\"http://binarytable.tk/contacts\">here</a>. All sorts of feedback are welcomed!</p>";
 
 	private String forgotPassword = "If you forgot password, visit next link to update it: " +
-			                        "http://binarytable.herokuapp.com/updatepassword/%s .</p>";
+			                        "http://binarytable.tk/updatepassword/%s .</p>";
 
 	private String passwordWasUpdated = "Your password was successfully updated.</p>";
 
