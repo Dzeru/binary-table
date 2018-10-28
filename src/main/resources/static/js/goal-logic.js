@@ -348,7 +348,7 @@ var confirmationsCount = 0;
 $("button.deleteGoal").on('click', function(event) {
     askDeleteConfirmation();
     $(".confNumber").on('click', function(event) {
-        if (this.innerHTML === 0) {
+        if (this.innerHTML == 0) {
             this.innerHTML = 1;
             confirmationsCount = confirmationsCount + 1;
         }
@@ -382,7 +382,7 @@ function deleteGoal() {
     }})
     .done(function(res) {
       location.replace('/goals'); //location.href = '/goals' (?)
-      console.log("Delete request sended!");
+      console.log("Delete request is sent!");
     })
     .fail(function(res) {
       location.replace('/goals');

@@ -30,19 +30,20 @@ public class AuthProvider implements AuthenticationProvider
 
 		User user = (User) userService.loadUserByUsername(username);
 
-		if(user == null || !user.getUsername().equals(username))
+		if(user != null && (user.getUsername().equals(username) || user.getName().equals(username)))
 		{
+			if(!passwordEncoder.matches(password, user.getPassword()))
+			{
+				throw new BadCredentialsException("Wrong password");
+			}
+
+			Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
+
+			return new UsernamePasswordAuthenticationToken(user, password, authorities);
+		}
+		else
+
 			throw new BadCredentialsException("Username not found");
-		}
-
-		if(!passwordEncoder.matches(password, user.getPassword()))
-		{
-			throw new BadCredentialsException("Wrong password");
-		}
-
-		Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
-
-		return new UsernamePasswordAuthenticationToken(user, password, authorities);
 	}
 
 	public boolean supports(Class<?> arg)

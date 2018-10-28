@@ -19,18 +19,15 @@
     <script src="/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
     <script src="/js/jquery-ui.min.js" th:src="@{/js/jquery-ui.min.js}"></script>
     <script src="/js/html2canvas.min.js" th:src="@{/js/html2canvas.min.js}"></script>
-    <script src="https://vk.com/js/api/openapi.js" type="text/javascript"></script>
     <style>.cross { cursor: pointer; }</style>
 </head>
 
 <body>
-  <script type="text/javascript">VK.init({apiId:6700902});</script>
-  <div id="vk_api_transport"></div>
   <span id="openNoteBtn"><img src = "/images/note-image.png" alt="[Note]"></span>
   <span id="stepsCounter">
     (<span id="stepsCurrent"></span>/<span id="stepsOutOf" contenteditable="true"></span>)
   </span>
-  <div id="deleteConfirmation" title="Are you sure to DELETE? 0->1 " style="display: none">
+  <div id="deleteConfirmation" th:title="#{goal.sureDelete}" style="display: none">
     <p align="center">
       <button class="confNumber"> 0 </button>
       <button class="confNumber"> 0 </button>

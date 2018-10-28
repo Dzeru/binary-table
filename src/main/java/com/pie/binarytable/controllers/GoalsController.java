@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -44,7 +45,7 @@ public class GoalsController
 	public String goals(@AuthenticationPrincipal User user, Model model)
 	{
 		Long userId = user.getId();
-		ArrayList<Goal> allGoals = new ArrayList(goalDAO.findByUserId(userId));
+		HashSet<Goal> allGoals = new HashSet(goalDAO.findByUserId(userId));
 		ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalDAO.findByUserId(userId));
 
 		if(!groupGoals.isEmpty())
@@ -84,12 +85,27 @@ public class GoalsController
 	@PostMapping("/addgoal")
 	public String addGoal(@AuthenticationPrincipal User user,
 						  @RequestParam String goalName,
-						  @RequestParam Integer steps,
+						  @RequestParam String steps,
 						  @RequestParam(required = false) String note,
 						  @RequestParam(required = false) String emails,
 						  Model model)
 	{
-		if(goalName == null || goalName.isEmpty())
+		int st = 0;
+
+		try
+		{
+			st = Integer.parseInt(steps);
+		}
+		catch(Exception e)
+		{
+			model.addAttribute("error", "error.wrongSteps");
+			model.addAttribute("goalNameVal", goalName);
+			model.addAttribute("noteVal", note);
+			model.addAttribute("user", user);
+			return "addgoal";
+		}
+
+		if(goalName == null || goalName.trim().isEmpty())
 		{
 			model.addAttribute("error", "error.emptyGoal");
 			model.addAttribute("stepsVal", steps);
@@ -97,7 +113,7 @@ public class GoalsController
 			model.addAttribute("user", user);
 			return "addgoal";
 		}
-		if(steps == null || steps <= 0)
+		if(steps == null || st <= 0 || st > 255)
 		{
 			model.addAttribute("error", "error.wrongSteps");
 			model.addAttribute("goalNameVal", goalName);
@@ -108,14 +124,14 @@ public class GoalsController
 
 		String goalTimestamp = new Timestamp(System.currentTimeMillis()).toString();
 
-		Goal newGoal = new Goal(user.getId(), goalName, steps, note, goalTimestamp);
+		Goal newGoal = new Goal(user.getId(), goalName, st, note, goalTimestamp);
 
 		if(note == null)
 			newGoal.setNote("");
 
 		StringBuilder sb = new StringBuilder();
 
-		for(int i = 0; i < steps; i++)
+		for(int i = 0; i < st; i++)
 			sb.append("0");
 
 		newGoal.setCurrentState(sb.toString());

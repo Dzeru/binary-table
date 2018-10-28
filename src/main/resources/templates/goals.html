@@ -16,15 +16,15 @@
         </thead>
         <tbody>
         <tr th:each="goal : ${goals}">
-            <td valign="center"><b><a class="link-semidark" th:href="@{goal(id=${goal.id},hash=${goal.hash})}" th:text="${goal.goalName}"></a></b></td>
+            <td valign="center"><b><a class="link-semidark" th:href="@{goal(id=${goal.id},hash=${goal.hash})}" th:utext="${goal.goalName}"></a></b></td>
             <td valign="center"><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></td>
-            <td valign="center" th:text="${goal.note}"></td>
+            <td valign="center" th:utext="${goal.note}"></td>
         </tr>
         </tbody>
     </table>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#finishedGoals" aria-controls="finishedGoals" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="button button-dark mt-5" th:text="#{goal.finishedGoals}"/>
+    <button class="button button-dark mt-5" type="button" data-toggle="collapse" data-target="#finishedGoals" aria-controls="finishedGoals" aria-expanded="false" aria-label="Toggle navigation">
+        <b th:text="#{goal.finishedGoals}"/>
     </button>
     <div id="finishedGoals" class="mt-3 collapse">
         <table class="table">
@@ -37,9 +37,9 @@
             </thead>
             <tbody>
             <tr th:each="goal : ${finishedGoals}">
-                <td valign="center"><b><a class="link-semidark" th:href="@{goal(id=${goal.id},hash=${goal.hash})}" th:text="${goal.goalName}"></a></b></td>
+                <td valign="center"><b><a class="link-semidark" th:href="@{goal(id=${goal.id},hash=${goal.hash})}" th:utext="${goal.goalName}"></a></b></td>
                 <td valign="center"><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></td>
-                <td valign="center" th:text="${goal.note}"></td>
+                <td valign="center" th:utext="${goal.note}"></td>
             </tr>
             </tbody>
         </table>

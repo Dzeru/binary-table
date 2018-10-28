@@ -41,6 +41,7 @@ public class RestGoalsController
 	public ResponseEntity updateGoal(@RequestBody Goal goal)
 	{
 		boolean result = false; //error by default
+
 		goalDAO.save(goal);
 
 		if(goalDAO.findByIdEquals(goal.getId()).getCurrentState().equals(goal.getCurrentState()))

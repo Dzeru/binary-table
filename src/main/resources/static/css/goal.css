@@ -1,3 +1,22 @@
+/*
+Remove border and padding
+*/
+
+*
+{
+  outline: 0 !important;
+}
+
+::-moz-focus-outer, ::-moz-focus-inner
+{
+    border: 0;
+    padding: 0;
+}
+
+/*
+End of removal magic
+*/
+
 body {
 	background:#B172C5;
 	margin-left: 5%;
@@ -131,12 +150,13 @@ td {
 	background-color: Transparent;
 	border: none;
 	outline: none;
-	font-family: 'Jura', sans-serif;
-	color: #FFFFFF;
 }
 
 .confNumberText {
 	font-size: 45px;
+	font-family: 'Jura', sans-serif;
+    font-weight: 600;
+    color: #FFFFFF;
 }
 
 .ui-widget-content {
@@ -148,6 +168,10 @@ td {
 	border-color: #FFFFFF !important;
 	border-style: solid !important;
 	border-width: 4px !important;
+	font-family: 'Jura', sans-serif;
+    font-weight: 600;
+    color: #FFFFFF;
+
 }
 
 /* ends here */
