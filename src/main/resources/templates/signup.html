@@ -9,7 +9,7 @@
     <div class="mb-3" align="center"><a class="navbar-brand link-dark logo" th:href="@{/}" href="/">Binary Table &beta;</a></div>
     <form name="signUpForm" th:action="@{/signup}" method="post">
         <div class="my-3" align="center" th:if="${error}">
-            <span th:text="#{${error}}"/>
+            <span class="error" th:text="#{${error}}"/>
         </div>
         <div class="form-group">
             <label for="name" th:text="#{fields.name}"></label>

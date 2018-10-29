@@ -22,7 +22,6 @@ body
     background: #b172c5;
     color: #fff;
     font-family: 'Jura', sans-serif;
-    cursor: pointer;
 }
 
 a, a:hover
@@ -34,6 +33,7 @@ table
 {
 	table-layout: fixed;
 	cursor: pointer;
+	word-break: break-all;
 }
 
 .link-white
@@ -124,6 +124,11 @@ table
 .index-promo
 {
     font-size: 40px;
+}
+
+.error
+{
+    font-size: 26px;
 }
 
 /*

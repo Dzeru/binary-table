@@ -8,7 +8,7 @@
 <section class="sticky-footer-section">
 <div class="mx-auto border my-5 py-3 px-3 form">
     <div class="my-3" align="center" th:if="${error}">
-        <span th:text="#{${error}}"/>
+        <span class="error" th:text="#{${error}}"/>
     </div>
     <form th:action="@{/addgoal}" method="post" accept-charset="utf-8">
         <div class="form-group">

@@ -9,7 +9,7 @@
     <div align="center"><a class="navbar-brand link-dark logo" href="@{/}">Binary Table &beta;</a></div>
     <form name="loginForm" th:action="@{/login}" method="post" accept-charset="utf-8">
 	<div class="my-3" align="center" th:if="${param.error}">
-		<p th:text="#{error.invalidEmailOrPassword}"></p>
+		<span class="error" th:text="#{error.invalidEmailOrPassword}"/>
 	</div>
         <div class="form-group">
             <label for="email" th:text="#{fields.emailOrName}"/></label>

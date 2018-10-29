@@ -110,14 +110,21 @@ public class UsersController
 	}
 
 	@PostMapping("/forgotpassword")
-	public String forgotPassword(@RequestParam String email)
+	public String forgotPassword(@RequestParam String email, Model model)
 	{
-		String uuid = UUID.randomUUID().toString();
 		User user = userDAO.findByUsername(email);
-		user.setUpdatePassword(uuid);
-		userDAO.save(user);
+		if(user != null)
+		{
+			String uuid = UUID.randomUUID().toString();
+			user.setUpdatePassword(uuid);
+			userDAO.save(user);
 
-		mailSender.sendUpdatePasswordMessage(email, uuid);
+			mailSender.sendUpdatePasswordMessage(email, uuid);
+		}
+		else
+		{
+			model.addAttribute("error", "error.emailDoesNotExist");
+		}
 
 		return "forgotpassword";
 	}
@@ -146,6 +153,13 @@ public class UsersController
 		else
 		{
 			User user = userDAO.findByUsername(email);
+
+			if(user == null)
+			{
+				status = "error.failToUpdatePassword";
+				model.addAttribute("status", status);
+				return "updatepassword";
+			}
 
 			if(user.getUpdatePassword().equals(updatePassword))
 			{

@@ -7,8 +7,11 @@ import com.pie.binarytable.dto.CollaboratorsList;
 import com.pie.binarytable.dto.GoalId;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
+import com.pie.binarytable.entities.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -29,68 +32,88 @@ public class RestGoalsController
 	Sends JSON with Goal object to JavaScript functions in /goal
     */
 	@RequestMapping(value = "/getgoal", method = RequestMethod.GET)
-	public Goal goal(@RequestParam(value="id") Long goalId)
+	public Goal goal(@RequestParam(value="id") Long goalId, @AuthenticationPrincipal User user)
 	{
-		return goalDAO.findByIdEquals(goalId);
+		Goal goal = goalDAO.findByIdEquals(goalId);
+
+		if(goal.getUserId() == user.getId())
+			return goalDAO.findByIdEquals(goalId);
+		else return null;
 	}
 
-	/*
-	Updates @Param currentState of goal from /goal page
-	 */
 	@RequestMapping(value = "/updategoal", method = RequestMethod.POST)
-	public ResponseEntity updateGoal(@RequestBody Goal goal)
+	public ResponseEntity updateGoal(@RequestBody Goal goal, @AuthenticationPrincipal User user)
 	{
 		boolean result = false; //error by default
 
-		goalDAO.save(goal);
-
-		if(goalDAO.findByIdEquals(goal.getId()).getCurrentState().equals(goal.getCurrentState()))
+		if(goal.getUserId() != user.getId())
+			return ResponseEntity.badRequest().body(result);
+		else
 		{
-			result = true; //success
-			return ResponseEntity.ok().body(result);
+			goalDAO.save(goal);
+
+			if(goalDAO.findByIdEquals(goal.getId()).getCurrentState().equals(goal.getCurrentState()))
+			{
+				result = true; //success
+				return ResponseEntity.ok().body(result);
+			}
+			else return ResponseEntity.badRequest().body(result);
 		}
-		else return ResponseEntity.badRequest().body(result);
 	}
 
 	/*
 	Deletes goal by goal id
 	 */
 	@RequestMapping(value = "/deletegoal", method = RequestMethod.POST)
-	public ResponseEntity deleteGoal(@RequestBody GoalId goalId)
+	public ResponseEntity deleteGoal(@RequestBody GoalId goalId, @AuthenticationPrincipal User user)
 	{
 		boolean result = false; //error by default
 		Long id = goalId.getId();
 
-		if(goalDAO.findByIdEquals(id).isGroupGoal())
+		if(goalDAO.findByIdEquals(id).getUserId() != user.getId())
 		{
-			groupGoalDAO.deleteByGoalId(id);
-
-			if(!groupGoalDAO.findByGoalId(id).isEmpty()) //list!
+			return ResponseEntity.badRequest().body(result);
+		}
+		else
+		{
+			if(goalDAO.findByIdEquals(id).isGroupGoal())
 			{
-				return ResponseEntity.badRequest().body(result);
+				groupGoalDAO.deleteByGoalId(id);
+
+				if(!groupGoalDAO.findByGoalId(id).isEmpty()) //list!
+				{
+					return ResponseEntity.badRequest().body(result);
+				}
 			}
-		}
 
-		goalDAO.deleteById(id);
+			goalDAO.deleteById(id);
 
-		if(goalDAO.findByIdEquals(id) == null) //one object!
-		{
-			result = true; //success
-			return ResponseEntity.ok().body(result);
+			if(goalDAO.findByIdEquals(id) == null) //one object!
+			{
+				result = true; //success
+				return ResponseEntity.ok().body(result);
+			} else return ResponseEntity.badRequest().body(result);
 		}
-		else return ResponseEntity.badRequest().body(result);
 	}
 
 	@RequestMapping(value = "/getcollaborators", method = RequestMethod.GET)
-	public CollaboratorsList getCollaborators(@RequestParam(value = "id") Long id)
+	public CollaboratorsList getCollaborators(@RequestParam(value = "id") Long id, @AuthenticationPrincipal User user)
 	{
 		ArrayList<GroupGoal> groupGoals = groupGoalDAO.findByGoalId(id);
 		CollaboratorsList collaboratorsList = new CollaboratorsList();
 
+		boolean isCollaborator = false;
+
 		for(GroupGoal g : groupGoals)
 		{
+			if(g.getUserId() == user.getId())
+				isCollaborator = true;
 			collaboratorsList.addCollaborator(userDAO.findByIdEquals(g.getUserId()).getUsername());
 		}
-		return collaboratorsList;
+
+		if(isCollaborator)
+			return collaboratorsList;
+		else
+			return null;
 	}
 }

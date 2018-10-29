@@ -59,12 +59,9 @@ public class GoalsController
 		List<Goal> finishedGoals = allGoals.stream().filter((g) -> g.isFinished()).collect(Collectors.toList());
 		List<Goal> goals = allGoals.stream().filter((g) -> !g.isFinished()).collect(Collectors.toList());
 
-		int countOfGoals = goals.size();
-
 		model.addAttribute("goals", goals);
 		model.addAttribute("finishedGoals", finishedGoals);
 		model.addAttribute("user", user);
-		model.addAttribute("countOfGoals", countOfGoals);
 
 		return "goals";
 	}
@@ -113,9 +110,26 @@ public class GoalsController
 			model.addAttribute("user", user);
 			return "addgoal";
 		}
-		if(steps == null || st <= 0 || st > 255)
+		if(steps == null || st <= 0 || st > 625)
 		{
 			model.addAttribute("error", "error.wrongSteps");
+			model.addAttribute("goalNameVal", goalName);
+			model.addAttribute("noteVal", note);
+			model.addAttribute("user", user);
+			return "addgoal";
+		}
+		if(goalName.length() > 65535)
+		{
+			model.addAttribute("error", "error.tooLongGoalName");
+			model.addAttribute("goalNameVal", goalName);
+			model.addAttribute("noteVal", note);
+			model.addAttribute("user", user);
+			return "addgoal";
+		}
+
+		if(note.length() > 65535)
+		{
+			model.addAttribute("error", "error.tooLongNote");
 			model.addAttribute("goalNameVal", goalName);
 			model.addAttribute("noteVal", note);
 			model.addAttribute("user", user);
