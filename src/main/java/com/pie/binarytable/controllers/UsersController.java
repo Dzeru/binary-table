@@ -47,7 +47,7 @@ public class UsersController
 	{
 		if(!user.getPassword().equals(repeatPassword))
 		{
-			model.addAttribute("errorMessage", "error.equalPasswords");
+			model.addAttribute("error", "error.equalPasswords");
 			model.addAttribute("nameVal", user.getName());
 			model.addAttribute("emailVal", user.getUsername());
 			return "signup";
@@ -60,7 +60,6 @@ public class UsersController
 			{
 				model.addAttribute("error", "error.emailExists");
 				model.addAttribute("nameVal", user.getName());
-				model.addAttribute("passwordVal", user.getPassword());
 				return "signup";
 			}
 			if(user.getPassword().length() < 6)
@@ -74,14 +73,12 @@ public class UsersController
 			{
 				model.addAttribute("error", "error.emptyEmail");
 				model.addAttribute("nameVal", user.getName());
-				model.addAttribute("passwordVal", user.getPassword());
 				return "signup";
 			}
 			if(user.getName() == null || user.getName().isEmpty())
 			{
 				model.addAttribute("error", "error.emptyName");
 				model.addAttribute("emailVal", user.getUsername());
-				model.addAttribute("passwordVal", user.getPassword());
 				return "signup";
 			}
 

@@ -3,10 +3,12 @@ package com.pie.binarytable.controllers;
 import com.pie.binarytable.dao.GoalDAO;
 import com.pie.binarytable.dao.GroupGoalDAO;
 import com.pie.binarytable.dao.UserDAO;
+import com.pie.binarytable.dto.AddGoalReturnParams;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
 
+import com.pie.binarytable.services.AddGoalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,10 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*
@@ -37,6 +36,9 @@ public class GoalsController
 
 	@Autowired
 	private UserDAO userDAO;
+
+	@Autowired
+	AddGoalService addGoalService;
 
 	/*
 	Forms list of goals and so on
@@ -87,104 +89,20 @@ public class GoalsController
 						  @RequestParam(required = false) String emails,
 						  Model model)
 	{
-		int st = 0;
+		AddGoalReturnParams addGoalReturnParams = addGoalService.addGoal(user, goalName, steps, note, emails);
 
-		try
+		HashMap<String, Object> params = addGoalReturnParams.getParams();
+
+		if(!params.isEmpty())
 		{
-			st = Integer.parseInt(steps);
-		}
-		catch(Exception e)
-		{
-			model.addAttribute("error", "error.wrongSteps");
-			model.addAttribute("goalNameVal", goalName);
-			model.addAttribute("noteVal", note);
-			model.addAttribute("user", user);
-			return "addgoal";
-		}
-
-		if(goalName == null || goalName.trim().isEmpty())
-		{
-			model.addAttribute("error", "error.emptyGoal");
-			model.addAttribute("stepsVal", steps);
-			model.addAttribute("noteVal", note);
-			model.addAttribute("user", user);
-			return "addgoal";
-		}
-		if(steps == null || st <= 0 || st > 625)
-		{
-			model.addAttribute("error", "error.wrongSteps");
-			model.addAttribute("goalNameVal", goalName);
-			model.addAttribute("noteVal", note);
-			model.addAttribute("user", user);
-			return "addgoal";
-		}
-		if(goalName.length() > 65535)
-		{
-			model.addAttribute("error", "error.tooLongGoalName");
-			model.addAttribute("goalNameVal", goalName);
-			model.addAttribute("noteVal", note);
-			model.addAttribute("user", user);
-			return "addgoal";
-		}
-
-		if(note.length() > 65535)
-		{
-			model.addAttribute("error", "error.tooLongNote");
-			model.addAttribute("goalNameVal", goalName);
-			model.addAttribute("noteVal", note);
-			model.addAttribute("user", user);
-			return "addgoal";
-		}
-
-		String goalTimestamp = new Timestamp(System.currentTimeMillis()).toString();
-
-		Goal newGoal = new Goal(user.getId(), goalName, st, note, goalTimestamp);
-
-		if(note == null)
-			newGoal.setNote("");
-
-		StringBuilder sb = new StringBuilder();
-
-		for(int i = 0; i < st; i++)
-			sb.append("0");
-
-		newGoal.setCurrentState(sb.toString());
-		newGoal.setFinished(false);
-
-		UUID hash = UUID.randomUUID();
-		newGoal.setHash(hash.toString());
-
-		goalDAO.save(newGoal);
-
-		/*
-		Only for group goals
-		 */
-		if(!emails.isEmpty() && emails != null)
-		{
-			newGoal.setGroupGoal(true);
-			goalDAO.save(newGoal);
-			String[] emailList = emails.split(", ");
-			newGoal = goalDAO.findByGoalNameEqualsAndUserIdEqualsAndGoalTimestampEquals(goalName, user.getId(), goalTimestamp);
-			Long goalId = newGoal.getId();
-
-			for(String email : emailList)
+			for(Map.Entry<String, Object> par : params.entrySet())
 			{
-				User username = userDAO.findByUsername(email);
-				if(username != null)
-				{
-					GroupGoal groupGoal = new GroupGoal(goalId, username.getId());
-					groupGoalDAO.save(groupGoal);
-				}
-				else
-				{
-					model.addAttribute("error", "error.emailDoesNotExist");
-					model.addAttribute("user", user);
-					return "addgoal";
-				}
+				model.addAttribute(par.getKey(), par.getValue());
 			}
 		}
-		goalDAO.save(newGoal);
 
-		return "redirect:/goals";
+
+
+		return addGoalReturnParams.getUrl();
 	}
 }

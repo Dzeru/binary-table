@@ -13,15 +13,15 @@
     <form th:action="@{/addgoal}" method="post" accept-charset="utf-8">
         <div class="form-group">
             <label for="goalName" th:text="#{fields.goal}"></label>
-            <input class="form-control" id="goalName" type="text" name="goalName" th:placeholder="#{placeholder.goal}">
+            <input class="form-control" id="goalName" type="text" name="goalName" th:placeholder="#{placeholder.goal}" th:value="${goalNameVal} ? ${goalNameVal}">
         </div>
         <div class="form-group">
             <label for="steps" th:text="#{fields.countOfSteps}"></label>
-            <input class="form-control" id="steps" type="text" name="steps" th:placeholder="#{placeholder.steps}">
+            <input class="form-control" id="steps" type="text" name="steps" th:placeholder="#{placeholder.steps}" th:value="${stepsVal} ? ${stepsVal}">
         </div>
         <div class="form-group">
             <label for="note" th:text="#{fields.note}"></label>
-            <textarea class="form-control" id="note" name="note" th:placeholder="#{placeholder.note}"></textarea>
+            <textarea class="form-control" id="note" name="note" th:placeholder="#{placeholder.note}" th:utext="${noteVal} ? ${noteVal}"></textarea>
         </div>
         <a class="button button-white-dark-border my-4" data-toggle="collapse" href="#groupGoal" role="button" aria-expanded="false" aria-controls="groupGoal" th:text="#{goal.groupGoal}"></a>
         <div class="collapse w100" id="groupGoal">
