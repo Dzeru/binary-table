@@ -55,12 +55,7 @@ function changeNumber() {
         data.numString = setCharAt(data.numString, this.cellRealIndex, '1');
     }
 
-    // Появление кнопки сохранения
-    if (data.saved === true) {
-        $("button.saveState").prop('disabled', false);
-        $("button.saveState").fadeTo("slow", 1);
-        data.saved = false;
-    }
+    updateGoal();
     calculateProgressString(data.title);
 }
 
@@ -230,20 +225,15 @@ function initializeTable() {
   createCells();
   createTable(cellTable, data);
   makeButtons();
-  $("button.saveState").fadeTo("fast", 0.25);
   $("#vkshare").fadeTo("fast", 0.25);
-  $("button.saveState").prop('disabled', true);
-  $("button.saveState").on('click', function(event) {
+  // Изменение title или содержимого заметки автоматически обновляет цель
+  document.getElementById('titleString').addEventListener('blur', function()
+  {
       updateGoal();
   });
-  // Изменение title или содержимого заметки делает кнопку сохранения активной
-  document.getElementById('titleString').addEventListener('focus', function() {
-      $("button.saveState").prop('disabled', false);
-      $("button.saveState").fadeTo("slow", 1);
-  });
-  document.getElementById('note').addEventListener('focus', function() {
-      $("button.saveState").prop('disabled', false);
-      $("button.saveState").fadeTo("slow", 1);
+  document.getElementById('note').addEventListener('blur', function()
+  {
+      updateGoal();
   });
   $("#endGoal").on('click', function() {
       finishGoal();
@@ -550,7 +540,7 @@ function checkInputStepsChange() {
     $('#stepsOutOf').html(previousSteps);       
   }
   else {                                        // Accept changes
-    currentStepsNum = Math.min(currentStepsNum, 169);
+    currentStepsNum = Math.min(currentStepsNum, (maxSquareNum * maxSquareNum));
 
     // Clear previous data
     $('#tableBodyId').empty();  // Clear table body
@@ -587,6 +577,7 @@ function checkInputStepsChange() {
     //////////////
 
     $('#stepsOutOf').html(currentStepsNum);
+    updateGoal();
   }
 }
 

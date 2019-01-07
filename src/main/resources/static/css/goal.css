@@ -78,9 +78,18 @@ td {
 	color: #FFFFFF;
 }
 
-#tools {
-	display: flex;
-	justify-content: center;
+#back-btn
+{
+    display: inline-block;
+    width: 50%;
+    float: left;
+}
+
+#delete-btn
+{
+    display: inline-block;
+    width: 50%;
+    float: right;
 }
 
 .deleteGoal {

@@ -18,10 +18,10 @@ public class UserService implements UserDetailsService
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
-		User uu = userDAO.findByUsername(username);
-		User un = userDAO.findByName(username);
-		if(uu == null)
-			return un;
-		else return uu;
+		User userFindByUsername = userDAO.findByUsername(username);
+		User userFindByName = userDAO.findByName(username);
+		if(userFindByUsername == null)
+			return userFindByName;
+		else return userFindByUsername;
 	}
 }

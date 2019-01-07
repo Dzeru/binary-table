@@ -42,7 +42,6 @@ public class AuthProvider implements AuthenticationProvider
 			return new UsernamePasswordAuthenticationToken(user, password, authorities);
 		}
 		else
-
 			throw new BadCredentialsException("Username not found");
 	}
 

@@ -44,20 +44,17 @@ public class RestGoalsController
 	@RequestMapping(value = "/updategoal", method = RequestMethod.POST)
 	public ResponseEntity updateGoal(@RequestBody Goal goal, @AuthenticationPrincipal User user)
 	{
-		boolean result = false; //error by default
-
 		if(goal.getUserId() != user.getId())
-			return ResponseEntity.badRequest().body(result);
+			return ResponseEntity.badRequest().body("No access to this method");
 		else
 		{
 			goalDAO.save(goal);
 
 			if(goalDAO.findByIdEquals(goal.getId()).getCurrentState().equals(goal.getCurrentState()))
 			{
-				result = true; //success
-				return ResponseEntity.ok().body(result);
+				return ResponseEntity.ok().body("Goal is successfully updated");
 			}
-			else return ResponseEntity.badRequest().body(result);
+			else return ResponseEntity.badRequest().body("Fail to update goal");
 		}
 	}
 
@@ -67,12 +64,11 @@ public class RestGoalsController
 	@RequestMapping(value = "/deletegoal", method = RequestMethod.POST)
 	public ResponseEntity deleteGoal(@RequestBody GoalId goalId, @AuthenticationPrincipal User user)
 	{
-		boolean result = false; //error by default
 		Long id = goalId.getId();
 
 		if(goalDAO.findByIdEquals(id).getUserId() != user.getId())
 		{
-			return ResponseEntity.badRequest().body(result);
+			return ResponseEntity.badRequest().body("No access to this method");
 		}
 		else
 		{
@@ -82,7 +78,7 @@ public class RestGoalsController
 
 				if(!groupGoalDAO.findByGoalId(id).isEmpty()) //list!
 				{
-					return ResponseEntity.badRequest().body(result);
+					return ResponseEntity.badRequest().body("Fail to delete group goal");
 				}
 			}
 
@@ -90,9 +86,8 @@ public class RestGoalsController
 
 			if(goalDAO.findByIdEquals(id) == null) //one object!
 			{
-				result = true; //success
-				return ResponseEntity.ok().body(result);
-			} else return ResponseEntity.badRequest().body(result);
+				return ResponseEntity.ok().body("Goal is successfully deleted");
+			} else return ResponseEntity.badRequest().body("Fail to delete goal");
 		}
 	}
 
