@@ -5,6 +5,8 @@
 [Binary Table](http://binarytable.tk "Binary Table") - minimalistic progress tracker & counter.
 
 1 - Step is done
+
+
 0 - Step is not done
 
 More 1 in table - more progress.
