@@ -2,12 +2,14 @@ package com.pie.binarytable.controllers;
 
 import com.pie.binarytable.dao.GoalDAO;
 import com.pie.binarytable.dao.GroupGoalDAO;
+import com.pie.binarytable.dao.UserAccountsDAO;
 import com.pie.binarytable.dao.UserDAO;
 import com.pie.binarytable.dto.AddGoalReturnParams;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
 
+import com.pie.binarytable.entities.UserAccounts;
 import com.pie.binarytable.services.AddGoalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,7 +41,10 @@ public class GoalsController
 	private UserDAO userDAO;
 
 	@Autowired
-	AddGoalService addGoalService;
+	private UserAccountsDAO userAccountsDAO;
+
+	@Autowired
+	private AddGoalService addGoalService;
 
 	/*
 	Forms list of goals and so on
@@ -47,6 +53,35 @@ public class GoalsController
 	public String goals(@AuthenticationPrincipal User user, Model model)
 	{
 		Long userId = user.getId();
+		HashSet<Goal> allGoals = new HashSet(goalDAO.findByUserId(userId));
+		ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalDAO.findByUserId(userId));
+
+		if(!groupGoals.isEmpty())
+		{
+			for(GroupGoal goal : groupGoals)
+			{
+				allGoals.add(goalDAO.findByIdEquals(goal.getGoalId()));
+			}
+		}
+
+		List<Goal> finishedGoals = allGoals.stream().filter((g) -> g.isFinished()).collect(Collectors.toList());
+		List<Goal> goals = allGoals.stream().filter((g) -> !g.isFinished()).collect(Collectors.toList());
+
+		model.addAttribute("goals", goals);
+		model.addAttribute("finishedGoals", finishedGoals);
+		model.addAttribute("user", user);
+
+		return "goals";
+	}
+
+	@GetMapping("/goals")
+	public String goals(Principal principal, Model model)
+	{
+		String principalName = principal.getName();
+		UserAccounts userAccounts = userAccountsDAO.findByGoogleUsername(principalName);
+		User user = userDAO.findByUserAccountsId(userAccounts.getId());
+		Long userId = user.getId();
+
 		HashSet<Goal> allGoals = new HashSet(goalDAO.findByUserId(userId));
 		ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalDAO.findByUserId(userId));
 
@@ -100,8 +135,6 @@ public class GoalsController
 				model.addAttribute(par.getKey(), par.getValue());
 			}
 		}
-
-
 
 		return addGoalReturnParams.getUrl();
 	}

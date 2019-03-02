@@ -1,9 +1,11 @@
 package com.pie.binarytable.controllers;
 
+import com.pie.binarytable.dao.UserAccountsDAO;
 import com.pie.binarytable.dao.UserDAO;
 import com.pie.binarytable.entities.Role;
 import com.pie.binarytable.entities.User;
 
+import com.pie.binarytable.entities.UserAccounts;
 import com.pie.binarytable.services.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,6 +26,9 @@ public class UsersController
 {
 	@Autowired
 	private UserDAO userDAO;
+
+	@Autowired
+	private UserAccountsDAO userAccountsDAO;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -87,6 +92,15 @@ public class UsersController
 			user.setRoles(Collections.singleton(Role.USER));
 
 			user.setRegistrationDate(LocalDateTime.now().toString());
+
+			UserAccounts userAccounts = new UserAccounts();
+			userAccounts.setBinaryTableName(user.getName());
+			userAccounts.setBinaryTableUsername(user.getUsername());
+
+			userAccountsDAO.save(userAccounts);
+
+			userAccounts = userAccountsDAO.findByBinaryTableUsername(user.getUsername());
+			user.setUserAccountsId(userAccounts.getId());
 
 			userDAO.save(user);
 

@@ -10,7 +10,7 @@ function isLoginWithSso()
         {
             if(res)
             {
-                location.replace("/terms");
+                console.log(res);
             }
             else
             {

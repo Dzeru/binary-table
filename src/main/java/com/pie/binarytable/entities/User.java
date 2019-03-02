@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
-import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -16,6 +16,10 @@ public class User implements UserDetails
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+	@NotNull
+    @OneToOne // mapped by
+    private Long userAccountsId;
 
 	@NotNull
     private String username;
@@ -45,8 +49,19 @@ public class User implements UserDetails
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Long id)
+    {
         this.id = id;
+    }
+
+    public Long getUserAccountsId()
+    {
+        return userAccountsId;
+    }
+
+    public void setUserAccountsId(Long userAccountsId)
+    {
+        this.userAccountsId = userAccountsId;
     }
 
     public String getUsername() {
@@ -137,9 +152,34 @@ public class User implements UserDetails
     }
 
     @Override
-    public String toString() {
+    public boolean equals(Object o)
+    {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return isActive() == user.isActive() &&
+                Objects.equals(getId(), user.getId()) &&
+                Objects.equals(getUserAccountsId(), user.getUserAccountsId()) &&
+                Objects.equals(getUsername(), user.getUsername()) &&
+                Objects.equals(getPassword(), user.getPassword()) &&
+                Objects.equals(getName(), user.getName()) &&
+                Objects.equals(getUpdatePassword(), user.getUpdatePassword()) &&
+                Objects.equals(getRegistrationDate(), user.getRegistrationDate()) &&
+                Objects.equals(getRoles(), user.getRoles());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getId(), getUserAccountsId(), getUsername(), getPassword(), getName(), isActive(), getUpdatePassword(), getRegistrationDate(), getRoles());
+    }
+
+    @Override
+    public String toString()
+    {
         return "User{" +
                 "id=" + id +
+                ", userAccountsId=" + userAccountsId +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
@@ -149,8 +189,7 @@ public class User implements UserDetails
                 ", roles=" + roles +
                 '}';
     }
-
-    /*
+/*
 	public Set<Goal> getGoals()
 	{
 		return goals;
