@@ -18,7 +18,6 @@ public class User implements UserDetails
     private Long id;
 
 	@NotNull
-    @OneToOne // mapped by
     private Long userAccountsId;
 
 	@NotNull

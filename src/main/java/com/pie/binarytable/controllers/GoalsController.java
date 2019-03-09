@@ -75,7 +75,7 @@ public class GoalsController
 	}
 
 	@GetMapping("/goals")
-	public String goals(Principal principal, Model model)
+	public String goalsSso(Principal principal, Model model)
 	{
 		String principalName = principal.getName();
 		UserAccounts userAccounts = userAccountsDAO.findByGoogleUsername(principalName);
@@ -125,6 +125,29 @@ public class GoalsController
 						  Model model)
 	{
 		AddGoalReturnParams addGoalReturnParams = addGoalService.addGoal(user, goalName, steps, note, emails);
+
+		HashMap<String, Object> params = addGoalReturnParams.getParams();
+
+		if(!params.isEmpty())
+		{
+			for(Map.Entry<String, Object> par : params.entrySet())
+			{
+				model.addAttribute(par.getKey(), par.getValue());
+			}
+		}
+
+		return addGoalReturnParams.getUrl();
+	}
+
+	@PostMapping("/addgoal")
+	public String addGoalSso(Principal principal,
+	                      @RequestParam String goalName,
+	                      @RequestParam String steps,
+	                      @RequestParam(required = false) String note,
+	                      @RequestParam(required = false) String emails,
+	                      Model model)
+	{
+		AddGoalReturnParams addGoalReturnParams = addGoalService.addGoalSso(principal, goalName, steps, note, emails);
 
 		HashMap<String, Object> params = addGoalReturnParams.getParams();
 

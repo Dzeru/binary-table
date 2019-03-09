@@ -10,6 +10,7 @@ function isLoginWithSso()
         {
             if(res)
             {
+                location.replace("/goals");
                 console.log(res);
             }
             else
