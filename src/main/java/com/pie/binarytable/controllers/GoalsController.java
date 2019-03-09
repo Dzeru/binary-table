@@ -74,32 +74,39 @@ public class GoalsController
 		return "goals";
 	}
 
-	@GetMapping("/goals")
-	public String goalsSso(Principal principal, Model model)
+	/*
+	Forms list of goals and so on
+	 */
+	@GetMapping("/goalssso")
+	public String goalssso(@AuthenticationPrincipal Principal principal, Model model)
 	{
 		String principalName = principal.getName();
+
 		UserAccounts userAccounts = userAccountsDAO.findByGoogleUsername(principalName);
-		User user = userDAO.findByUserAccountsId(userAccounts.getId());
-		Long userId = user.getId();
 
-		HashSet<Goal> allGoals = new HashSet(goalDAO.findByUserId(userId));
-		ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalDAO.findByUserId(userId));
-
-		if(!groupGoals.isEmpty())
+		if(userAccounts != null)
 		{
-			for(GroupGoal goal : groupGoals)
+			User user = userDAO.findByUserAccountsId(userAccounts.getId());
+
+			Long userId = user.getId();
+			HashSet<Goal> allGoals = new HashSet(goalDAO.findByUserId(userId));
+			ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalDAO.findByUserId(userId));
+
+			if(!groupGoals.isEmpty())
 			{
-				allGoals.add(goalDAO.findByIdEquals(goal.getGoalId()));
+				for(GroupGoal goal : groupGoals)
+				{
+					allGoals.add(goalDAO.findByIdEquals(goal.getGoalId()));
+				}
 			}
+
+			List<Goal> finishedGoals = allGoals.stream().filter((g) -> g.isFinished()).collect(Collectors.toList());
+			List<Goal> goals = allGoals.stream().filter((g) -> !g.isFinished()).collect(Collectors.toList());
+
+			model.addAttribute("goals", goals);
+			model.addAttribute("finishedGoals", finishedGoals);
+			model.addAttribute("user", user);
 		}
-
-		List<Goal> finishedGoals = allGoals.stream().filter((g) -> g.isFinished()).collect(Collectors.toList());
-		List<Goal> goals = allGoals.stream().filter((g) -> !g.isFinished()).collect(Collectors.toList());
-
-		model.addAttribute("goals", goals);
-		model.addAttribute("finishedGoals", finishedGoals);
-		model.addAttribute("user", user);
-
 		return "goals";
 	}
 
@@ -125,29 +132,6 @@ public class GoalsController
 						  Model model)
 	{
 		AddGoalReturnParams addGoalReturnParams = addGoalService.addGoal(user, goalName, steps, note, emails);
-
-		HashMap<String, Object> params = addGoalReturnParams.getParams();
-
-		if(!params.isEmpty())
-		{
-			for(Map.Entry<String, Object> par : params.entrySet())
-			{
-				model.addAttribute(par.getKey(), par.getValue());
-			}
-		}
-
-		return addGoalReturnParams.getUrl();
-	}
-
-	@PostMapping("/addgoal")
-	public String addGoalSso(Principal principal,
-	                      @RequestParam String goalName,
-	                      @RequestParam String steps,
-	                      @RequestParam(required = false) String note,
-	                      @RequestParam(required = false) String emails,
-	                      Model model)
-	{
-		AddGoalReturnParams addGoalReturnParams = addGoalService.addGoalSso(principal, goalName, steps, note, emails);
 
 		HashMap<String, Object> params = addGoalReturnParams.getParams();
 

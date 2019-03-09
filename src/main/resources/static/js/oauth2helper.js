@@ -10,8 +10,17 @@ function isLoginWithSso()
         {
             if(res)
             {
-                location.replace("/goals");
-                console.log(res);
+                if(window.location.pathname == "/")
+                {
+                    location.replace("/goalssso");
+                    console.log("User log in with sso");
+                }
+                else
+                {
+                    console.log(window.location.pathname);
+                    console.log("It is not an index page");
+                }
+
             }
             else
             {

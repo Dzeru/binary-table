@@ -6,6 +6,7 @@ import com.pie.binarytable.entities.Role;
 import com.pie.binarytable.entities.User;
 import com.pie.binarytable.entities.UserAccounts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,16 +29,18 @@ public class OAuth2Controller
 	@Autowired
 	PasswordEncoder encoder;
 
-	@RequestMapping(value = "/isloginwithsso", method= RequestMethod.GET)
-	public boolean user(Principal principal)
+	@RequestMapping(value = "/isloginwithsso", method = RequestMethod.GET)
+	public boolean user(@AuthenticationPrincipal Principal principal)
 	{
 		UserAccounts userAccounts = userAccountsDAO.findByGoogleUsername(principal.getName());
 
 		if(userAccounts == null)
 		{
 			User user = new User();
+
+			userAccounts = new UserAccounts();
 			userAccounts.setBinaryTableUsername("");
-			userAccounts.setBinaryTableName("");
+			userAccounts.setBinaryTableName(principal.getName());
 			userAccounts.setGoogleUsername(principal.getName());
 			userAccountsDAO.save(userAccounts);
 
