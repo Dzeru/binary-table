@@ -456,6 +456,7 @@ function makeScreenshot() {
 function finishGoal() {
     data.finished = true;
     updateGoal();
+    location.replace("/goals");
 }
 
 function restoreGoal() {

@@ -48,6 +48,11 @@ public class RestGoalsController
 			return ResponseEntity.badRequest().body("No access to this method");
 		else
 		{
+			if(goal.isFinished() && goal.getDoneSteps() != goal.getAllSteps())
+			{
+				goal.setFinished(false);
+			}
+
 			goalDAO.save(goal);
 
 			if(goalDAO.findByIdEquals(goal.getId()).getCurrentState().equals(goal.getCurrentState()))
