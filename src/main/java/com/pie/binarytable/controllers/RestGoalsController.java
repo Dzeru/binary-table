@@ -9,6 +9,7 @@ import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 @RestController
 public class RestGoalsController
 {
+	private final static Logger logger = Logger.getLogger(RestGoalsController.class);
+
 	@Autowired
 	GoalDAO goalDAO;
 
@@ -36,16 +39,26 @@ public class RestGoalsController
 	{
 		Goal goal = goalDAO.findByIdEquals(goalId);
 
-		if(goal.getUserId() == user.getId())
-			return goalDAO.findByIdEquals(goalId);
-		else return null;
+		if(goal.getUserId().equals(user.getId()))
+		{
+			logger.info("Get goal: user id = " + user.getId() + ", goal's userId = " + goal.getUserId());
+			return goal;
+		}
+		else
+		{
+			logger.warn("Get goal: user with id = " + user.getId() + " try to access goal with userId = " + goal.getUserId());
+			return null;
+		}
 	}
 
 	@RequestMapping(value = "/updategoal", method = RequestMethod.POST)
 	public ResponseEntity updateGoal(@RequestBody Goal goal, @AuthenticationPrincipal User user)
 	{
-		if(goal.getUserId() != user.getId())
+		if(!goal.getUserId().equals(user.getId()))
+		{
+			logger.warn("Update goal: user with id = " + user.getId() + " try to access goal with userId = " + goal.getUserId());
 			return ResponseEntity.badRequest().body("No access to this method");
+		}
 		else
 		{
 			if(goal.isFinished() && goal.getDoneSteps() != goal.getAllSteps())
@@ -57,6 +70,7 @@ public class RestGoalsController
 
 			if(goalDAO.findByIdEquals(goal.getId()).getCurrentState().equals(goal.getCurrentState()))
 			{
+				logger.info("Update goal: goal with id = " + goal.getId() + " is successfully updated");
 				return ResponseEntity.ok().body("Goal is successfully updated");
 			}
 			else return ResponseEntity.badRequest().body("Fail to update goal");
@@ -70,20 +84,23 @@ public class RestGoalsController
 	public ResponseEntity deleteGoal(@RequestBody GoalId goalId, @AuthenticationPrincipal User user)
 	{
 		Long id = goalId.getId();
+		Goal goal = goalDAO.findByIdEquals(id);
 
-		if(goalDAO.findByIdEquals(id).getUserId() != user.getId())
+		if(!goal.getUserId().equals(user.getId()))
 		{
+			logger.warn("Delete goal: user with id = " + user.getId() + " try to access goal with userId = " + goal.getUserId());
 			return ResponseEntity.badRequest().body("No access to this method");
 		}
 		else
 		{
-			if(goalDAO.findByIdEquals(id).isGroupGoal())
+			if(goal.isGroupGoal())
 			{
 				groupGoalDAO.deleteByGoalId(id);
 
 				if(!groupGoalDAO.findByGoalId(id).isEmpty()) //list!
 				{
-					return ResponseEntity.badRequest().body("Fail to delete group goal");
+					logger.warn("Delete goal: fail to delete group goal with id = " + id);
+					return ResponseEntity.badRequest().body("Fail to delete group goal with id = " + id);
 				}
 			}
 
@@ -91,8 +108,14 @@ public class RestGoalsController
 
 			if(goalDAO.findByIdEquals(id) == null) //one object!
 			{
+				logger.info("Delete goal: goal is successfully deleted, goals' id = " + goal.getId());
 				return ResponseEntity.ok().body("Goal is successfully deleted");
-			} else return ResponseEntity.badRequest().body("Fail to delete goal");
+			}
+			else
+			{
+				logger.warn("Delete goal: fail to delete goal with id = " + id);
+				return ResponseEntity.badRequest().body("Fail to delete goal with id = " + id);
+			}
 		}
 	}
 
@@ -106,14 +129,20 @@ public class RestGoalsController
 
 		for(GroupGoal g : groupGoals)
 		{
-			if(g.getUserId() == user.getId())
+			if(g.getUserId().equals(user.getId()))
 				isCollaborator = true;
 			collaboratorsList.addCollaborator(userDAO.findByIdEquals(g.getUserId()).getUsername());
 		}
 
 		if(isCollaborator)
+		{
+			logger.info("Get collaborators: goal's id = " + groupGoals.get(0).getGoalId());
 			return collaboratorsList;
+		}
 		else
+		{
+			logger.info("Get collaborators: fail to get collaborators, goal's id = " + groupGoals.get(0).getGoalId());
 			return null;
+		}
 	}
 }

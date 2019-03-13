@@ -2,6 +2,7 @@ package com.pie.binarytable.services;
 
 import com.pie.binarytable.entities.User;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,6 +18,8 @@ import java.util.Collection;
 @Component
 public class AuthProvider implements AuthenticationProvider
 {
+	private final static Logger logger = Logger.getLogger(AuthProvider.class);
+
 	@Autowired
 	private UserService userService;
 
@@ -39,6 +42,7 @@ public class AuthProvider implements AuthenticationProvider
 
 			Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
 
+			logger.info("AuthProvider: user with id = " + user.getId() + " logs in");
 			return new UsernamePasswordAuthenticationToken(user, password, authorities);
 		}
 		else

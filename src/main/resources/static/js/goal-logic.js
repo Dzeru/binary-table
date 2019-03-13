@@ -59,7 +59,7 @@ function changeNumber() {
     calculateProgressString(data.title);
 }
 
-// Если заменить numstring.length на squareSide, то таблица будет полной 
+// Если заменить numString.length на squareSide, то таблица будет полной
 // Создаем ячейки без цифр, присваиваем каждой индекс. Записываются в массив ячеек
 function createCells() {
     for (var i = 0 ; i < data.numString.length; i++){
@@ -171,6 +171,7 @@ function getGoalInfo() {
     // dataType: 'jsonp',
     // url: /goal
     success: function(res) {
+    console.log(res);
       data.numString = res.currentState;
       data.title = res.goalName;
       data.id = res.id;
