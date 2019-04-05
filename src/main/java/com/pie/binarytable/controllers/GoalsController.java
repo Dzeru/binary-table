@@ -9,7 +9,9 @@ import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
 
 import com.pie.binarytable.services.AddGoalService;
+import com.pie.binarytable.services.GoalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,13 +40,16 @@ public class GoalsController
 	private UserDAO userDAO;
 
 	@Autowired
-	AddGoalService addGoalService;
+	private AddGoalService addGoalService;
+
+	@Autowired
+	private GoalService goalService;
 
 	/*
 	Forms list of goals and so on
 	 */
 	@GetMapping("/goals")
-	public String goals(@AuthenticationPrincipal User user, Model model)
+	public String goals(@AuthenticationPrincipal User user, Model model, Device device)
 	{
 		Long userId = user.getId();
 		HashSet<Goal> allGoals = new HashSet(goalDAO.findByUserId(userId));
@@ -58,6 +63,8 @@ public class GoalsController
 			}
 		}
 
+		goalService.checkCurrentStateOfGoals(allGoals);
+
 		List<Goal> finishedGoals = allGoals.stream().filter((g) -> g.isFinished()).collect(Collectors.toList());
 		List<Goal> goals = allGoals.stream().filter((g) -> !g.isFinished()).collect(Collectors.toList());
 
@@ -65,7 +72,15 @@ public class GoalsController
 		model.addAttribute("finishedGoals", finishedGoals);
 		model.addAttribute("user", user);
 
-		return "goals";
+		//return "goals";
+		if(device.isNormal())
+		{
+			return "goals";
+		}
+		else
+		{
+			return "compactgoals";
+		}
 	}
 
 	/*
