@@ -3,12 +3,17 @@
 <head th:replace="fragments/meta :: meta(~{::title})">
     <title th:text="#{meta.profile}"></title>
 </head>
-<body class="sticky-footer-body">
+<body>
 <th:block th:replace="fragments/usernavbar :: usernavbar"/>
-<section class="sticky-footer-section">
+<section class="section-right">
+<div class="my-3 mx-3" align="center">
+    <span class="mx-2"><a class="link-semidark" href="/terms" th:text="#{meta.terms}"></a></span>
+    <span class="mx-2"><a class="link-semidark" href="/feedback" th:text="#{meta.feedback}"></a></span>
+    <span class="mx-2"><a class="link-semidark" href="/contacts" th:text="#{meta.contacts}"></a></span>
+</div>
 <div class="pt-3">
-<table align="center">
-    <tbody>
+    <table align="center">
+        <tbody>
         <tr>
             <th class="pr-3"><b th:text="#{fields.name}"></b></th>
             <th th:text="${name}"></th>
@@ -21,10 +26,10 @@
             <th class="pr-3"><b th:text="#{fields.registrationDate}"></b></th>
             <th> <span th:text="#{fields.day}"/> <span th:text="${day}"/> <span th:text="#{fields.month}"/> <span th:text="${month}"/> <span th:text="#{fields.year}"/> <span th:text="${year}"/> <span th:text="#{fields.time}"/> <span th:text="${time}"/></th>
         </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
 </div>
-<div class="container pt-5 w50">
+<div class="container pt-5 w50 fl">
     <h3 th:text="#{login.updatePassword}"></h3>
     <form th:action="@{/updatepasswordprofile}" method="post">
         <div class="my-3" align="center" th:if="${passwordStatus}">
@@ -45,7 +50,7 @@
         <input class="button button-dark" type="submit" th:value="#{login.updatePassword}"/>
     </form>
 </div>
-<div class="container pt-5 w50">
+<div class="container pt-5 w50 fr">
     <h3 th:text="#{login.updateEmail}"></h3>
     <form th:action="@{/updateemailprofile}" method="post">
         <div class="my-3" align="center" th:if="${emailStatus}">
@@ -63,17 +68,9 @@
             <label for="repeatEmail" th:text="#{fields.repeatEmail}"></label>
             <input class="form-control" id="repeatEmail" type="text" name="repeatEmail" th:placeholder="#{placeholder.newEmail}"/>
         </div>
-        <div class="form-group">
-            <label for="passwordEmail" th:text="#{fields.password}"></label>
-            <input class="form-control" id="passwordEmail" type="password" name="password" th:placeholder="#{placeholder.password}"/>
-        </div>
         <input class="button button-dark" type="submit" th:value="#{login.updateEmail}"/>
-        <div class="pt-5">
-            <a class="button button-white" th:href="@{/goals}" href="/goals" th:text="#{meta.back}"></a>
-        </div>
     </form>
 </div>
 </section>
-<th:block th:replace="fragments/footer :: footer"/>
 </body>
 </html>

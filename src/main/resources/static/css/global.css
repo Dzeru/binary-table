@@ -231,6 +231,15 @@ Atomic styles
 	width: 100%;
 }
 
+.mt3vh
+{
+    margin-top: 3vh;
+}
+
+/*
+Atomic styles end
+*/
+
 .navbar-icon
 {
     height: 10vh;
@@ -259,14 +268,16 @@ Atomic styles
 .goal-card
 {
     background: #c08ed0;
-    width: 98vw;
+    width: 98%;
     height: 10vh;
     margin: 1vh 1vh;
     padding: 1vh 1vh;
+    overflow: hidden;
 }
 
 .goal-card-name
 {
+    font-weight: bold;
     font-size: 18px;
     white-space: nowrap;
     overflow: hidden;
@@ -294,4 +305,23 @@ Atomic styles
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.section-right
+{
+    display: inline-block;
+    float: right;
+    width: 90%;
+    height: 90vh;
+}
+
+.navbar-section
+{
+    display: inline-block;
+    float: left;
+    width: 10%;
+    height: 100vh;
+    padding-left: 1vw;
+    position: sticky;
+    top: 0;
 }

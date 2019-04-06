@@ -13,12 +13,9 @@
 				<div class="goal-card-note"><span th:utext="${goal.note}"/></div>
 			</div>
 			</a>
-			<!-- <td valign="center"><b><a class="link-semidark" th:href="@{goal(id=${goal.id},hash=${goal.hash})}" th:utext="${goal.goalName}"></a></b></td>
-			<td valign="center"><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></td>
-			<td valign="center" th:utext="${goal.note}"></td> -->
 		</div>
 
-	<button class="button button-dark mt-5" type="button" data-toggle="collapse" data-target="#finishedGoals" aria-controls="finishedGoals" aria-expanded="false" aria-label="Toggle navigation">
+	<button class="button button-dark mt-5 ml-2" type="button" data-toggle="collapse" data-target="#finishedGoals" aria-controls="finishedGoals" aria-expanded="false" aria-label="Toggle navigation">
 		<b th:text="#{goal.finishedGoals}"/>
 	</button>
 	<div id="finishedGoals" class="mt-3 collapse">

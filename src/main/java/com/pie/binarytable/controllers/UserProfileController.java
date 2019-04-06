@@ -54,7 +54,9 @@ public class UserProfileController
 
 	@PostMapping("/updatepasswordprofile")
 	public String updatePasswordProfile(@AuthenticationPrincipal User user,
-	                                    @RequestParam String oldPassword, @RequestParam String newPassword, @RequestParam String repeatPassword,
+	                                    @RequestParam String oldPassword,
+	                                    @RequestParam String newPassword,
+	                                    @RequestParam String repeatPassword,
 	                                    Model model)
 	{
 		if(!passwordEncoder.matches(oldPassword, user.getPassword()) || !newPassword.equals(repeatPassword))
@@ -97,15 +99,10 @@ public class UserProfileController
 
 	@PostMapping("/updateemailprofile")
 	public String updateEmailProfile(@AuthenticationPrincipal User user,
-	                                    @RequestParam String oldEmail, @RequestParam String newEmail, @RequestParam String repeatEmail,
-	                                    @RequestParam String password, Model model)
+	                                 @RequestParam String oldEmail,
+	                                 @RequestParam String newEmail,
+	                                 @RequestParam String repeatEmail, Model model)
 	{
-		if(!passwordEncoder.matches(password, user.getPassword()))
-		{
-			model.addAttribute("emailStatus", "error.equalPasswords");
-		}
-		else
-		{
 			if(newEmail.equals(repeatEmail) && userDAO.findByUsername(oldEmail) != null)
 			{
 				user.setUsername(newEmail);
@@ -116,7 +113,6 @@ public class UserProfileController
 			{
 				model.addAttribute("emailStatus", "status.successUpdateEmail");
 			}
-		}
 
 		model.addAttribute("user", user);
 		model.addAttribute("name", user.getName());
