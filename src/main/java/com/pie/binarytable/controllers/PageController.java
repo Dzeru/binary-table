@@ -2,6 +2,7 @@ package com.pie.binarytable.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.mobile.device.Device;
 
 /*
 Controller for simple pages
@@ -16,15 +17,29 @@ public class PageController
 	}
 
 	@GetMapping("/index")
-	public String main()
+	public String main(Device device)
 	{
-		return "index";
+		if(device.isNormal())
+		{
+			return "index";
+		}
+		else
+		{
+			return "indexcompact";
+		}
 	}
 
 	@GetMapping("/")
-	public String index()
+	public String index(Device device)
 	{
-		return "index";
+		if(device.isNormal())
+		{
+			return "index";
+		}
+		else
+		{
+			return "indexcompact";
+		}
 	}
 
 	@GetMapping("/goal")
