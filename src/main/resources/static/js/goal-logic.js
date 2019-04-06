@@ -55,8 +55,8 @@ function changeNumber() {
         data.numString = setCharAt(data.numString, this.cellRealIndex, '1');
     }
 
-    updateGoal();
     calculateProgressString(data.title);
+    updateGoal();
 }
 
 // Если заменить numString.length на squareSide, то таблица будет полной
@@ -182,6 +182,9 @@ function getGoalInfo() {
       data.goalTimestamp = res.goalTimestamp;
       data.hash = res.hash;
 
+      console.log("getgoal");
+      console.log(data);
+
       // Логика странички
       initializeTable();
     },
@@ -230,10 +233,12 @@ function initializeTable() {
   // Изменение title или содержимого заметки автоматически обновляет цель
   document.getElementById('titleString').addEventListener('blur', function()
   {
+      data.title = document.getElementById('titleString').innerHTML;
       updateGoal();
   });
   document.getElementById('note').addEventListener('blur', function()
   {
+      data.note =  document.getElementById('note').innerHTML;
       updateGoal();
   });
   $("#endGoal").on('click', function() {
@@ -273,8 +278,10 @@ function initializeTable() {
 ///////////////////////////////////////////////////////////////////////
 // Магия с кнопкой сохранения состояния
 function updateGoal() {
-    data.title = document.getElementById('titleString').innerHTML;
-    data.note = document.getElementById('note').innerHTML;
+
+
+    console.log("update goal");
+    console.log(data.note);
     var formData = {
         "id": data.id,
         "goalName": data.title,

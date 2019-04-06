@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<body>
+<th:block th:fragment="usernavbarcompact">
+	<section class="navbar-compact" align="center">
+		<a th:href="@{/profile}"><image class="navbar-compact-icon" th:src="@{/images/profile.svg}" src="/images/profile.svg" alt="Profile"/></a>
+		<a th:href="@{/goals}"><image class="navbar-compact-icon center-icon" th:src="@{/images/goals.svg}" src="/images/goals.svg" alt="Goals"/></a>
+		<a th:href="@{/addgoal}"><image class="navbar-compact-icon" th:src="@{/images/add.svg}" src="/images/add.svg" alt="Add goal"/></a>
+	</section>
+</th:block>
+</body>
+</html>

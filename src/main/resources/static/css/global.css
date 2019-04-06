@@ -230,3 +230,68 @@ Atomic styles
 {
 	width: 100%;
 }
+
+.navbar-icon
+{
+    height: 10vh;
+}
+
+.navbar-compact
+{
+	position: sticky;
+	bottom: 0;
+	padding-bottom: 3vh;
+	padding-top: 2vh;
+	background: #b172c5;
+}
+
+.navbar-compact-icon
+{
+    height: 8vh;
+}
+
+.center-icon
+{
+    margin-left: 8vh;
+    margin-right: 8vh;
+}
+
+.goal-card
+{
+    background: #c08ed0;
+    width: 98vw;
+    height: 10vh;
+    margin: 1vh 1vh;
+    padding: 1vh 1vh;
+}
+
+.goal-card-name
+{
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.goal-card-steps
+{
+    display: inline-block;
+    float: left;
+    width: 50%;
+    font-size: 16px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.goal-card-note
+{
+    display: inline-block;
+    float: right;
+    width: 49%;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

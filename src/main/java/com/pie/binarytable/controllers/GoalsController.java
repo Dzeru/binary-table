@@ -72,14 +72,13 @@ public class GoalsController
 		model.addAttribute("finishedGoals", finishedGoals);
 		model.addAttribute("user", user);
 
-		//return "goals";
 		if(device.isNormal())
 		{
 			return "goals";
 		}
 		else
 		{
-			return "compactgoals";
+			return "goalscompact";
 		}
 	}
 
