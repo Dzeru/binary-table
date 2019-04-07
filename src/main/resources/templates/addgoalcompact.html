@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<head th:replace="fragments/meta :: meta(~{::title})">
+	<title th:text="#{goal.addGoal}"></title>
+</head>
+<body class="sticky-footer-body">
+<section class="sticky-footer-section">
+	<div class="mx-auto border py-3 px-3 form-compact">
+		<div class="my-3" align="center" th:if="${error}">
+			<span class="error" th:text="#{${error}}"/>
+		</div>
+		<form th:action="@{/addgoal}" method="post" accept-charset="utf-8">
+			<div class="form-group">
+				<label for="goalName" th:text="#{fields.goal}"></label>
+				<input class="form-control" id="goalName" type="text" name="goalName" th:placeholder="#{placeholder.goal}" th:value="${goalNameVal} ? ${goalNameVal}">
+			</div>
+			<div class="form-group">
+				<label for="steps" th:text="#{fields.countOfSteps}"></label>
+				<input class="form-control" id="steps" type="text" name="steps" th:placeholder="#{placeholder.steps}" th:value="${stepsVal} ? ${stepsVal}">
+			</div>
+			<div class="form-group">
+				<label for="note" th:text="#{fields.note}"></label>
+				<textarea class="form-control" id="note" name="note" th:placeholder="#{placeholder.note}" th:utext="${noteVal} ? ${noteVal}"></textarea>
+			</div>
+			<a class="button button-white-dark-border my-4" data-toggle="collapse" href="#groupGoal" role="button" aria-expanded="false" aria-controls="groupGoal" th:text="#{goal.groupGoal}"></a>
+			<div class="collapse w100" id="groupGoal">
+				<div class="form-group mt-3">
+					<label for="emails" th:text="#{goal.writeCollaborators}"></label>
+					<textarea class="form-control" id="emails" name="emails" th:placeholder="#{placeholder.collaborators}"></textarea>
+				</div>
+			</div>
+			<div class="my-5">
+				<input class="button button-dark" type="submit" th:value="#{goal.addGoal}">
+			</div>
+		</form>
+	</div>
+</section>
+<th:block th:replace="fragments/usernavbarcompact :: usernavbarcompact"/>
+</body>
+</html>

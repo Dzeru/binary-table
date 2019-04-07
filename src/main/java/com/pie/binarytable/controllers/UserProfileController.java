@@ -5,6 +5,7 @@ import com.pie.binarytable.entities.User;
 import com.pie.binarytable.services.MailSender;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -29,7 +30,7 @@ public class UserProfileController
 	private MailSender mailSender;
 
 	@GetMapping("/profile")
-	public String profile(@AuthenticationPrincipal User user, Model model)
+	public String profile(@AuthenticationPrincipal User user, Model model, Device device)
 	{
 		model.addAttribute("user", user);
 		model.addAttribute("name", user.getName());
@@ -49,7 +50,14 @@ public class UserProfileController
 		model.addAttribute("day", day);
 		model.addAttribute("time", time);
 
-		return "profile";
+		if(!device.isNormal())
+		{
+			return "profile";
+		}
+		else
+		{
+			return "profilecompact";
+		}
 	}
 
 	@PostMapping("/updatepasswordprofile")
@@ -57,7 +65,7 @@ public class UserProfileController
 	                                    @RequestParam String oldPassword,
 	                                    @RequestParam String newPassword,
 	                                    @RequestParam String repeatPassword,
-	                                    Model model)
+	                                    Model model, Device device)
 	{
 		if(!passwordEncoder.matches(oldPassword, user.getPassword()) || !newPassword.equals(repeatPassword))
 		{
@@ -94,14 +102,22 @@ public class UserProfileController
 		model.addAttribute("day", day);
 		model.addAttribute("time", time);
 
-		return "profile";
+		if(device.isNormal())
+		{
+			return "profile";
+		}
+		else
+		{
+			return "profilecompact";
+		}
 	}
 
 	@PostMapping("/updateemailprofile")
 	public String updateEmailProfile(@AuthenticationPrincipal User user,
 	                                 @RequestParam String oldEmail,
 	                                 @RequestParam String newEmail,
-	                                 @RequestParam String repeatEmail, Model model)
+	                                 @RequestParam String repeatEmail,
+	                                 Model model, Device device)
 	{
 			if(newEmail.equals(repeatEmail) && userDAO.findByUsername(oldEmail) != null)
 			{
@@ -132,6 +148,13 @@ public class UserProfileController
 		model.addAttribute("day", day);
 		model.addAttribute("time", time);
 
-		return "profile";
+		if(device.isNormal())
+		{
+			return "profile";
+		}
+		else
+		{
+			return "profilecompact";
+		}
 	}
 }

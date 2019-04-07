@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 /*
 Controller for goals.
 REST controller for /goal page is in another class RestGoalsController
- */
+*/
 @Controller
 public class GoalsController
 {
@@ -47,7 +47,7 @@ public class GoalsController
 
 	/*
 	Forms list of goals and so on
-	 */
+	*/
 	@GetMapping("/goals")
 	public String goals(@AuthenticationPrincipal User user, Model model, Device device)
 	{
@@ -84,17 +84,25 @@ public class GoalsController
 
 	/*
 	Gets page /addgoal, where user can add the goal
-	 */
+	*/
 	@GetMapping("/addgoal")
-	public String newGoal(@AuthenticationPrincipal User user, Model model)
+	public String newGoal(@AuthenticationPrincipal User user, Model model, Device device)
 	{
 		model.addAttribute("user", user);
-		return "addgoal";
+
+		if(!device.isNormal())
+		{
+			return "addgoal";
+		}
+		else
+		{
+			return "addgoalcompact";
+		}
 	}
 
 	/*
 	Adds new goal and redirect back to the list of user's goals
-	 */
+	*/
 	@PostMapping("/addgoal")
 	public String addGoal(@AuthenticationPrincipal User user,
 						  @RequestParam String goalName,

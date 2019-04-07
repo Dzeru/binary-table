@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<head th:replace="fragments/meta :: meta(~{::title})">
+	<title th:text="#{meta.profile}"></title>
+</head>
+<body class="sticky-footer-body">
+<section class="sticky-footer-section">
+	<div class="my-3 mx-3" align="center">
+		<span class="mx-2"><a class="link-semidark" href="/terms" th:text="#{meta.terms}"></a></span>
+		<span class="mx-2"><a class="link-semidark" href="/feedback" th:text="#{meta.feedback}"></a></span>
+		<span class="mx-2"><a class="link-semidark" href="/contacts" th:text="#{meta.contacts}"></a></span>
+	</div>
+	<div class="pt-3 px-3">
+		<table align="center">
+			<tbody>
+			<tr>
+				<th class="pr-3"><b th:text="#{fields.name}"></b></th>
+				<th th:text="${name}"></th>
+			</tr>
+			<tr>
+				<th class="pr-3"><b th:text="#{fields.email}"></b></th>
+				<th th:text="${email}"></th>
+			</tr>
+			<tr>
+				<th class="pr-3"><b th:text="#{fields.registrationDate}"></b></th>
+				<th> <span th:text="#{fields.day}"/> <span th:text="${day}"/> <span th:text="#{fields.month}"/> <span th:text="${month}"/> <span th:text="#{fields.year}"/> <span th:text="${year}"/> <span th:text="#{fields.time}"/> <span th:text="${time}"/></th>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="pt-5 px-3">
+		<h3 th:text="#{login.updatePassword}"></h3>
+		<form th:action="@{/updatepasswordprofile}" method="post">
+			<div class="my-3" align="center" th:if="${passwordStatus}">
+				<span th:text="#{${passwordStatus}}"/>
+			</div>
+			<div class="form-group">
+				<label for="password" th:text="#{fields.oldPassword}"></label>
+				<input class="form-control" id="password" type="password" name="oldPassword" th:placeholder="#{placeholder.oldPassword}"/>
+			</div>
+			<div class="form-group">
+				<label for="newPassword" th:text="#{fields.newPassword}"></label>
+				<input class="form-control" id="newPassword" type="password" name="newPassword" th:placeholder="#{placeholder.newPassword}"/>
+			</div>
+			<div class="form-group">
+				<label for="repeatPassword" th:text="#{fields.repeatPassword}"></label>
+				<input class="form-control" id="repeatPassword" type="password" name="repeatPassword" th:placeholder="#{placeholder.newPassword}"/>
+			</div>
+			<input class="button button-dark" type="submit" th:value="#{login.updatePassword}"/>
+		</form>
+	</div>
+	<div class="pt-5 px-3">
+		<h3 th:text="#{login.updateEmail}"></h3>
+		<form th:action="@{/updateemailprofile}" method="post">
+			<div class="my-3" align="center" th:if="${emailStatus}">
+				<span th:text="#{${emailStatus}}"/>
+			</div>
+			<div class="form-group">
+				<label for="email" th:text="#{fields.oldEmail}"></label>
+				<input class="form-control" id="email" type="text" name="oldEmail" th:placeholder="#{placeholder.oldEmail}"/>
+			</div>
+			<div class="form-group">
+				<label for="newEmail" th:text="#{fields.newEmail}"></label>
+				<input class="form-control" id="newEmail" type="text" name="newEmail" th:placeholder="#{placeholder.newEmail}"/>
+			</div>
+			<div class="form-group">
+				<label for="repeatEmail" th:text="#{fields.repeatEmail}"></label>
+				<input class="form-control" id="repeatEmail" type="text" name="repeatEmail" th:placeholder="#{placeholder.newEmail}"/>
+			</div>
+			<input class="button button-dark" type="submit" th:value="#{login.updateEmail}"/>
+		</form>
+	</div>
+</section>
+<th:block th:replace="fragments/usernavbarcompact :: usernavbarcompact"/>
+</body>
+</html>

@@ -259,10 +259,14 @@ Atomic styles end
     height: 8vh;
 }
 
-.center-icon
+.left-icon-m
 {
-    margin-left: 8vh;
-    margin-right: 8vh;
+    margin-right: 4vw;
+}
+
+.right-icon-m
+{
+    margin-left: 4vw;
 }
 
 .goal-card
@@ -324,4 +328,10 @@ Atomic styles end
     padding-left: 1vw;
     position: sticky;
     top: 0;
+}
+
+.form-compact
+{
+    background: #fff;
+    color: #b172c5;
 }
