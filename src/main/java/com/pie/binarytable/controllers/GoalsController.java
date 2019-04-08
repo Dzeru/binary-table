@@ -90,7 +90,7 @@ public class GoalsController
 	{
 		model.addAttribute("user", user);
 
-		if(!device.isNormal())
+		if(device.isNormal())
 		{
 			return "addgoal";
 		}

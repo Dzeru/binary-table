@@ -50,7 +50,7 @@ public class UserProfileController
 		model.addAttribute("day", day);
 		model.addAttribute("time", time);
 
-		if(!device.isNormal())
+		if(device.isNormal())
 		{
 			return "profile";
 		}
