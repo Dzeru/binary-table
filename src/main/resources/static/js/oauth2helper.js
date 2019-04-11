@@ -1,4 +1,4 @@
-function isLoginWithSso()
+/*function isLoginWithSso()
 {
     var url = "/isloginwithsso";
 
@@ -12,7 +12,7 @@ function isLoginWithSso()
             {
                 if(window.location.pathname == "/")
                 {
-                    location.replace("/goalssso");
+                    //location.replace("/terms");
                     console.log("User log in with sso");
                 }
                 else
@@ -39,4 +39,4 @@ function isLoginWithSso()
 $(document).ready(function()
 {
     isLoginWithSso();
-});
+});*/
