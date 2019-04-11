@@ -2,14 +2,11 @@ package com.pie.binarytable.controllers;
 
 import com.pie.binarytable.dao.GoalDAO;
 import com.pie.binarytable.dao.GroupGoalDAO;
-import com.pie.binarytable.dao.UserAccountsDAO;
 import com.pie.binarytable.dao.UserDAO;
 import com.pie.binarytable.dto.AddGoalReturnParams;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
-
-import com.pie.binarytable.entities.UserAccounts;
 import com.pie.binarytable.services.AddGoalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,8 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.security.Principal;
-import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,9 +34,6 @@ public class GoalsController
 
 	@Autowired
 	private UserDAO userDAO;
-
-	@Autowired
-	private UserAccountsDAO userAccountsDAO;
 
 	@Autowired
 	private AddGoalService addGoalService;
@@ -77,7 +69,7 @@ public class GoalsController
 	/*
 	Forms list of goals and so on
 	 */
-	@GetMapping("/goalssso")
+	/*@GetMapping("/goalssso")
 	public String goalssso(@AuthenticationPrincipal Principal principal, Model model)
 	{
 		String principalName = principal.getName();
@@ -108,7 +100,7 @@ public class GoalsController
 			model.addAttribute("user", user);
 		}
 		return "goals";
-	}
+	}*/
 
 	/*
 	Gets page /addgoal, where user can add the goal

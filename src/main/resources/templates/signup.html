@@ -11,6 +11,9 @@
         <div class="my-3" align="center" th:if="${error}">
             <span class="error" th:text="#{${error}}"/>
         </div>
+        <div align="center">
+            <a th:href="@{/login/google}">Sign up with Google</a>
+        </div>
         <div class="form-group">
             <label for="name" th:text="#{fields.name}"></label>
             <input class="form-control" id="name" type="text" name="name" th:placeholder="#{placeholder.name}" th:value="${nameVal} ? ${nameVal}">

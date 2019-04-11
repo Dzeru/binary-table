@@ -1,16 +1,9 @@
 package com.pie.binarytable.config;
 
-import com.pie.binarytable.dao.UserAccountsDAO;
 import com.pie.binarytable.dao.UserDAO;
-import com.pie.binarytable.entities.Role;
-import com.pie.binarytable.entities.User;
-import com.pie.binarytable.entities.UserAccounts;
 import com.pie.binarytable.services.AuthProvider;
+import com.pie.binarytable.services.OAuth2Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,23 +15,23 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
-import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
+import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
+import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.servlet.Filter;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.UUID;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableOAuth2Client
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
+	private static List<String> clients = Arrays.asList("google");
+
 	@Autowired
 	private AuthProvider authProvider;
 
@@ -46,13 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	private OAuth2ClientContext oAuth2ClientContext;
 
 	@Autowired
+	private OAuth2Service oAuth2Service;
+
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private UserDAO userDAO;
-
-	@Autowired
-	private UserAccountsDAO userAccountsDAO;
 
 	@Bean
 	PasswordEncoder passwordEncoder()
@@ -61,15 +54,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 		return passwordEncoder;
 	}
 
-	@Bean
+	/*@Bean
 	public FilterRegistrationBean oAuth2ClientFilterRegistration(OAuth2ClientContextFilter oAuth2ClientContextFilter)
 	{
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(oAuth2ClientContextFilter);
 		registration.setOrder(-100);
 		return registration;
-	}
-
+	}*/
+/*
 	private Filter ssoFilter()
 	{
 		OAuth2ClientAuthenticationProcessingFilter googleFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/google");
@@ -80,8 +73,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 		googleFilter.setTokenServices(tokenServices);
 		return googleFilter;
 	}
+*/
+	/*@Bean
+	public ClientRegistrationRepository clientRegistrationRepositoryd()
+	{
+		List<ClientRegistration> registrations = clients.stream()
+				.map(c -> getRegistration(c))
+				.filter(registration -> registration != null)
+				.collect(Collectors.toList());
+
+		return new InMemoryClientRegistrationRepository();
+	}*/
+
 
 	/*@Bean
+	public PrincipalExtractor principalExtractor()
+	{
+		return new CustomPrincipalExtractor();
+	}
+
+	@Bean
 	public PrincipalExtractor principalExtractor(UserDAO userDAO)
 	{
 		return map ->
@@ -113,9 +124,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 			}
 			return userDAO.save(user);
 		};
-	}*/
-
-	@Bean
+	}
+*/
+	/*@Bean
 	@ConfigurationProperties("google.client")
 	public AuthorizationCodeResourceDetails google()
 	{
@@ -128,6 +139,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	{
 		return new ResourceServerProperties();
 	}
+*/
+	@Bean
+	public AuthorizationRequestRepository<OAuth2AuthorizationRequest> customAuthorizationRepository()
+	{
+		return new HttpSessionOAuth2AuthorizationRequestRepository();
+	}
+
+	@Bean
+	public JwtAuthenticationFilter authenticationTokenFilterBean()
+	{
+		return new JwtAuthenticationFilter();
+	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception
@@ -139,8 +162,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 						"/about", "/terms", "/feedback", "/contacts", "/usecases", "/error").permitAll()
 				.anyRequest().authenticated()
 				.and().formLogin().loginPage("/login").defaultSuccessUrl("/goals").failureUrl("/login?error").permitAll()
-				.and().logout().logoutSuccessUrl("/").permitAll()
-				.and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
+				.and().logout().logoutSuccessUrl("/").permitAll();
+
+		http
+				.oauth2Login().loginPage("/login").defaultSuccessUrl("/goals").failureUrl("/login?error")
+				.userInfoEndpoint().oidcUserService(oAuth2Service)
+				.and().authorizationEndpoint().authorizationRequestRepository(customAuthorizationRepository());
+
+		http
+				.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Override

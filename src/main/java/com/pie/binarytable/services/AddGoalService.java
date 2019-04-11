@@ -2,18 +2,15 @@ package com.pie.binarytable.services;
 
 import com.pie.binarytable.dao.GoalDAO;
 import com.pie.binarytable.dao.GroupGoalDAO;
-import com.pie.binarytable.dao.UserAccountsDAO;
 import com.pie.binarytable.dao.UserDAO;
 import com.pie.binarytable.dto.AddGoalReturnParams;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
-import com.pie.binarytable.entities.UserAccounts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.UUID;
@@ -30,9 +27,6 @@ public class AddGoalService
     @Autowired
     UserDAO userDAO;
 
-    @Autowired
-    UserAccountsDAO userAccountsDAO;
-    
     /*
     First Entry is URL, others are params for page
      */
@@ -166,7 +160,7 @@ public class AddGoalService
     /*
     First Entry is URL, others are params for page
      */
-    public AddGoalReturnParams addGoalSso(Principal principal,
+   /* public AddGoalReturnParams addGoalSso(Principal principal,
                                        String goalName,
                                        String steps,
                                        String note,
@@ -257,11 +251,11 @@ public class AddGoalService
         newGoal.setHash(hash.toString());
 
         goalDAO.save(newGoal);
-
+*/
 		/*
 		Only for group goals
 		 */
-        if(!emails.isEmpty() && emails != null)
+        /*if(!emails.isEmpty() && emails != null)
         {
             newGoal.setGroupGoal(true);
             goalDAO.save(newGoal);
@@ -294,5 +288,5 @@ public class AddGoalService
         addGoalReturnParams.setUrl("redirect:/goals");
 
         return addGoalReturnParams;
-    }
+    }*/
 }

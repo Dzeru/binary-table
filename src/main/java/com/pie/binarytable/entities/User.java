@@ -17,8 +17,7 @@ public class User implements UserDetails
 	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-	@NotNull
-    private Long userAccountsId;
+    //private Long userAccountsId;
 
 	@NotNull
     private String username;
@@ -34,6 +33,9 @@ public class User implements UserDetails
 
     @NotNull
     private String registrationDate;
+
+    private String googleName;
+    private String googleUsername;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -53,7 +55,7 @@ public class User implements UserDetails
         this.id = id;
     }
 
-    public Long getUserAccountsId()
+   /* public Long getUserAccountsId()
     {
         return userAccountsId;
     }
@@ -62,7 +64,7 @@ public class User implements UserDetails
     {
         this.userAccountsId = userAccountsId;
     }
-
+*/
     public String getUsername() {
         return username;
     }
@@ -150,6 +152,26 @@ public class User implements UserDetails
         this.registrationDate = registrationDate;
     }
 
+    public String getGoogleName()
+    {
+        return googleName;
+    }
+
+    public void setGoogleName(String googleName)
+    {
+        this.googleName = googleName;
+    }
+
+    public String getGoogleUsername()
+    {
+        return googleUsername;
+    }
+
+    public void setGoogleUsername(String googleUsername)
+    {
+        this.googleUsername = googleUsername;
+    }
+
     @Override
     public boolean equals(Object o)
     {
@@ -158,7 +180,7 @@ public class User implements UserDetails
         User user = (User) o;
         return isActive() == user.isActive() &&
                 Objects.equals(getId(), user.getId()) &&
-                Objects.equals(getUserAccountsId(), user.getUserAccountsId()) &&
+                //Objects.equals(getUserAccountsId(), user.getUserAccountsId()) &&
                 Objects.equals(getUsername(), user.getUsername()) &&
                 Objects.equals(getPassword(), user.getPassword()) &&
                 Objects.equals(getName(), user.getName()) &&
@@ -170,7 +192,7 @@ public class User implements UserDetails
     @Override
     public int hashCode()
     {
-        return Objects.hash(getId(), getUserAccountsId(), getUsername(), getPassword(), getName(), isActive(), getUpdatePassword(), getRegistrationDate(), getRoles());
+        return Objects.hash(getId(), getUsername(), getPassword(), getName(), isActive(), getUpdatePassword(), getRegistrationDate(), getRoles());
     }
 
     @Override
@@ -178,7 +200,7 @@ public class User implements UserDetails
     {
         return "User{" +
                 "id=" + id +
-                ", userAccountsId=" + userAccountsId +
+      //          ", userAccountsId=" + userAccountsId +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +

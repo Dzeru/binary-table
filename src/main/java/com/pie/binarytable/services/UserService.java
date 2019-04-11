@@ -1,7 +1,6 @@
 package com.pie.binarytable.services;
 
 import com.pie.binarytable.dao.UserDAO;
-
 import com.pie.binarytable.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,8 +19,29 @@ public class UserService implements UserDetailsService
 	{
 		User userFindByUsername = userDAO.findByUsername(username);
 		User userFindByName = userDAO.findByName(username);
-		if(userFindByUsername == null)
+		User userFindByGoogleUsername = userDAO.findByGoogleUsername(username);
+		User userFindByGoogleName = userDAO.findByGoogleName(username);
+
+		if(userFindByUsername != null)
+		{
+			return userFindByUsername;
+		}
+
+		if(userFindByName != null)
+		{
 			return userFindByName;
-		else return userFindByUsername;
+		}
+
+		if(userFindByGoogleUsername != null)
+		{
+			return userFindByGoogleUsername;
+		}
+
+		if(userFindByGoogleName != null)
+		{
+			return userFindByGoogleName;
+		}
+
+		return null;
 	}
 }
