@@ -180,19 +180,20 @@ public class User implements UserDetails
         User user = (User) o;
         return isActive() == user.isActive() &&
                 Objects.equals(getId(), user.getId()) &&
-                //Objects.equals(getUserAccountsId(), user.getUserAccountsId()) &&
                 Objects.equals(getUsername(), user.getUsername()) &&
                 Objects.equals(getPassword(), user.getPassword()) &&
                 Objects.equals(getName(), user.getName()) &&
                 Objects.equals(getUpdatePassword(), user.getUpdatePassword()) &&
                 Objects.equals(getRegistrationDate(), user.getRegistrationDate()) &&
+                Objects.equals(getGoogleName(), user.getGoogleName()) &&
+                Objects.equals(getGoogleUsername(), user.getGoogleUsername()) &&
                 Objects.equals(getRoles(), user.getRoles());
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(getId(), getUsername(), getPassword(), getName(), isActive(), getUpdatePassword(), getRegistrationDate(), getRoles());
+        return Objects.hash(getId(), getUsername(), getPassword(), getName(), isActive(), getUpdatePassword(), getRegistrationDate(), getGoogleName(), getGoogleUsername(), getRoles());
     }
 
     @Override
@@ -200,17 +201,19 @@ public class User implements UserDetails
     {
         return "User{" +
                 "id=" + id +
-      //          ", userAccountsId=" + userAccountsId +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", active=" + active +
                 ", updatePassword='" + updatePassword + '\'' +
                 ", registrationDate='" + registrationDate + '\'' +
+                ", googleName='" + googleName + '\'' +
+                ", googleUsername='" + googleUsername + '\'' +
                 ", roles=" + roles +
                 '}';
     }
-/*
+
+    /*
 	public Set<Goal> getGoals()
 	{
 		return goals;

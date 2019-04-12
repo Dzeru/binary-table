@@ -4,6 +4,9 @@ import com.pie.binarytable.dao.UserDAO;
 import com.pie.binarytable.services.AuthProvider;
 import com.pie.binarytable.services.OAuth2Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,13 +18,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
+import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.Filter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,7 +37,7 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
-	private static List<String> clients = Arrays.asList("google");
+	//private static List<String> clients = Arrays.asList("google");
 
 	@Autowired
 	private AuthProvider authProvider;
@@ -54,26 +61,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 		return passwordEncoder;
 	}
 
-	/*@Bean
+	@Bean
 	public FilterRegistrationBean oAuth2ClientFilterRegistration(OAuth2ClientContextFilter oAuth2ClientContextFilter)
 	{
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(oAuth2ClientContextFilter);
 		registration.setOrder(-100);
 		return registration;
-	}*/
-/*
+	}
+
 	private Filter ssoFilter()
 	{
 		OAuth2ClientAuthenticationProcessingFilter googleFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/google");
 		OAuth2RestTemplate googleTemplate = new OAuth2RestTemplate(google(), oAuth2ClientContext);
 		googleFilter.setRestTemplate(googleTemplate);
-		UserInfoTokenServices tokenServices = new UserInfoTokenServices(googleResource().getUserInfoUri(), google().getClientId());
+		CustomUserInfoTokenServices tokenServices = new CustomUserInfoTokenServices(googleResource().getUserInfoUri(), google().getClientId());
 		tokenServices.setRestTemplate(googleTemplate);
 		googleFilter.setTokenServices(tokenServices);
+		tokenServices.setUserDAO(userDAO);
+		tokenServices.setPasswordEncoder(passwordEncoder);
 		return googleFilter;
 	}
-*/
+
 	/*@Bean
 	public ClientRegistrationRepository clientRegistrationRepositoryd()
 	{
@@ -126,7 +135,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 		};
 	}
 */
-	/*@Bean
+	@Bean
 	@ConfigurationProperties("google.client")
 	public AuthorizationCodeResourceDetails google()
 	{
@@ -139,8 +148,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	{
 		return new ResourceServerProperties();
 	}
-*/
-	@Bean
+
+	/*@Bean
 	public AuthorizationRequestRepository<OAuth2AuthorizationRequest> customAuthorizationRepository()
 	{
 		return new HttpSessionOAuth2AuthorizationRequestRepository();
@@ -150,7 +159,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	public JwtAuthenticationFilter authenticationTokenFilterBean()
 	{
 		return new JwtAuthenticationFilter();
-	}
+	}*/
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception
@@ -164,13 +173,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 				.and().formLogin().loginPage("/login").defaultSuccessUrl("/goals").failureUrl("/login?error").permitAll()
 				.and().logout().logoutSuccessUrl("/").permitAll();
 
-		http
+		/*http
 				.oauth2Login().loginPage("/login").defaultSuccessUrl("/goals").failureUrl("/login?error")
 				.userInfoEndpoint().oidcUserService(oAuth2Service)
 				.and().authorizationEndpoint().authorizationRequestRepository(customAuthorizationRepository());
-
+*/
 		http
-				.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(ssoFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Override
