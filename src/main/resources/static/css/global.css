@@ -103,6 +103,13 @@ table
     text-decoration: none;
 }
 
+.nav-button
+{
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 5px 10px;
+}
+
 .form
 {
     background: #fff;
