@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.FixedAuth
 import org.springframework.boot.autoconfigure.security.oauth2.resource.FixedPrincipalExtractor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
@@ -113,25 +114,26 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
 
 			User user = userDAO.findByGoogleUsername(googleUsername);
 
-		if(user == null)
+			if(user == null)
+			{
+				user = new User();
+				user.setRegistrationDate(LocalDateTime.now().toString());
+				user.setActive(true);
+				user.setRoles(Collections.singleton(Role.USER));
+			}
+
+				user.setName(googleName);
+				user.setUsername(googleUsername);
+				user.setGoogleName(googleName);
+				user.setGoogleUsername(googleUsername);
+
+				user.setPassword(passwordEncoder.encode("oauth2user"));
+
+				userDAO.save(user);
+		}
+
+		if (map.containsKey("error"))
 		{
-			user = new User();
-			user.setRegistrationDate(LocalDateTime.now().toString());
-			user.setActive(true);
-			user.setRoles(Collections.singleton(Role.USER));
-		}
-
-			user.setName(googleName);
-			user.setUsername(googleUsername);
-			user.setGoogleName(googleName);
-			user.setGoogleUsername(googleUsername);
-
-			user.setPassword(passwordEncoder.encode("oauth2user"));
-
-			userDAO.save(user);
-		}
-
-		if (map.containsKey("error")) {
 			this.logger.debug("userinfo returned error: " + map.get("error"));
 			throw new InvalidTokenException(accessToken);
 		}
@@ -139,6 +141,13 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
 	}
 
 	private OAuth2Authentication extractAuthentication(Map<String, Object> map) {
+		System.out.println("EXTRACT AUTHENTICATION");
+
+		for(Map.Entry<String, Object> e : map.entrySet())
+		{
+			System.out.println(e.getKey() + " " + e.getValue().toString());
+		}
+		
 		Object principal = getPrincipal(map);
 		List<GrantedAuthority> authorities = this.authoritiesExtractor
 				.extractAuthorities(map);

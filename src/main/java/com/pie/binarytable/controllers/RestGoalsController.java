@@ -9,11 +9,14 @@ import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
 
+import com.pie.binarytable.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 
 @RestController
@@ -28,12 +31,17 @@ public class RestGoalsController
 	@Autowired
 	UserDAO userDAO;
 
+	@Autowired
+	UserService userService;
+
 	/*
 	Sends JSON with Goal object to JavaScript functions in /goal
     */
 	@RequestMapping(value = "/getgoal", method = RequestMethod.GET)
-	public Goal goal(@RequestParam(value="id") Long goalId, @AuthenticationPrincipal User user)
+	public Goal goal(Principal principal,
+	                 @RequestParam(value="id") Long goalId)
 	{
+		User user = (User) userService.loadUserByUsername(principal.getName());
 		Goal goal = goalDAO.findByIdEquals(goalId);
 
 		if(goal.getUserId() == user.getId())
@@ -42,8 +50,11 @@ public class RestGoalsController
 	}
 
 	@RequestMapping(value = "/updategoal", method = RequestMethod.POST)
-	public ResponseEntity updateGoal(@RequestBody Goal goal, @AuthenticationPrincipal User user)
+	public ResponseEntity updateGoal(Principal principal,
+	                                 @RequestBody Goal goal)
 	{
+		User user = (User) userService.loadUserByUsername(principal.getName());
+
 		if(goal.getUserId() != user.getId())
 			return ResponseEntity.badRequest().body("No access to this method");
 		else
@@ -62,8 +73,11 @@ public class RestGoalsController
 	Deletes goal by goal id
 	 */
 	@RequestMapping(value = "/deletegoal", method = RequestMethod.POST)
-	public ResponseEntity deleteGoal(@RequestBody GoalId goalId, @AuthenticationPrincipal User user)
+	public ResponseEntity deleteGoal(Principal principal,
+	                                 @RequestBody GoalId goalId)
 	{
+		User user = (User) userService.loadUserByUsername(principal.getName());
+
 		Long id = goalId.getId();
 
 		if(goalDAO.findByIdEquals(id).getUserId() != user.getId())
@@ -92,8 +106,11 @@ public class RestGoalsController
 	}
 
 	@RequestMapping(value = "/getcollaborators", method = RequestMethod.GET)
-	public CollaboratorsList getCollaborators(@RequestParam(value = "id") Long id, @AuthenticationPrincipal User user)
+	public CollaboratorsList getCollaborators(Principal principal,
+	                                          @RequestParam(value = "id") Long id)
 	{
+		User user = (User) userService.loadUserByUsername(principal.getName());
+
 		ArrayList<GroupGoal> groupGoals = groupGoalDAO.findByGoalId(id);
 		CollaboratorsList collaboratorsList = new CollaboratorsList();
 
