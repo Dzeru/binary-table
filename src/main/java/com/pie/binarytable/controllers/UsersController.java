@@ -4,6 +4,7 @@ import com.pie.binarytable.dao.UserDAO;
 import com.pie.binarytable.entities.Role;
 import com.pie.binarytable.entities.User;
 import com.pie.binarytable.services.MailSender;
+import com.pie.binarytable.services.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 /*
@@ -32,6 +34,9 @@ public class UsersController
 	@Autowired
 	private MailSender mailSender;
 
+	@Autowired
+	private SignUpService signUpService;
+
 	@GetMapping("/signup")
 	public String registration()
 	{
@@ -46,55 +51,17 @@ public class UsersController
 	@PostMapping("/signup")
 	public String addUser(User user, @RequestParam String repeatPassword, Model model)
 	{
-		if(!user.getPassword().equals(repeatPassword))
+		Map<String, Object> modelSignUp = signUpService.signUp(user, repeatPassword);
+
+		if(modelSignUp.isEmpty())
 		{
-			model.addAttribute("error", "error.equalPasswords");
-			model.addAttribute("nameVal", user.getName());
-			model.addAttribute("emailVal", user.getUsername());
-			return "signup";
+			return "redirect:/login";
 		}
 		else
 		{
-			User userFromDB = userDAO.findByUsername(user.getUsername());
-
-			if(userFromDB != null)
-			{
-				model.addAttribute("error", "error.emailExists");
-				model.addAttribute("nameVal", user.getName());
-				return "signup";
-			}
-			if(user.getPassword().length() < 6)
-			{
-				model.addAttribute("error", "error.shortPassword");
-				model.addAttribute("nameVal", user.getName());
-				model.addAttribute("emailVal", user.getUsername());
-				return "signup";
-			}
-			if(user.getUsername() == null || user.getUsername().isEmpty())
-			{
-				model.addAttribute("error", "error.emptyEmail");
-				model.addAttribute("nameVal", user.getName());
-				return "signup";
-			}
-			if(user.getName() == null || user.getName().isEmpty())
-			{
-				model.addAttribute("error", "error.emptyName");
-				model.addAttribute("emailVal", user.getUsername());
-				return "signup";
-			}
-
-			user.setPassword(passwordEncoder.encode(user.getPassword()));
-			user.setActive(true);
-			user.setRoles(Collections.singleton(Role.USER));
-
-			user.setRegistrationDate(LocalDateTime.now().toString());
-
-			userDAO.save(user);
-
-			mailSender.sendGreetingMessage(user.getUsername(), user.getName());
+			model.addAllAttributes(modelSignUp);
+			return "signup";
 		}
-
-		return "redirect:/login";
 	}
 
 	/*

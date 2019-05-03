@@ -2,7 +2,6 @@ package com.pie.binarytable.controllers;
 
 import com.pie.binarytable.dao.GoalDAO;
 import com.pie.binarytable.dao.GroupGoalDAO;
-import com.pie.binarytable.dto.AddGoalReturnParams;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
@@ -93,18 +92,16 @@ public class GoalsController
 						  Model model)
 	{
 		User user = (User) userService.loadUserByUsername(principal.getName());
-		AddGoalReturnParams addGoalReturnParams = addGoalService.addGoal(user, goalName, steps, note, emails);
+		Map<String, Object> modelAddGoal = addGoalService.addGoal(user, goalName, steps, note, emails);
 
-		HashMap<String, Object> params = addGoalReturnParams.getParams();
-
-		if(!params.isEmpty())
+		if(modelAddGoal.isEmpty())
 		{
-			for(Map.Entry<String, Object> par : params.entrySet())
-			{
-				model.addAttribute(par.getKey(), par.getValue());
-			}
+			return "redirect:/goals";
 		}
-
-		return addGoalReturnParams.getUrl();
+		else
+		{
+			model.addAllAttributes(modelAddGoal);
+			return "addgoal";
+		}
 	}
 }

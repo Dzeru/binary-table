@@ -100,13 +100,6 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
 	{
 		Map<String, Object> map = getMap(this.userInfoEndpointUrl, accessToken);
 
-		System.out.println("***********************************************");
-		for(Map.Entry<String, Object> e : map.entrySet())
-		{
-			System.out.println(e.getKey() + " " + e.getValue());
-		}
-		System.out.println("***********************************************");
-
 		if(map.containsKey("sub"))
 		{
 			String googleName = (String) map.get("name");
