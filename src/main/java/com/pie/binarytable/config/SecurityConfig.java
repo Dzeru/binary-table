@@ -1,6 +1,6 @@
 package com.pie.binarytable.config;
 
-import com.pie.binarytable.dao.UserDAO;
+import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.services.AuthProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	private UserDAO userDAO;
+	private UserRepository userDAO;
 
 	@Bean
 	PasswordEncoder passwordEncoder()

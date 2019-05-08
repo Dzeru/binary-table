@@ -1,14 +1,12 @@
 package com.pie.binarytable.controllers;
 
-import com.pie.binarytable.dao.UserDAO;
+import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.entities.User;
 import com.pie.binarytable.services.MailSender;
 
 import com.pie.binarytable.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +22,7 @@ Controller for user profile, where user can change email and password
 public class UserProfileController
 {
 	@Autowired
-	private UserDAO userDAO;
+	private UserRepository userDAO;
 
 	@Autowired
 	private UserService userService;

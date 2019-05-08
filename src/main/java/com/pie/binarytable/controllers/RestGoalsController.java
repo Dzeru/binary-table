@@ -1,8 +1,8 @@
 package com.pie.binarytable.controllers;
 
-import com.pie.binarytable.dao.GoalDAO;
-import com.pie.binarytable.dao.GroupGoalDAO;
-import com.pie.binarytable.dao.UserDAO;
+import com.pie.binarytable.repositories.GoalRepository;
+import com.pie.binarytable.repositories.GroupGoalRepository;
+import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.dto.CollaboratorsList;
 import com.pie.binarytable.dto.GoalId;
 import com.pie.binarytable.entities.Goal;
@@ -12,8 +12,6 @@ import com.pie.binarytable.entities.User;
 import com.pie.binarytable.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -23,13 +21,13 @@ import java.util.ArrayList;
 public class RestGoalsController
 {
 	@Autowired
-	GoalDAO goalDAO;
+	GoalRepository goalRepository;
 
 	@Autowired
-	GroupGoalDAO groupGoalDAO;
+	GroupGoalRepository groupGoalRepository;
 
 	@Autowired
-	UserDAO userDAO;
+	UserRepository userDAO;
 
 	@Autowired
 	UserService userService;
@@ -42,10 +40,10 @@ public class RestGoalsController
 	                 @RequestParam(value="id") Long goalId)
 	{
 		User user = (User) userService.loadUserByUsername(principal.getName());
-		Goal goal = goalDAO.findByIdEquals(goalId);
+		Goal goal = goalRepository.findByIdEquals(goalId);
 
 		if(goal.getUserId() == user.getId())
-			return goalDAO.findByIdEquals(goalId);
+			return goalRepository.findByIdEquals(goalId);
 		else return null;
 	}
 
@@ -59,9 +57,9 @@ public class RestGoalsController
 			return ResponseEntity.badRequest().body("No access to this method");
 		else
 		{
-			goalDAO.save(goal);
+			goalRepository.save(goal);
 
-			if(goalDAO.findByIdEquals(goal.getId()).getCurrentState().equals(goal.getCurrentState()))
+			if(goalRepository.findByIdEquals(goal.getId()).getCurrentState().equals(goal.getCurrentState()))
 			{
 				return ResponseEntity.ok().body("Goal is successfully updated");
 			}
@@ -80,25 +78,25 @@ public class RestGoalsController
 
 		Long id = goalId.getId();
 
-		if(goalDAO.findByIdEquals(id).getUserId() != user.getId())
+		if(goalRepository.findByIdEquals(id).getUserId() != user.getId())
 		{
 			return ResponseEntity.badRequest().body("No access to this method");
 		}
 		else
 		{
-			if(goalDAO.findByIdEquals(id).isGroupGoal())
+			if(goalRepository.findByIdEquals(id).isGroupGoal())
 			{
-				groupGoalDAO.deleteByGoalId(id);
+				groupGoalRepository.deleteByGoalId(id);
 
-				if(!groupGoalDAO.findByGoalId(id).isEmpty()) //list!
+				if(!groupGoalRepository.findByGoalId(id).isEmpty()) //list!
 				{
 					return ResponseEntity.badRequest().body("Fail to delete group goal");
 				}
 			}
 
-			goalDAO.deleteById(id);
+			goalRepository.deleteById(id);
 
-			if(goalDAO.findByIdEquals(id) == null) //one object!
+			if(goalRepository.findByIdEquals(id) == null) //one object!
 			{
 				return ResponseEntity.ok().body("Goal is successfully deleted");
 			} else return ResponseEntity.badRequest().body("Fail to delete goal");
@@ -111,7 +109,7 @@ public class RestGoalsController
 	{
 		User user = (User) userService.loadUserByUsername(principal.getName());
 
-		ArrayList<GroupGoal> groupGoals = groupGoalDAO.findByGoalId(id);
+		ArrayList<GroupGoal> groupGoals = groupGoalRepository.findByGoalId(id);
 		CollaboratorsList collaboratorsList = new CollaboratorsList();
 
 		boolean isCollaborator = false;

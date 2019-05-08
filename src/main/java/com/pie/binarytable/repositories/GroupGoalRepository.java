@@ -1,4 +1,4 @@
-package com.pie.binarytable.dao;
+package com.pie.binarytable.repositories;
 
 import com.pie.binarytable.entities.GroupGoal;
 import org.springframework.data.repository.CrudRepository;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 @Service
 @Repository
-public interface GroupGoalDAO extends CrudRepository<GroupGoal, Long>
+public interface GroupGoalRepository extends CrudRepository<GroupGoal, Long>
 {
 	ArrayList<GroupGoal> findByUserId(Long id);
 	ArrayList<GroupGoal> findByGoalId(Long id);

@@ -1,7 +1,6 @@
 package com.pie.binarytable.controllers;
 
-import com.pie.binarytable.dao.UserDAO;
-import com.pie.binarytable.entities.Role;
+import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.entities.User;
 import com.pie.binarytable.services.MailSender;
 import com.pie.binarytable.services.SignUpService;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,7 +23,7 @@ Controller for users
 public class UsersController
 {
 	@Autowired
-	private UserDAO userDAO;
+	private UserRepository userDAO;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;

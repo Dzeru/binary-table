@@ -1,8 +1,8 @@
 package com.pie.binarytable.services;
 
-import com.pie.binarytable.dao.GoalDAO;
-import com.pie.binarytable.dao.GroupGoalDAO;
-import com.pie.binarytable.dao.UserDAO;
+import com.pie.binarytable.repositories.GoalRepository;
+import com.pie.binarytable.repositories.GroupGoalRepository;
+import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
@@ -18,13 +18,13 @@ import java.util.UUID;
 public class AddGoalService
 {
     @Autowired
-    GoalDAO goalDAO;
+    GoalRepository goalRepository;
     
     @Autowired
-    GroupGoalDAO groupGoalDAO;
+    GroupGoalRepository groupGoalRepository;
 
     @Autowired
-    UserDAO userDAO;
+    UserRepository userDAO;
 
     public Map<String, Object> addGoal(User user,
                                        String goalName,
@@ -95,7 +95,7 @@ public class AddGoalService
         UUID hash = UUID.randomUUID();
         newGoal.setHash(hash.toString());
 
-        goalDAO.save(newGoal);
+        goalRepository.save(newGoal);
 
 		/*
 		Only for group goals
@@ -103,9 +103,9 @@ public class AddGoalService
         if(!emails.isEmpty() && emails != null)
         {
             newGoal.setGroupGoal(true);
-            goalDAO.save(newGoal);
+            goalRepository.save(newGoal);
             String[] emailList = emails.split(", ");
-            newGoal = goalDAO.findByGoalNameEqualsAndUserIdEqualsAndGoalTimestampEquals(goalName, user.getId(), goalTimestamp);
+            newGoal = goalRepository.findByGoalNameEqualsAndUserIdEqualsAndGoalTimestampEquals(goalName, user.getId(), goalTimestamp);
             Long goalId = newGoal.getId();
 
             for(String email : emailList)
@@ -114,7 +114,7 @@ public class AddGoalService
                 if(username != null)
                 {
                     GroupGoal groupGoal = new GroupGoal(goalId, username.getId());
-                    groupGoalDAO.save(groupGoal);
+                    groupGoalRepository.save(groupGoal);
                 }
                 else
                 {
@@ -123,7 +123,7 @@ public class AddGoalService
                 }
             }
         }
-        goalDAO.save(newGoal);
+        goalRepository.save(newGoal);
 
         return model;
     }

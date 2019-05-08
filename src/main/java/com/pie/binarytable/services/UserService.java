@@ -1,6 +1,6 @@
 package com.pie.binarytable.services;
 
-import com.pie.binarytable.dao.UserDAO;
+import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService
 {
 	@Autowired
-	private UserDAO userDAO;
+	private UserRepository userDAO;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException

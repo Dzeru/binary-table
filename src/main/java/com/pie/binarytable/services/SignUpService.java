@@ -1,6 +1,6 @@
 package com.pie.binarytable.services;
 
-import com.pie.binarytable.dao.UserDAO;
+import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.entities.Role;
 import com.pie.binarytable.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class SignUpService
 {
 	@Autowired
-	UserDAO userDAO;
+	UserRepository userDAO;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;

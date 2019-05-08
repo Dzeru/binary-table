@@ -1,17 +1,14 @@
 package com.pie.binarytable.config;
 
-import com.pie.binarytable.dao.UserDAO;
+import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.entities.Role;
 import com.pie.binarytable.entities.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.FixedAuthoritiesExtractor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.FixedPrincipalExtractor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,7 +39,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
 	private AuthoritiesExtractor authoritiesExtractor = new FixedAuthoritiesExtractor();
 	private PrincipalExtractor principalExtractor = new FixedPrincipalExtractor();
 
-	private UserDAO userDAO;
+	private UserRepository userDAO;
 	private PasswordEncoder passwordEncoder;
 
 	public CustomUserInfoTokenServices(){}
@@ -53,7 +50,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
 		this.clientId = clientId;
 	}
 
-	public void setUserDAO(UserDAO userDAO)
+	public void setUserDAO(UserRepository userDAO)
 	{
 		this.userDAO = userDAO;
 	}

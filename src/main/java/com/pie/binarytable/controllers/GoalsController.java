@@ -1,7 +1,7 @@
 package com.pie.binarytable.controllers;
 
-import com.pie.binarytable.dao.GoalDAO;
-import com.pie.binarytable.dao.GroupGoalDAO;
+import com.pie.binarytable.repositories.GoalRepository;
+import com.pie.binarytable.repositories.GroupGoalRepository;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
@@ -26,10 +26,10 @@ REST controller for /goal page is in another class RestGoalsController
 public class GoalsController
 {
 	@Autowired
-	private GoalDAO goalDAO;
+	private GoalRepository goalRepository;
 
 	@Autowired
-	private GroupGoalDAO groupGoalDAO;
+	private GroupGoalRepository groupGoalRepository;
 
 	@Autowired
 	private UserService userService;
@@ -47,14 +47,14 @@ public class GoalsController
 		User user = (User) userService.loadUserByUsername(principal.getName());
 
 		Long userId = user.getId();
-		HashSet<Goal> allGoals = new HashSet(goalDAO.findByUserId(userId));
-		ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalDAO.findByUserId(userId));
+		HashSet<Goal> allGoals = new HashSet(goalRepository.findByUserId(userId));
+		ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalRepository.findByUserId(userId));
 
 		if(!groupGoals.isEmpty())
 		{
 			for(GroupGoal goal : groupGoals)
 			{
-				allGoals.add(goalDAO.findByIdEquals(goal.getGoalId()));
+				allGoals.add(goalRepository.findByIdEquals(goal.getGoalId()));
 			}
 		}
 

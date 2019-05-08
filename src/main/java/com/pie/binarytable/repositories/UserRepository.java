@@ -1,4 +1,4 @@
-package com.pie.binarytable.dao;
+package com.pie.binarytable.repositories;
 
 import com.pie.binarytable.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Repository
-public interface UserDAO extends JpaRepository<User, Long>
+public interface UserRepository extends JpaRepository<User, Long>
 {
 	User findByUsername(String email);
 	User findByIdEquals(Long id);
