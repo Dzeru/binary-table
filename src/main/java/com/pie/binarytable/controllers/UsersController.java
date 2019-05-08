@@ -6,6 +6,7 @@ import com.pie.binarytable.entities.User;
 
 import com.pie.binarytable.services.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -183,19 +184,33 @@ public class UsersController
 	}
 
 	@GetMapping("/feedback")
-	public String feedback()
+	public String feedback(Device device)
 	{
-		return "feedback";
+		if(device.isNormal())
+		{
+			return "feedback";
+		}
+		else
+		{
+			return "feedbackcompact";
+		}
 	}
 
 	@PostMapping("/feedback")
-	public String sendFeedback(@RequestParam String feedback, Model model)
+	public String sendFeedback(@RequestParam String feedback, Model model, Device device)
 	{
 		mailSender.sendFeedbackMessage(feedback);
 
 		model.addAttribute("thanks", "feedback.thankYouForFeedback");
 
-		return "feedback";
+		if(device.isNormal())
+		{
+			return "feedback";
+		}
+		else
+		{
+			return "feedbackcompact";
+		}
 	}
 
 }

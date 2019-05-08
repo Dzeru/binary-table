@@ -110,6 +110,13 @@ table
     padding: 5px 10px;
 }
 
+.nav-button:hover
+{
+    color: #f0acb2;
+    border: 1px solid #fff;
+    padding: 5px 10px;
+}
+
 .form
 {
     background: #fff;
