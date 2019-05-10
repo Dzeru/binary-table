@@ -3,6 +3,7 @@ package com.pie.binarytable.config;
 import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.entities.Role;
 import com.pie.binarytable.entities.User;
+import com.pie.binarytable.services.MailSender;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
@@ -41,6 +42,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
 
 	private UserRepository userDAO;
 	private PasswordEncoder passwordEncoder;
+	private MailSender mailSender;
 
 	public CustomUserInfoTokenServices(){}
 
@@ -58,6 +60,11 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
 	public void setPasswordEncoder(PasswordEncoder passwordEncoder)
 	{
 		this.passwordEncoder = passwordEncoder;
+	}
+
+	public void setMailSender(MailSender mailSender)
+	{
+		this.mailSender = mailSender;
 	}
 
 	public String getUserInfoEndpointUrl()
@@ -110,14 +117,15 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
 				user.setRegistrationDate(LocalDateTime.now().toString());
 				user.setActive(true);
 				user.setRoles(Collections.singleton(Role.USER));
-			}
+				user.setPassword(passwordEncoder.encode("oauth2user"));
 
+				mailSender.sendGreetingMessage(googleUsername, googleName);
+				mailSender.sendOAuth2GoogleLoginMessage(googleUsername);
+			}
 				user.setName(googleName);
 				user.setUsername(googleUsername);
 				user.setGoogleName(googleName);
 				user.setGoogleUsername(googleUsername);
-
-				user.setPassword(passwordEncoder.encode("oauth2user"));
 
 				userDAO.save(user);
 		}

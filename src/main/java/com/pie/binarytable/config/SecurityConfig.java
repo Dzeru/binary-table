@@ -2,6 +2,7 @@ package com.pie.binarytable.config;
 
 import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.services.AuthProvider;
+import com.pie.binarytable.services.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -42,6 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	@Autowired
 	private UserRepository userDAO;
 
+	@Autowired
+	private MailSender mailSender;
+
 	@Bean
 	PasswordEncoder passwordEncoder()
 	{
@@ -68,6 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 		googleFilter.setTokenServices(tokenServices);
 		tokenServices.setUserDAO(userDAO);
 		tokenServices.setPasswordEncoder(passwordEncoder);
+		tokenServices.setMailSender(mailSender);
 		return googleFilter;
 	}
 
