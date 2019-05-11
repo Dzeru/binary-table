@@ -3,9 +3,9 @@
 <head th:replace="fragments/meta :: meta(~{::title})">
     <title th:text="#{meta.signup}"/></title>
 </head>
-<body onload="document.signUpForm.name.focus()" class="sticky-footer-body">
+<body class="sticky-footer-body">
 <section class="sticky-footer-section">
-    <div class="mx-auto border my-5 py-3 px-3 form">
+    <div class="d-none d-sm-none d-md-block mx-auto border my-5 py-3 px-3 form">
     <div class="mb-3" align="center"><a class="navbar-brand link-dark logo" th:href="@{/}" href="/">Binary Table &beta;</a></div>
     <form name="signUpForm" th:action="@{/signup}" method="post">
         <div class="my-3" align="center" th:if="${error}">
@@ -33,6 +33,32 @@
         <input class="button button-dark mt-1 mb-3" type="submit" th:value="#{meta.signup}"/>
         <div align="center"><span th:text="#{login.registrationAgreeMessage}"/> <a class="link-semidark" th:href="@{/terms}" th:text="#{login.termsForSignUp}"></a></div>
     </form>
+    </div>
+    <div class="d-md-none d-lg-none d-xl-none d-block mx-auto border py-3 px-3 form-compact">
+        <div class="mb-3" align="center"><a class="navbar-brand link-dark logo" th:href="@{/}" href="/">Binary Table &beta;</a></div>
+        <form name="signUpForm" th:action="@{/signup}" method="post">
+            <div class="my-3" align="center" th:if="${error}">
+                <span class="error" th:text="#{${error}}"/>
+            </div>
+            <div class="form-group">
+                <label for="name-compact" th:text="#{fields.name}"></label>
+                <input class="form-control" id="name-compact" type="text" name="name" th:placeholder="#{placeholder.name}" th:value="${nameVal} ? ${nameVal}">
+            </div>
+            <div class="form-group">
+                <label for="email-compact" th:text="#{fields.email}"></label>
+                <input class="form-control" id="email-compact" type="text" name="username" th:placeholder="#{placeholder.email}" th:value="${emailVal} ? ${emailVal}">
+            </div>
+            <div class="form-group">
+                <label for="password-compact" th:text="#{fields.password}"></label>
+                <input class="form-control" id="password-compact" type="password" name="password" th:placeholder="#{placeholder.password}">
+            </div>
+            <div class="form-group">
+                <label for="repeatPassword-compact" th:text="#{fields.repeatPassword}"></label>
+                <input class="form-control" id="repeatPassword-compact" type="password" name="repeatPassword" th:placeholder="#{placeholder.password}">
+            </div>
+            <input class="button button-dark mt-1 mb-3" type="submit" th:value="#{meta.signup}"/>
+            <div align="center"><span th:text="#{login.registrationAgreeMessage}"/> <a class="link-semidark" th:href="@{/terms}" th:text="#{login.termsForSignUp}"></a></div>
+        </form>
     </div>
 </section>
 <th:block th:replace="fragments/footer :: footer"/>

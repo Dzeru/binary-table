@@ -7,7 +7,10 @@ import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
 import com.pie.binarytable.services.AddGoalService;
 import com.pie.binarytable.services.UserService;
+import com.pie.binarytable.services.GoalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +24,7 @@ import java.util.stream.Collectors;
 /*
 Controller for goals.
 REST controller for /goal page is in another class RestGoalsController
- */
+*/
 @Controller
 public class GoalsController
 {
@@ -37,12 +40,16 @@ public class GoalsController
 	@Autowired
 	private AddGoalService addGoalService;
 
+	@Autowired
+	private GoalService goalService;
+
 	/*
 	Forms list of goals and so on
-	 */
+	*/
 	@GetMapping("/goals")
 	public String goals(Principal principal,
-	                    Model model)
+	                    Model model,
+						Device device)
 	{
 		User user = (User) userService.loadUserByUsername(principal.getName());
 
@@ -58,6 +65,8 @@ public class GoalsController
 			}
 		}
 
+		goalService.checkCurrentStateOfGoals(allGoals);
+
 		List<Goal> finishedGoals = allGoals.stream().filter((g) -> g.isFinished()).collect(Collectors.toList());
 		List<Goal> goals = allGoals.stream().filter((g) -> !g.isFinished()).collect(Collectors.toList());
 
@@ -65,24 +74,40 @@ public class GoalsController
 		model.addAttribute("finishedGoals", finishedGoals);
 		model.addAttribute("user", user);
 
-		return "goals";
+		if(device.isNormal())
+		{
+			return "goals";
+		}
+		else
+		{
+			return "goalscompact";
+		}
 	}
 
 	/*
 	Gets page /addgoal, where user can add the goal
-	 */
+	*/
 	@GetMapping("/addgoal")
 	public String newGoal(Principal principal,
-	                      Model model)
+	                      Model model,
+						  Device device)
 	{
 		User user = (User) userService.loadUserByUsername(principal.getName());
 		model.addAttribute("user", user);
-		return "addgoal";
+
+		if(device.isNormal())
+		{
+			return "addgoal";
+		}
+		else
+		{
+			return "addgoalcompact";
+		}
 	}
 
 	/*
 	Adds new goal and redirect back to the list of user's goals
-	 */
+	*/
 	@PostMapping("/addgoal")
 	public String addGoal(Principal principal,
 						  @RequestParam String goalName,

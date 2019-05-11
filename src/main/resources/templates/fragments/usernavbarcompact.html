@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<body>
+<th:block th:fragment="usernavbarcompact">
+	<section class="navbar-compact" align="center">
+		<a th:href="@{/profile}"><image class="navbar-compact-icon left-icon-m" th:src="@{/images/profile.svg}" src="/images/profile.svg" alt="Profile"/></a>
+		<form th:action="@{/logout}" method="post" style="display: inline">
+			<button type="submit" style="background:#b172c5;border:none">
+				<img class="navbar-compact-icon left-icon-m" th:src="@{images/logout.svg}" src="/images/logout.svg">
+			</button>
+		</form>
+		<a th:href="@{/goals}"><image class="navbar-compact-icon left-icon-m" th:src="@{/images/goals.svg}" src="/images/goals.svg" alt="Goals"/></a>
+		<span class="nav-item dropdown left-icon-m">
+            <a class="nav-item dropdown-toggle link-white" href="#" data-toggle="dropdown"><img class="navbar-compact-icon" th:src="@{/images/lang.svg}" src="/images/lang.svg" alt="Language"/></a>
+            <ul class="dropdown-menu" style="background:#b172c5">
+                <li><a class="nav-item nav-link link-white" href="?lang=en">English</a></li>
+                <li><a class="nav-item nav-link link-white" href="?lang=ru">Russian</a></li>
+            </ul>
+        </span>
+		<a th:href="@{/addgoal}"><image class="navbar-compact-icon" th:src="@{/images/add.svg}" src="/images/add.svg" alt="Add goal"/></a>
+	</section>
+</th:block>
+</body>
+</html>

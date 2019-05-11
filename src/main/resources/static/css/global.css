@@ -103,6 +103,20 @@ table
     text-decoration: none;
 }
 
+.nav-button
+{
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 5px 10px;
+}
+
+.nav-button:hover
+{
+    color: #f0acb2;
+    border: 1px solid #fff;
+    padding: 5px 10px;
+}
+
 .form
 {
     background: #fff;
@@ -229,4 +243,109 @@ Atomic styles
 .w100
 {
 	width: 100%;
+}
+
+.mt3vh
+{
+    margin-top: 3vh;
+}
+
+/*
+Atomic styles end
+*/
+
+.navbar-icon
+{
+    height: 10vh;
+}
+
+.navbar-compact
+{
+	position: sticky;
+	bottom: 0;
+	padding-bottom: 3vh;
+	padding-top: 2vh;
+	background: #b172c5;
+}
+
+.navbar-compact-icon
+{
+    height: 8vh;
+}
+
+.left-icon-m
+{
+    margin-right: 4vw;
+}
+
+.right-icon-m
+{
+    margin-left: 4vw;
+}
+
+.goal-card
+{
+    background: #c08ed0;
+    width: 98%;
+    height: 10vh;
+    margin: 1vh 1vh;
+    padding: 1vh 1vh;
+    overflow: hidden;
+}
+
+.goal-card-name
+{
+    font-weight: bold;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.goal-card-steps
+{
+    display: inline-block;
+    float: left;
+    width: 50%;
+    font-size: 16px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.goal-card-note
+{
+    display: inline-block;
+    float: right;
+    width: 49%;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.section-right
+{
+    display: inline-block;
+    float: right;
+    width: 90%;
+    height: 90vh;
+}
+
+.navbar-section
+{
+    display: inline-block;
+    float: left;
+    width: 10%;
+    height: 100vh;
+    padding-left: 1vw;
+    position: sticky;
+    top: 0;
+}
+
+.form-compact
+{
+    background: #fff;
+    color: #b172c5;
 }

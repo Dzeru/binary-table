@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<body>
+<th:block th:fragment="navbarcompact">
+	<div align="center">
+		<div>
+			<a class="link-white logo" th:href="@{/}"href="/">Binary Table <small>&beta;</small></a>
+		</div>
+		<div class="mt-3" align="center">
+			<span class="nav-item dropdown">
+				<a class="nav-item dropdown-toggle link-white" href="#" data-toggle="dropdown"><img class="navbar-compact-icon" th:src="@{/images/lang.svg}" src="/images/lang.svg" alt="Language"/></a>
+				<ul class="dropdown-menu" style="background:#b172c5">
+					<li><a class="nav-item nav-link link-white" href="?lang=en">English</a></li>
+					<li><a class="nav-item nav-link link-white" href="?lang=ru">Russian</a></li>
+				</ul>
+			</span>
+			<a class="link-white ml-4" th:href="@{/usecases}" th:text="#{meta.useCases}"></a>
+		</div>
+		<div class="mt-3" align="center">
+			<a class="button button-dark" th:href="@{/signup}" th:text="#{meta.signup}"></a>
+			<a class="button button-white ml-4" th:href="@{/login}" th:text="#{meta.login}"></a>
+		</div>
+	</div>
+</th:block>
+</body>
+</html>

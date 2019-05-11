@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<head th:replace="fragments/meta :: meta(~{::title})">
+	<title>Binary Table</title>
+</head>
+<body class="sticky-footer-body">
+<th:block th:replace="fragments/navbarcompact :: navbarcompact"/>
+<section class="pt-4 sticky-footer-section" align="center">
+	<table align="center" border="4" bordercolor="#fff">
+		<tbody>
+		<tr><th colspan="4" th:text="#{main.step0}"></th></tr>
+		<tr><th colspan="4" th:text="#{main.step1}"></th></tr>
+		<tr><th>0</th><th>0</th><th>0</th><th>0</th></tr>
+		<tr><th>0</th><th>0</th><th>0</th><th>0</th></tr>
+		<tr><th colspan="4" th:text="#{main.step10}"></th></tr>
+		<tr><th>1</th><th>0</th><th>0</th><th>1</th></tr>
+		<tr><th colspan="4" th:text="#{main.step11}"></th></tr>
+		</tbody>
+	</table>
+</section>
+<th:block th:replace="fragments/footer :: footer"/>
+</body>
+</html>

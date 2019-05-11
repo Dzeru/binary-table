@@ -3,49 +3,33 @@
 <head th:replace="fragments/meta :: meta(~{::title})">
     <title th:text="#{goal.goals}"/></title>
 </head>
-<body class="sticky-footer-body">
-<script th:src="@{/js/oauth2helper.js}" src="/js/oauth2helper.js"></script>
+<body>
 <th:block th:replace="fragments/usernavbar :: usernavbar"/>
-<section class="sticky-footer-section">
-    <table class="table">
-        <thead>
-            <tr>
-                <th class="w40" valign="center" scope="col" th:text="#{fields.goal}"><b>Goal</b></th>
-                <th class="w20" valign="center" scope="col" th:text="#{fields.steps}"><b>Steps</b></th>
-                <th class="w40" valign="center" scope="col" th:text="#{fields.note}"><b>Note</b></th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr th:each="goal : ${goals}">
-            <td valign="center"><b><a class="link-semidark" th:href="@{goal(id=${goal.id},hash=${goal.hash})}" th:utext="${goal.goalName}"></a></b></td>
-            <td valign="center"><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></td>
-            <td valign="center" th:utext="${goal.note}"></td>
-        </tr>
-        </tbody>
-    </table>
+<section class="section-right">
+    <div th:each="goal : ${goals}">
+        <a class="link-white" th:href="@{goal(id=${goal.id},hash=${goal.hash})}">
+            <div class="goal-card">
+                <div class="goal-card-name"><span th:utext="${goal.goalName}"/></div>
+                <div class="goal-card-steps"><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></div>
+                <div class="goal-card-note"><span th:utext="${goal.note}"/></div>
+            </div>
+        </a>
+    </div>
 
-    <button class="button button-dark mt-5" type="button" data-toggle="collapse" data-target="#finishedGoals" aria-controls="finishedGoals" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="button button-dark mt-5 ml-2" type="button" data-toggle="collapse" data-target="#finishedGoals" aria-controls="finishedGoals" aria-expanded="false" aria-label="Toggle navigation">
         <b th:text="#{goal.finishedGoals}"/>
     </button>
     <div id="finishedGoals" class="mt-3 collapse">
-        <table class="table">
-            <thead>
-            <tr>
-                <th class="w40" valign="center" scope="col" th:text="#{fields.goal}"><b>Goal</b></th>
-                <th class="w20" valign="center" scope="col" th:text="#{fields.steps}"><b>Steps</b></th>
-                <th class="w40" valign="center" scope="col" th:text="#{fields.note}"><b>Note</b></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="goal : ${finishedGoals}">
-                <td valign="center"><b><a class="link-semidark" th:href="@{goal(id=${goal.id},hash=${goal.hash})}" th:utext="${goal.goalName}"></a></b></td>
-                <td valign="center"><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></td>
-                <td valign="center" th:utext="${goal.note}"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div th:each="goal : ${finishedGoals}">
+            <a class="link-white" th:href="@{goal(id=${goal.id},hash=${goal.hash})}">
+                <div class="goal-card">
+                    <div class="goal-card-name"><span th:utext="${goal.goalName}"/></div>
+                    <div class="goal-card-steps"><span th:text="${goal.doneSteps}"/>/<span th:text="${goal.allSteps}"/></div>
+                    <div class="goal-card-note"><span th:utext="${goal.note}"/></div>
+                </div>
+            </a>
+        </div>
     </div>
 </section>
-<th:block th:replace="fragments/footer :: footer"/>
 </body>
 </html>

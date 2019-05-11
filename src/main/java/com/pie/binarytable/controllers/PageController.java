@@ -4,6 +4,7 @@ import com.pie.binarytable.entities.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.mobile.device.Device;
 
 import java.security.Principal;
 
@@ -30,19 +31,34 @@ public class PageController
 	}
 
 	@GetMapping("/index")
-	public String main()
+	public String main(Device device)
 	{
-		return "index";
+		if(device.isNormal())
+		{
+			return "index";
+		}
+		else
+		{
+			return "indexcompact";
+		}
 	}
 
 	@GetMapping("/")
-	public String index(Principal principal)
+	public String index(Principal principal, Device device)
 	{
 		if(principal != null)
 		{
 			return "redirect:/goals";
 		}
-		return "index";
+		
+		if(device.isNormal())
+		{
+			return "index";
+		}
+		else
+		{
+			return "indexcompact";
+		}
 	}
 
 	@GetMapping("/goal")

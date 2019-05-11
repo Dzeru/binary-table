@@ -3,9 +3,11 @@ package com.pie.binarytable.controllers;
 import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.entities.User;
 import com.pie.binarytable.services.MailSender;
-
 import com.pie.binarytable.services.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +24,7 @@ Controller for user profile, where user can change email and password
 public class UserProfileController
 {
 	@Autowired
-	private UserRepository userDAO;
+	private UserRepository userRepository;
 
 	@Autowired
 	private UserService userService;
@@ -35,7 +37,8 @@ public class UserProfileController
 
 	@GetMapping("/profile")
 	public String profile(Principal principal,
-	                      Model model)
+	                      Model model,
+						  Device device)
 	{
 		User user = (User) userService.loadUserByUsername(principal.getName());
 
@@ -57,7 +60,14 @@ public class UserProfileController
 		model.addAttribute("day", day);
 		model.addAttribute("time", time);
 
-		return "profile";
+		if(device.isNormal())
+		{
+			return "profile";
+		}
+		else
+		{
+			return "profilecompact";
+		}
 	}
 
 	@PostMapping("/updatepasswordprofile")
@@ -65,7 +75,8 @@ public class UserProfileController
 	                                    @RequestParam String oldPassword,
 	                                    @RequestParam String newPassword,
 	                                    @RequestParam String repeatPassword,
-	                                    Model model)
+	                                    Model model,
+										Device device)
 	{
 		User user = (User) userService.loadUserByUsername(principal.getName());
 
@@ -77,7 +88,7 @@ public class UserProfileController
 		{
 			newPassword = passwordEncoder.encode(newPassword);
 			user.setPassword(newPassword);
-			userDAO.save(user);
+			userRepository.save(user);
 
 			if(passwordEncoder.matches(repeatPassword, user.getPassword()))
 			{
@@ -104,7 +115,14 @@ public class UserProfileController
 		model.addAttribute("day", day);
 		model.addAttribute("time", time);
 
-		return "profile";
+		if(device.isNormal())
+		{
+			return "profile";
+		}
+		else
+		{
+			return "profilecompact";
+		}
 	}
 
 	@PostMapping("/updateemailprofile")
@@ -113,7 +131,8 @@ public class UserProfileController
 	                                 @RequestParam String newEmail,
 	                                 @RequestParam String repeatEmail,
 	                                 @RequestParam String password,
-	                                 Model model)
+	                                 Model model,
+									 Device device)
 	{
 		User user = (User) userService.loadUserByUsername(principal.getName());
 
@@ -123,17 +142,16 @@ public class UserProfileController
 		}
 		else
 		{
-			if(newEmail.equals(repeatEmail) && userDAO.findByUsername(oldEmail) != null)
+			if(newEmail.equals(repeatEmail) && userRepository.findByUsername(oldEmail) != null)
 			{
 				user.setUsername(newEmail);
-				userDAO.save(user);
+				userRepository.save(user);
 			}
 
-			if(userDAO.findByUsername(newEmail) != null)
+			if(userRepository.findByUsername(newEmail) != null)
 			{
 				model.addAttribute("emailStatus", "status.successUpdateEmail");
 			}
-		}
 
 		model.addAttribute("user", user);
 		model.addAttribute("name", user.getName());
@@ -153,6 +171,13 @@ public class UserProfileController
 		model.addAttribute("day", day);
 		model.addAttribute("time", time);
 
-		return "profile";
+		if(device.isNormal())
+		{
+			return "profile";
+		}
+		else
+		{
+			return "profilecompact";
+		}
 	}
 }
