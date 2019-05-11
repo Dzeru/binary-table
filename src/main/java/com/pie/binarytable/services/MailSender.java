@@ -50,26 +50,9 @@ public class MailSender
 
 	private String passwordWasUpdated = "Your password was successfully updated.</p>";
 
-	public void send(String emailTo, String subject, String message)
-	{
-		try
-		{
-			MimeMessage mimeMessage = mailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+	private String oauth2GoogleLogin = "<p>This Google account was used to log in <a href=\"http://binarytable.tk\">Binary Table</a>. " +
+										"If it were't you, <a href=\"http://binarytable.tk/contacts\">contact us</a> to prevent account theft.</p>";
 
-			helper.setTo(emailTo);
-			helper.setFrom(username);
-			mimeMessage.setSubject(subject, "utf-8");
-			mimeMessage.setContent(message, "text/html;charset=utf-8");
-
-			mailSender.send(mimeMessage);
-		}
-		catch(MessagingException e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
 	public void sendGreetingMessage(String emailTo, String name)
 	{
 		String message = begin + String.format(greeting, name) +
@@ -92,5 +75,31 @@ public class MailSender
 	public void sendFeedbackMessage(String feedback)
 	{
 		send(username, "Feedback", feedback);
+	}
+
+	public void sendOAuth2GoogleLoginMessage(String emailTo)
+	{
+		String message = begin + oauth2GoogleLogin + sign + end;
+		send(emailTo, "Google account logs in Binary Table", message);
+	}
+
+	public void send(String emailTo, String subject, String message)
+	{
+		try
+		{
+			MimeMessage mimeMessage = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+
+			helper.setTo(emailTo);
+			helper.setFrom(username);
+			mimeMessage.setSubject(subject, "utf-8");
+			mimeMessage.setContent(message, "text/html;charset=utf-8");
+
+			mailSender.send(mimeMessage);
+		}
+		catch(MessagingException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

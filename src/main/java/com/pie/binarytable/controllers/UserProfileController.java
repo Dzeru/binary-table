@@ -1,17 +1,19 @@
 package com.pie.binarytable.controllers;
 
-import com.pie.binarytable.dao.UserDAO;
+import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.entities.User;
 import com.pie.binarytable.services.MailSender;
 
+import com.pie.binarytable.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.security.Principal;
 
 /*
 Controller for user profile, where user can change email and password
@@ -20,7 +22,10 @@ Controller for user profile, where user can change email and password
 public class UserProfileController
 {
 	@Autowired
-	private UserDAO userDAO;
+	private UserRepository userDAO;
+
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -29,8 +34,11 @@ public class UserProfileController
 	private MailSender mailSender;
 
 	@GetMapping("/profile")
-	public String profile(@AuthenticationPrincipal User user, Model model)
+	public String profile(Principal principal,
+	                      Model model)
 	{
+		User user = (User) userService.loadUserByUsername(principal.getName());
+
 		model.addAttribute("user", user);
 		model.addAttribute("name", user.getName());
 		model.addAttribute("email", user.getUsername());
@@ -53,10 +61,14 @@ public class UserProfileController
 	}
 
 	@PostMapping("/updatepasswordprofile")
-	public String updatePasswordProfile(@AuthenticationPrincipal User user,
-	                                    @RequestParam String oldPassword, @RequestParam String newPassword, @RequestParam String repeatPassword,
+	public String updatePasswordProfile(Principal principal,
+	                                    @RequestParam String oldPassword,
+	                                    @RequestParam String newPassword,
+	                                    @RequestParam String repeatPassword,
 	                                    Model model)
 	{
+		User user = (User) userService.loadUserByUsername(principal.getName());
+
 		if(!passwordEncoder.matches(oldPassword, user.getPassword()) || !newPassword.equals(repeatPassword))
 		{
 			model.addAttribute("passwordStatus", "error.equalPasswords");
@@ -96,10 +108,15 @@ public class UserProfileController
 	}
 
 	@PostMapping("/updateemailprofile")
-	public String updateEmailProfile(@AuthenticationPrincipal User user,
-	                                    @RequestParam String oldEmail, @RequestParam String newEmail, @RequestParam String repeatEmail,
-	                                    @RequestParam String password, Model model)
+	public String updateEmailProfile(Principal principal,
+	                                 @RequestParam String oldEmail,
+	                                 @RequestParam String newEmail,
+	                                 @RequestParam String repeatEmail,
+	                                 @RequestParam String password,
+	                                 Model model)
 	{
+		User user = (User) userService.loadUserByUsername(principal.getName());
+
 		if(!passwordEncoder.matches(password, user.getPassword()))
 		{
 			model.addAttribute("emailStatus", "error.equalPasswords");

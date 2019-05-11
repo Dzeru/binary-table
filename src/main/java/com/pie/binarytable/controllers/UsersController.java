@@ -1,19 +1,19 @@
 package com.pie.binarytable.controllers;
 
-import com.pie.binarytable.dao.UserDAO;
-import com.pie.binarytable.entities.Role;
+import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.entities.User;
-
 import com.pie.binarytable.services.MailSender;
+import com.pie.binarytable.services.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 /*
@@ -23,13 +23,16 @@ Controller for users
 public class UsersController
 {
 	@Autowired
-	private UserDAO userDAO;
+	private UserRepository userRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private MailSender mailSender;
+
+	@Autowired
+	private SignUpService signUpService;
 
 	@GetMapping("/signup")
 	public String registration()
@@ -45,55 +48,17 @@ public class UsersController
 	@PostMapping("/signup")
 	public String addUser(User user, @RequestParam String repeatPassword, Model model)
 	{
-		if(!user.getPassword().equals(repeatPassword))
+		Map<String, Object> modelSignUp = signUpService.signUp(user, repeatPassword);
+
+		if(modelSignUp.isEmpty())
 		{
-			model.addAttribute("error", "error.equalPasswords");
-			model.addAttribute("nameVal", user.getName());
-			model.addAttribute("emailVal", user.getUsername());
-			return "signup";
+			return "redirect:/login";
 		}
 		else
 		{
-			User userFromDB = userDAO.findByUsername(user.getUsername());
-
-			if(userFromDB != null)
-			{
-				model.addAttribute("error", "error.emailExists");
-				model.addAttribute("nameVal", user.getName());
-				return "signup";
-			}
-			if(user.getPassword().length() < 6)
-			{
-				model.addAttribute("error", "error.shortPassword");
-				model.addAttribute("nameVal", user.getName());
-				model.addAttribute("emailVal", user.getUsername());
-				return "signup";
-			}
-			if(user.getUsername() == null || user.getUsername().isEmpty())
-			{
-				model.addAttribute("error", "error.emptyEmail");
-				model.addAttribute("nameVal", user.getName());
-				return "signup";
-			}
-			if(user.getName() == null || user.getName().isEmpty())
-			{
-				model.addAttribute("error", "error.emptyName");
-				model.addAttribute("emailVal", user.getUsername());
-				return "signup";
-			}
-
-			user.setPassword(passwordEncoder.encode(user.getPassword()));
-			user.setActive(true);
-			user.setRoles(Collections.singleton(Role.USER));
-
-			user.setRegistrationDate(LocalDateTime.now().toString());
-
-			userDAO.save(user);
-
-			mailSender.sendGreetingMessage(user.getUsername(), user.getName());
+			model.addAllAttributes(modelSignUp);
+			return "signup";
 		}
-
-		return "redirect:/login";
 	}
 
 	/*
@@ -109,12 +74,12 @@ public class UsersController
 	@PostMapping("/forgotpassword")
 	public String forgotPassword(@RequestParam String email, Model model)
 	{
-		User user = userDAO.findByUsername(email);
+		User user = userRepository.findByUsername(email);
 		if(user != null)
 		{
 			String uuid = UUID.randomUUID().toString();
 			user.setUpdatePassword(uuid);
-			userDAO.save(user);
+			userRepository.save(user);
 
 			mailSender.sendUpdatePasswordMessage(email, uuid);
 		}
@@ -149,7 +114,7 @@ public class UsersController
 		}
 		else
 		{
-			User user = userDAO.findByUsername(email);
+			User user = userRepository.findByUsername(email);
 
 			if(user == null)
 			{
@@ -162,14 +127,14 @@ public class UsersController
 			{
 				password = passwordEncoder.encode(password);
 				user.setPassword(password);
-				userDAO.save(user);
+				userRepository.save(user);
 			}
 
-			if(password.equals(userDAO.findByIdEquals(user.getId()).getPassword()))
+			if(password.equals(userRepository.findByIdEquals(user.getId()).getPassword()))
 			{
 				status = "status.successUpdatePassword";
 				user.setUpdatePassword("");
-				userDAO.save(user);
+				userRepository.save(user);
 				mailSender.sendNotificationAboutUpdatePasswordMessage(email);
 			}
 			else

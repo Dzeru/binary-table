@@ -1,7 +1,11 @@
 package com.pie.binarytable.controllers;
 
+import com.pie.binarytable.entities.User;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.security.Principal;
 
 /*
 Controller for simple pages
@@ -15,6 +19,16 @@ public class PageController
 		return "terms";
 	}
 
+	@GetMapping("/#")
+	public String mainOAuth2(Principal principal)
+	{
+		if(principal != null)
+		{
+			return "redirect:/goals";
+		}
+		return "index";
+	}
+
 	@GetMapping("/index")
 	public String main()
 	{
@@ -22,8 +36,12 @@ public class PageController
 	}
 
 	@GetMapping("/")
-	public String index()
+	public String index(Principal principal)
 	{
+		if(principal != null)
+		{
+			return "redirect:/goals";
+		}
 		return "index";
 	}
 

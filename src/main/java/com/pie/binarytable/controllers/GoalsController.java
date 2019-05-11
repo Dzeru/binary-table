@@ -1,23 +1,20 @@
 package com.pie.binarytable.controllers;
 
-import com.pie.binarytable.dao.GoalDAO;
-import com.pie.binarytable.dao.GroupGoalDAO;
-import com.pie.binarytable.dao.UserDAO;
-import com.pie.binarytable.dto.AddGoalReturnParams;
+import com.pie.binarytable.repositories.GoalRepository;
+import com.pie.binarytable.repositories.GroupGoalRepository;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
-
 import com.pie.binarytable.services.AddGoalService;
+import com.pie.binarytable.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.Timestamp;
+import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,32 +26,35 @@ REST controller for /goal page is in another class RestGoalsController
 public class GoalsController
 {
 	@Autowired
-	private GoalDAO goalDAO;
+	private GoalRepository goalRepository;
 
 	@Autowired
-	private GroupGoalDAO groupGoalDAO;
+	private GroupGoalRepository groupGoalRepository;
 
 	@Autowired
-	private UserDAO userDAO;
+	private UserService userService;
 
 	@Autowired
-	AddGoalService addGoalService;
+	private AddGoalService addGoalService;
 
 	/*
 	Forms list of goals and so on
 	 */
 	@GetMapping("/goals")
-	public String goals(@AuthenticationPrincipal User user, Model model)
+	public String goals(Principal principal,
+	                    Model model)
 	{
+		User user = (User) userService.loadUserByUsername(principal.getName());
+
 		Long userId = user.getId();
-		HashSet<Goal> allGoals = new HashSet(goalDAO.findByUserId(userId));
-		ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalDAO.findByUserId(userId));
+		HashSet<Goal> allGoals = new HashSet(goalRepository.findByUserId(userId));
+		ArrayList<GroupGoal> groupGoals = new ArrayList(groupGoalRepository.findByUserId(userId));
 
 		if(!groupGoals.isEmpty())
 		{
 			for(GroupGoal goal : groupGoals)
 			{
-				allGoals.add(goalDAO.findByIdEquals(goal.getGoalId()));
+				allGoals.add(goalRepository.findByIdEquals(goal.getGoalId()));
 			}
 		}
 
@@ -72,8 +72,10 @@ public class GoalsController
 	Gets page /addgoal, where user can add the goal
 	 */
 	@GetMapping("/addgoal")
-	public String newGoal(@AuthenticationPrincipal User user, Model model)
+	public String newGoal(Principal principal,
+	                      Model model)
 	{
+		User user = (User) userService.loadUserByUsername(principal.getName());
 		model.addAttribute("user", user);
 		return "addgoal";
 	}
@@ -82,25 +84,24 @@ public class GoalsController
 	Adds new goal and redirect back to the list of user's goals
 	 */
 	@PostMapping("/addgoal")
-	public String addGoal(@AuthenticationPrincipal User user,
+	public String addGoal(Principal principal,
 						  @RequestParam String goalName,
 						  @RequestParam String steps,
 						  @RequestParam(required = false) String note,
 						  @RequestParam(required = false) String emails,
 						  Model model)
 	{
-		AddGoalReturnParams addGoalReturnParams = addGoalService.addGoal(user, goalName, steps, note, emails);
+		User user = (User) userService.loadUserByUsername(principal.getName());
+		Map<String, Object> modelAddGoal = addGoalService.addGoal(user, goalName, steps, note, emails);
 
-		HashMap<String, Object> params = addGoalReturnParams.getParams();
-
-		if(!params.isEmpty())
+		if(modelAddGoal.isEmpty())
 		{
-			for(Map.Entry<String, Object> par : params.entrySet())
-			{
-				model.addAttribute(par.getKey(), par.getValue());
-			}
+			return "redirect:/goals";
 		}
-
-		return addGoalReturnParams.getUrl();
+		else
+		{
+			model.addAllAttributes(modelAddGoal);
+			return "addgoal";
+		}
 	}
 }

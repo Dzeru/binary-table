@@ -1,4 +1,4 @@
-package com.pie.binarytable.dao;
+package com.pie.binarytable.repositories;
 
 import com.pie.binarytable.entities.Goal;
 import org.springframework.data.repository.CrudRepository;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @Repository
-public interface GoalDAO extends CrudRepository<Goal, Long>
+public interface GoalRepository extends CrudRepository<Goal, Long>
 {
 	Goal findByIdEquals(Long id);
 	List<Goal> findByUserId(Long userId);

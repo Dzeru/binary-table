@@ -1,44 +1,38 @@
 package com.pie.binarytable.services;
 
-import com.pie.binarytable.dao.GoalDAO;
-import com.pie.binarytable.dao.GroupGoalDAO;
-import com.pie.binarytable.dao.UserDAO;
-import com.pie.binarytable.dto.AddGoalReturnParams;
+import com.pie.binarytable.repositories.GoalRepository;
+import com.pie.binarytable.repositories.GroupGoalRepository;
+import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class AddGoalService
 {
     @Autowired
-    GoalDAO goalDAO;
+    GoalRepository goalRepository;
     
     @Autowired
-    GroupGoalDAO groupGoalDAO;
+    GroupGoalRepository groupGoalRepository;
 
     @Autowired
-    UserDAO userDAO;
-    
-    /*
-    First Entry is URL, others are params for page
-     */
-    public AddGoalReturnParams addGoal(@AuthenticationPrincipal User user,
+    UserRepository userRepository;
+
+    public Map<String, Object> addGoal(User user,
                                        String goalName,
                                        String steps,
                                        String note,
                                        String emails)
     {
-        AddGoalReturnParams addGoalReturnParams = new AddGoalReturnParams();
-
-        HashMap<String, Object> params = new HashMap<>();
+        Map<String, Object> model = new HashMap<>();
         
         int st = 0;
 
@@ -51,52 +45,36 @@ public class AddGoalService
         }
         catch(Exception e)
         {
-            params.put("error", "error.wrongSteps");
-            params.put("goalNameVal", goalName);
-            params.put("noteVal", note);
-            params.put("user", user);
-
-            addGoalReturnParams.setParams(params);
-            addGoalReturnParams.setUrl("addgoal");
-            return addGoalReturnParams;
+            model.put("error", "error.wrongSteps");
+            model.put("goalNameVal", goalName);
+            model.put("noteVal", note);
+            model.put("user", user);
         }
 
         if(goalName == null || goalName.trim().isEmpty())
         {
-            params.put("error", "error.emptyGoal");
-            params.put("stepsVal", steps);
-            params.put("noteVal", note);
-            params.put("user", user);
-
-            addGoalReturnParams.setParams(params);
-            addGoalReturnParams.setUrl("addgoal");
-            return addGoalReturnParams;
+            model.put("error", "error.emptyGoal");
+            model.put("stepsVal", steps);
+            model.put("noteVal", note);
+            model.put("user", user);
         }
 
         if(goalName.length() > 65535)
         {
-            params.put("error", "error.tooLongGoalName");
-            params.put("goalNameVal", goalName);
-            params.put("stepsVal", steps);
-            params.put("noteVal", note);
-            params.put("user", user);
-
-            addGoalReturnParams.setParams(params);
-            addGoalReturnParams.setUrl("addgoal");
-            return addGoalReturnParams;
+            model.put("error", "error.tooLongGoalName");
+            model.put("goalNameVal", goalName);
+            model.put("stepsVal", steps);
+            model.put("noteVal", note);
+            model.put("user", user);
         }
 
         if(note.length() > 65535)
         {
-            params.put("error", "error.tooLongNote");
-            params.put("goalNameVal", goalName);
-            params.put("stepsVal", steps);
-            params.put("noteVal", note);
-            params.put("user", user);
-
-            addGoalReturnParams.setParams(params);
-            addGoalReturnParams.setUrl("addgoal");
-            return addGoalReturnParams;
+            model.put("error", "error.tooLongNote");
+            model.put("goalNameVal", goalName);
+            model.put("stepsVal", steps);
+            model.put("noteVal", note);
+            model.put("user", user);
         }
 
         String goalTimestamp = new Timestamp(System.currentTimeMillis()).toString();
@@ -117,7 +95,7 @@ public class AddGoalService
         UUID hash = UUID.randomUUID();
         newGoal.setHash(hash.toString());
 
-        goalDAO.save(newGoal);
+        goalRepository.save(newGoal);
 
 		/*
 		Only for group goals
@@ -125,35 +103,28 @@ public class AddGoalService
         if(!emails.isEmpty() && emails != null)
         {
             newGoal.setGroupGoal(true);
-            goalDAO.save(newGoal);
+            goalRepository.save(newGoal);
             String[] emailList = emails.split(", ");
-            newGoal = goalDAO.findByGoalNameEqualsAndUserIdEqualsAndGoalTimestampEquals(goalName, user.getId(), goalTimestamp);
+            newGoal = goalRepository.findByGoalNameEqualsAndUserIdEqualsAndGoalTimestampEquals(goalName, user.getId(), goalTimestamp);
             Long goalId = newGoal.getId();
 
             for(String email : emailList)
             {
-                User username = userDAO.findByUsername(email);
+                User username = userRepository.findByUsername(email);
                 if(username != null)
                 {
                     GroupGoal groupGoal = new GroupGoal(goalId, username.getId());
-                    groupGoalDAO.save(groupGoal);
+                    groupGoalRepository.save(groupGoal);
                 }
                 else
                 {
-                    params.put("error", "error.emailDoesNotExist");
-                    params.put("user", user);
-
-                    addGoalReturnParams.setParams(params);
-                    addGoalReturnParams.setUrl("addgoal");
-                    return addGoalReturnParams;
+                    model.put("error", "error.emailDoesNotExist");
+                    model.put("user", user);
                 }
             }
         }
-        goalDAO.save(newGoal);
+        goalRepository.save(newGoal);
 
-        addGoalReturnParams.setParams(params);
-        addGoalReturnParams.setUrl("redirect:/goals");
-
-        return addGoalReturnParams;
+        return model;
     }
 }
