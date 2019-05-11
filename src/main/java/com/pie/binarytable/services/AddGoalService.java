@@ -1,11 +1,11 @@
 package com.pie.binarytable.services;
 
-import com.pie.binarytable.repositories.GoalRepository;
-import com.pie.binarytable.repositories.GroupGoalRepository;
-import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
+import com.pie.binarytable.repositories.GoalRepository;
+import com.pie.binarytable.repositories.GroupGoalRepository;
+import com.pie.binarytable.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

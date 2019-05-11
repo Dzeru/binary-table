@@ -1,7 +1,7 @@
 package com.pie.binarytable.services;
 
-import com.pie.binarytable.dao.GoalDAO;
 import com.pie.binarytable.entities.Goal;
+import com.pie.binarytable.repositories.GoalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.HashSet;
 public class GoalService
 {
 	@Autowired
-	private GoalDAO goalDAO;
+	private GoalRepository goalRepository;
 
 	public void checkCurrentStateOfGoals(HashSet<Goal> goals)
 	{
@@ -38,7 +38,7 @@ public class GoalService
 				}
 
 				g.setCurrentState(sb.toString());
-				goalDAO.save(g);
+				goalRepository.save(g);
 			}
 		}
 	}

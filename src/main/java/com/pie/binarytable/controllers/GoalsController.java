@@ -1,16 +1,15 @@
 package com.pie.binarytable.controllers;
 
-import com.pie.binarytable.repositories.GoalRepository;
-import com.pie.binarytable.repositories.GroupGoalRepository;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
+import com.pie.binarytable.repositories.GoalRepository;
+import com.pie.binarytable.repositories.GroupGoalRepository;
 import com.pie.binarytable.services.AddGoalService;
-import com.pie.binarytable.services.UserService;
 import com.pie.binarytable.services.GoalService;
+import com.pie.binarytable.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /*

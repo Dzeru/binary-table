@@ -1,10 +1,8 @@
 package com.pie.binarytable.controllers;
 
-import com.pie.binarytable.entities.User;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.mobile.device.Device;
 
 import java.security.Principal;
 

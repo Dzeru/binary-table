@@ -1,8 +1,8 @@
 package com.pie.binarytable.config;
 
-import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.entities.Role;
 import com.pie.binarytable.entities.User;
+import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.services.MailSender;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,7 +40,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
 	private AuthoritiesExtractor authoritiesExtractor = new FixedAuthoritiesExtractor();
 	private PrincipalExtractor principalExtractor = new FixedPrincipalExtractor();
 
-	private UserRepository userDAO;
+	private UserRepository userRepository;
 	private PasswordEncoder passwordEncoder;
 	private MailSender mailSender;
 
@@ -52,9 +52,9 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
 		this.clientId = clientId;
 	}
 
-	public void setUserDAO(UserRepository userDAO)
+	public void setUserRepository(UserRepository userRepository)
 	{
-		this.userDAO = userDAO;
+		this.userRepository = userRepository;
 	}
 
 	public void setPasswordEncoder(PasswordEncoder passwordEncoder)
@@ -109,7 +109,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
 			String googleName = (String) map.get("name");
 			String googleUsername = (String) map.get("email");
 
-			User user = userDAO.findByGoogleUsername(googleUsername);
+			User user = userRepository.findByGoogleUsername(googleUsername);
 
 			if(user == null)
 			{
@@ -127,7 +127,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices
 				user.setGoogleName(googleName);
 				user.setGoogleUsername(googleUsername);
 
-				userDAO.save(user);
+				userRepository.save(user);
 		}
 
 		if (map.containsKey("error"))

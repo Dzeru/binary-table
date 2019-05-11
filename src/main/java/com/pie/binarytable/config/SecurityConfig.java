@@ -27,6 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import javax.servlet.Filter;
 
 @Configuration
+@EnableOAuth2Client
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {

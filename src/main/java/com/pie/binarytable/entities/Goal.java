@@ -3,7 +3,6 @@ package com.pie.binarytable.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "goal")
@@ -41,12 +40,6 @@ public class Goal
 
 	@NotNull
 	private String hash;
-
-/*
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
-*/
 
 	public Goal(){}
 

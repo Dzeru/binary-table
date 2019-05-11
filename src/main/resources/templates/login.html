@@ -6,7 +6,7 @@
 <body class="sticky-footer-body">
 <section class="sticky-footer-section">
     <div class="d-none d-sm-none d-md-block mx-auto border my-5 py-3 px-3 form">
-        <div align="center"><a class="navbar-brand link-dark logo" href="@{/}">Binary Table &beta;</a></div>
+        <div align="center"><a class="navbar-brand link-dark logo" th:href="@{/}" href="/">Binary Table &beta;</a></div>
         <form name="loginForm" th:action="@{/login}" method="post" accept-charset="utf-8">
         <div class="my-3" align="center" th:if="${param.error}">
             <span class="error" th:text="#{error.invalidEmailOrPassword}"/>
@@ -21,6 +21,7 @@
             </div>
             <input class="button button-dark mt-1 mb-3" type="submit" th:value="#{meta.login}">
         </form>
+        <th:block th:replace="fragments/oauth :: oauth"/>
         <div align="center"><span class="form"><a class="link-dark" th:href="@{/forgotpassword}" th:text="#{login.forgotPassword}"></a></span></div>
         <div align="center"><span class="form"><a class="link-dark" th:href="@{/signup}" th:text="#{login.wantToSignUp}"></a></span></div>
     </div>
@@ -40,6 +41,7 @@
             </div>
             <input class="button button-dark mt-1 mb-3" type="submit" th:value="#{meta.login}">
         </form>
+        <th:block th:replace="fragments/oauth :: oauth"/>
         <div align="center"><span class="form"><a class="link-dark" th:href="@{/forgotpassword}" th:text="#{login.forgotPassword}"></a></span></div>
         <div align="center"><span class="form"><a class="link-dark" th:href="@{/signup}" th:text="#{login.wantToSignUp}"></a></span></div>
     </div>

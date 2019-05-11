@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<body>
+<th:block th:fragment="oauth">
+<div class="my-3" align="center"><span th:text="#{login.orUse}"></span></div>
+<div class="mb-3" align="center"><a th:href="@{/login/google}"><image class="navbar-compact-icon" th:src="@{/images/google.svg}" src="/images/google.svg" alt="Login with Google"></image></a></div>
+</th:block>
+</body>

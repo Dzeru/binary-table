@@ -1,17 +1,15 @@
 package com.pie.binarytable.controllers;
 
-import com.pie.binarytable.services.UserService;
-import com.pie.binarytable.repositories.GoalRepository;
-import com.pie.binarytable.repositories.GroupGoalRepository;
-import com.pie.binarytable.repositories.UserRepository;
 import com.pie.binarytable.dto.CollaboratorsList;
 import com.pie.binarytable.dto.GoalId;
 import com.pie.binarytable.entities.Goal;
 import com.pie.binarytable.entities.GroupGoal;
 import com.pie.binarytable.entities.User;
-
+import com.pie.binarytable.repositories.GoalRepository;
+import com.pie.binarytable.repositories.GroupGoalRepository;
+import com.pie.binarytable.repositories.UserRepository;
+import com.pie.binarytable.services.UserService;
 import org.apache.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +65,7 @@ public class RestGoalsController
 		if(!goal.getUserId().equals(user.getId()))
 		{
 			logger.warn("Update goal: user with id = " + user.getId() + " try to access goal with userId = " + goal.getUserId());
+			return ResponseEntity.badRequest().body("Fail to update goal");
 		}
 		else
 		{
